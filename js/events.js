@@ -46,6 +46,7 @@ const EVENTS = [
     title: "Security Course (internal)",
     type: "Training",
     city: "Gjøvik, NO",
+    soldout: true,
   },
   {
     date: "2026-08-31", end: "2026-09-04",
@@ -53,6 +54,7 @@ const EVENTS = [
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
+    soldout: true,
   },
   {
     date: "2026-09-07", end: "2026-09-11",
@@ -60,6 +62,7 @@ const EVENTS = [
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
+    soldout: true,
   },
   {
     date: "2026-09-14", end: "2026-09-18",
@@ -67,6 +70,7 @@ const EVENTS = [
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
+    soldout: true,
   },
   {
     date: "2026-09-21",
