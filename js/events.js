@@ -88,6 +88,13 @@ const EVENTS = [
     url: "https://www.glasspaper.no/kurs/mastering-microsoft-device-management/orderform?dId=12976592",
   },
   {
+    date: "2026-09-30", end: "2026-10-02",
+    title: "DSD Cloud University — Copilot and Agents",
+    type: "Training",
+    city: "Rosmalen, NL",
+    venue: "DSD Europe",
+  },
+  {
     date: "2026-10-13", end: "2026-10-15",
     title: "NIC 2026 — Nordic Infrastructure Conference",
     type: "Conference",
