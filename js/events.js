@@ -18,6 +18,13 @@
 
 const EVENTS = [
   {
+    date: "2026-07-10",
+    title: "DSD Cloud Academy",
+    type: "Training",
+    city: "Online",
+    soldout: true,
+  },
+  {
     date: "2026-07-14",
     title: "Microsoft 365 E7 Event",
     type: "Event",
