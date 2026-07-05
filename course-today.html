@@ -111,15 +111,16 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
-      <div class="eyebrow">Souvenir</div>
-      <h2 class="section-title">Get your boarding pass</h2>
-      <p>You're on board Microsoft University Air. Enter your name for a personalized boarding pass for this course — perfect for LinkedIn.</p>
+      <div class="eyebrow">For attendees</div>
+      <h2 class="section-title">Certificate of attendance</h2>
+      <p>Attending this course? Enter your name exactly as you'd like it to appear and download your personalized certificate of attendance.</p>
     </div>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
-      <input id="bp-name" placeholder="Your name" style="padding:11px 16px;font:inherit;border:1px solid var(--border);border-radius:4px;min-width:260px">
-      <button id="bp-generate" class="btn btn-blue" style="cursor:pointer">Generate boarding pass ✈️</button>
+    <div id="cert-form" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+      <input id="cert-name" placeholder="Your full name" style="padding:11px 16px;font:inherit;border:1px solid var(--border);border-radius:4px;min-width:280px">
+      <button id="cert-generate" class="btn btn-blue" style="cursor:pointer">Generate certificate</button>
     </div>
-    <div id="bp-result"></div>
+    <p id="cert-notice" style="display:none;color:var(--ink-faint)">Certificates are available during a course (and for a few days after it ends). Join me on one of the <a href="events.html">upcoming events</a>!</p>
+    <div id="cert-result"></div>
   </div>
 </section>
 
@@ -244,7 +245,7 @@
 })();
 </script>
 <script src="js/terminal.js" defer></script>
-<script src="js/boardingpass.js" defer></script>
+<script src="js/certificate.js" defer></script>
 <script src="js/counter.js" defer></script>
 <script src="js/site.js" defer></script>
 </body>
