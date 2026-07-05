@@ -69,6 +69,14 @@ const EVENTS = [
     venue: "Glasspaper",
   },
   {
+    date: "2026-09-21",
+    title: "Mastering Microsoft Device Management",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    url: "https://www.glasspaper.no/kurs/mastering-microsoft-device-management/orderform?dId=12976592",
+  },
+  {
     date: "2026-10-13", end: "2026-10-15",
     title: "NIC 2026 — Nordic Infrastructure Conference",
     type: "Conference",
