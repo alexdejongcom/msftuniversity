@@ -56,7 +56,18 @@
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="tour-map-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">The tour map</div>
+      <h2 class="section-title">Where in the world is Alex?</h2>
+    </div>
+    <canvas id="tour-map" style="width:100%;height:auto;background:#f7fafc;border:1px solid var(--border);border-radius:10px"></canvas>
+    <p style="margin-top:10px;font-size:13.5px;color:var(--ink-faint)">🔴 next stop · 🔵 upcoming — the plane knows the way.</p>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="cta-band">
       <div>
@@ -160,6 +171,8 @@
   });
 })();
 </script>
+<script src="js/terminal.js" defer></script>
+<script src="js/tourmap.js" defer></script>
 <script src="js/site.js" defer></script>
 </body>
 </html>

@@ -33,7 +33,7 @@
     "color:#7fba00;font-family:monospace;font-size:12px"
   );
   console.log("%cLike poking around? You'd probably enjoy the KQL Detective game → https://detective.kusto.io", css2);
-  console.log("%cPsst: try the Konami code (↑↑↓↓←→←→BA). Or click the logo squares 5 times.", css2);
+  console.log("%cPsst: Konami code (↑↑↓↓←→←→BA) · logo squares 5× · press ~ for a terminal · type 'vista'.", css2);
 
   /* ---------- Egg #2: Konami code → BSOD ---------- */
   var konami = ["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"];
@@ -47,6 +47,7 @@
     }
   });
 
+  window.__eggBsod = bsod;
   function bsod() {
     if (document.getElementById("egg-bsod")) return;
     var d = document.createElement("div");
