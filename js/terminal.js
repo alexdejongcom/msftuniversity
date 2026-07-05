@@ -63,6 +63,7 @@
         "  Get-Resources     Learning resources\n" +
         "  Invoke-Keynote    Engage keynote mode\n" +
         "  Invoke-BSOD       You know what this does\n" +
+        "  Get-Health        Service Health dashboard\n" +
         "  Enable-Aero       Windows Vista called...\n" +
         "  Disable-Aero      ...and 2026 answered\n" +
         "  cls / clear       Clear screen\n" +
@@ -109,6 +110,9 @@
     } else if (c === "disable-aero") {
       window.__setAero && window.__setAero(false);
       print("Aero glass disabled. Welcome back.");
+    } else if (c === "get-health" || c === "get-servicehealth") {
+      print("Opening Service Health dashboard...");
+      setTimeout(function () { window.location.href = "status.html"; }, 600);
     } else if (c === "cls" || c === "clear") {
       out.innerHTML = "";
     } else if (c === "exit") {

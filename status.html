@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Service Health — Microsoft University</title>
+<meta name="description" content="Live service health for Microsoft University — website, trainer, demo gods and coffee supply.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="canonical" href="https://msftuniversity.com/status.html">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .health-banner {
+    display: flex; align-items: center; gap: 14px;
+    background: #dff6dd; border: 1px solid #107c10; border-radius: 8px;
+    padding: 18px 24px; margin-bottom: 36px; font-weight: 600; color: #0b5a0b;
+  }
+  .health-banner .dot { font-size: 26px; }
+  table.health { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  table.health th, table.health td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 15px; }
+  table.health th { background: var(--bg-alt); font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); }
+  table.health tr:last-child td { border-bottom: none; }
+  .st-ok { color: #107c10; font-weight: 600; }
+  .st-warn { color: #997000; font-weight: 600; }
+  .st-info { color: var(--ink-faint); }
+  .incident { border-left: 4px solid var(--border); padding: 4px 0 4px 18px; margin-bottom: 22px; }
+  .incident.resolved { border-color: #107c10; }
+  .incident.monitoring { border-color: #ffb900; }
+  .incident .when { font-size: 13px; color: var(--ink-faint); }
+  .incident h3 { font-size: 17px; margin: 2px 0 4px; }
+  .incident p { font-size: 14.5px; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="course-today.html">My Course Today</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="training.html">Training &amp; Services</a></li>
+      <li><a href="resources.html">Learning Resources</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Book a Training</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">Service Health</div>
+    <h1>Microsoft University status</h1>
+    <p>Live health across all mission-critical training infrastructure. Refreshes automatically, unlike the trainer.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="health-banner" id="overall">
+      <span class="dot">✅</span>
+      <span id="overall-text">Checking service health…</span>
+    </div>
+
+    <table class="health" id="health-table">
+      <tr><th style="width:32%">Service</th><th style="width:22%">Status</th><th>Details</th></tr>
+      <tr><td>Website (Azure Static Web Apps)</td><td id="s-web" class="st-info">Checking…</td><td id="d-web" class="st-info">—</td></tr>
+      <tr><td>Visitor Counter API (Azure Functions)</td><td id="s-api" class="st-info">Checking…</td><td id="d-api" class="st-info">—</td></tr>
+      <tr><td>Events Calendar</td><td id="s-cal" class="st-info">Checking…</td><td id="d-cal" class="st-info">—</td></tr>
+      <tr><td>Trainer</td><td id="s-alex" class="st-info">Checking…</td><td id="d-alex" class="st-info">—</td></tr>
+      <tr><td>Coffee Supply</td><td id="s-coffee" class="st-info">Checking…</td><td id="d-coffee" class="st-info">—</td></tr>
+      <tr><td>Demo Gods</td><td class="st-ok">✅ Appeased</td><td class="st-info">Offerings accepted. Live demos may proceed.</td></tr>
+      <tr><td>Slides-per-Demo Ratio</td><td class="st-ok">✅ Within SLA</td><td class="st-info">Currently 0.2 — well below the 1.0 threshold. Less slides, more demos.</td></tr>
+      <tr><td>Clippy Containment</td><td class="st-warn">⚠️ Monitoring</td><td class="st-info">Subject escapes when the logo is clicked five times. Containment deemed impossible since 1997.</td></tr>
+    </table>
+    <p style="margin-top:12px;font-size:13px;color:var(--ink-faint)">Uptime: 99.99% (self-reported, like all the best SLAs) · Last checked: <span id="checked">—</span></p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">History</div>
+      <h2 class="section-title">Incident history</h2>
+    </div>
+
+    <div class="incident resolved">
+      <div class="when">5 July 2026 · Resolved</div>
+      <h3>Visitor counter deployed to production</h3>
+      <p>An Azure Function and Table Storage were provisioned to count visitors. Root cause of the feature: the trainer said "what else can we add?". Monitoring nominal.</p>
+    </div>
+
+    <div class="incident resolved">
+      <div class="when">14 July 2026 · Scheduled</div>
+      <h3>Trainer rate-limited in London region</h3>
+      <p>Microsoft 365 E7 event (sold out). Temporary latency in email responses expected. Mitigation: double espresso. RCA: jet lag, KLM.</p>
+    </div>
+
+    <div class="incident resolved">
+      <div class="when">4–5 August 2026 · Scheduled maintenance</div>
+      <h3>Trainer redeployed to Redmond (Microsoft HQ)</h3>
+      <p>TechMentor &amp; Cybersecurity Live! sessions. Live demos scheduled; no slides will be harmed during this maintenance window.</p>
+    </div>
+
+    <div class="incident monitoring">
+      <div class="when">Since 1997 · Monitoring</div>
+      <h3>Clippy containment breach</h3>
+      <p>It looks like you're trying to read an incident report. Impact: intermittent nostalgia. No ETA for resolution; workaround: click "No" (does not work).</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Microsoft University</h4>
+        <p>Microsoft training, keynotes and cloud advisory by Alex de Jong — Microsoft Certified Trainer and international speaker.</p>
+        <p style="margin-top:14px;font-size:12.5px;color:#767676">Microsoft, Azure, Microsoft 365, Copilot, Intune and related marks are trademarks of the Microsoft group of companies. This independent website is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="course-today.html">My Course Today</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="training.html">Training &amp; Services</a></li>
+          <li><a href="resources.html">Learning Resources</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/adjnl/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://x.com/alexdejongcom" target="_blank" rel="noopener">X / Twitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a></li>
+          <li><a href="https://outlook.office.com/bookwithme/user/9224ea12136f4ce0a77667b581e17b88%40alexdejong.com?anonymous&amp;ismsaljsauthenabled" target="_blank" rel="noopener">Book a meeting</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>🌐 English (United States)</span>
+      <span>© 2026 Alex de Jong · Microsoft University</span>
+      <span>Not affiliated with Microsoft Corporation</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/events.js"></script>
+<script>
+(function () {
+  function set(id, cls, text) {
+    var el = document.getElementById(id);
+    el.className = cls; el.textContent = text;
+  }
+
+  function check() {
+    document.getElementById("checked").textContent = new Date().toLocaleTimeString();
+
+    // Website + API: measure real latency of the counter function
+    var t0 = performance.now();
+    fetch("/api/counter")
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (data) {
+        var ms = Math.round(performance.now() - t0);
+        set("s-web", "st-ok", "✅ Available");
+        set("d-web", "st-info", "Serving from Azure global edge.");
+        set("s-api", "st-ok", "✅ Available");
+        set("d-api", "st-info", ms + " ms round-trip · " + data.count + " visitors counted and stored in Table Storage.");
+      })
+      .catch(function () {
+        set("s-web", "st-ok", "✅ Available");
+        set("d-web", "st-info", "You are reading this, so yes.");
+        set("s-api", "st-warn", "⚠️ Unreachable");
+        set("d-api", "st-info", "Counter API not responding (local preview, or the demo gods require a fresh offering).");
+      });
+
+    // Events calendar: real data
+    var t = new Date(); t.setHours(0, 0, 0, 0);
+    var evs = (typeof EVENTS !== "undefined" ? EVENTS : []);
+    var upcoming = evs.filter(function (e) { return new Date(e.date + "T00:00:00") > t; });
+    var current = null;
+    evs.forEach(function (e) {
+      var s = new Date(e.date + "T00:00:00"), en = new Date((e.end || e.date) + "T00:00:00");
+      if (!current && s <= t && t <= en) current = e;
+    });
+    set("s-cal", "st-ok", "✅ Available");
+    set("d-cal", "st-info", upcoming.length + " upcoming events on the calendar.");
+
+    // Trainer: deployed where?
+    if (current) {
+      set("s-alex", "st-ok", "✅ Deployed");
+      set("d-alex", "st-info", "Currently running \"" + current.title + "\" in " + current.city + ". Response times may vary during demos.");
+    } else if (upcoming.length) {
+      set("s-alex", "st-ok", "✅ Standby");
+      set("d-alex", "st-info", "Next deployment: " + upcoming[0].title + " (" + upcoming[0].date + ", " + upcoming[0].city + ").");
+    } else {
+      set("s-alex", "st-warn", "⚠️ Idle");
+      set("d-alex", "st-info", "No scheduled deployments. This is statistically improbable — check back soon.");
+    }
+
+    // Coffee: time-of-day based telemetry
+    var h = new Date().getHours();
+    if (h < 6) { set("s-coffee", "st-warn", "⚠️ Offline"); set("d-coffee", "st-info", "Outside operating hours. Do not approach the trainer."); }
+    else if (h < 9) { set("s-coffee", "st-warn", "⚠️ Brewing"); set("d-coffee", "st-info", "First batch percolating. Full capacity expected by 09:00."); }
+    else { set("s-coffee", "st-ok", "✅ Optimal"); set("d-coffee", "st-info", "Caffeine levels within operational parameters."); }
+
+    document.getElementById("overall-text").textContent =
+      "All systems operational — no slides were used in the making of this page.";
+  }
+
+  check();
+  setInterval(check, 30000);
+})();
+</script>
+<script src="js/terminal.js" defer></script>
+<script src="js/counter.js" defer></script>
+<script src="js/site.js" defer></script>
+</body>
+</html>
