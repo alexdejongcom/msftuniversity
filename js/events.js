@@ -103,6 +103,14 @@ const EVENTS = [
     url: "https://nicconf.com/tickets",
   },
   {
+    date: "2026-10-20", end: "2026-10-22",
+    title: "In-company Training (internal)",
+    type: "Training",
+    city: "Eindhoven, NL",
+    venue: "Ictivity",
+    soldout: true,
+  },
+  {
     date: "2026-11-15", end: "2026-11-20",
     title: "Live! 360 Tech Con 2026",
     type: "Conference",
