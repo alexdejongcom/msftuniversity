@@ -80,7 +80,18 @@
       <tr><td>Slides-per-Demo Ratio</td><td class="st-ok">✅ Within SLA</td><td class="st-info">Currently 0.2 — well below the 1.0 threshold. Less slides, more demos.</td></tr>
       <tr><td>Clippy Containment</td><td class="st-warn">⚠️ Monitoring</td><td class="st-info">Subject escapes when the logo is clicked five times. Containment deemed impossible since 1997.</td></tr>
     </table>
-    <p style="margin-top:12px;font-size:13px;color:var(--ink-faint)">Uptime: 99.99% (self-reported, like all the best SLAs) · Last checked: <span id="checked">—</span></p>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px">
+      <button id="alerts-btn" class="btn btn-blue" style="cursor:pointer">🔔 Set up health alerts</button>
+      <span style="font-size:13px;color:var(--ink-faint)">Uptime: 99.99% (self-reported, like all the best SLAs) · Last checked: <span id="checked">—</span></span>
+    </div>
+    <div id="alerts-panel" style="display:none;margin-top:14px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px 24px">
+      <h3 style="font-size:16px;margin-bottom:6px">Create alert rule</h3>
+      <p style="font-size:14.5px;color:var(--ink-soft);margin-bottom:12px">
+        Alert rule created: <strong>when Trainer status changes</strong> → <strong>notify via LinkedIn</strong>.<br>
+        Action group deployment requires one manual step: you have to click Follow yourself. Azure can't do everything.
+      </p>
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/adjnl/" target="_blank" rel="noopener">Complete deployment on LinkedIn ›</a>
+    </div>
   </div>
 </section>
 
@@ -223,6 +234,20 @@
     document.getElementById("overall-text").textContent =
       "All systems operational — no slides were used in the making of this page.";
   }
+
+  // "Set up alerts" — deploys an alert rule (i.e. asks you to follow on LinkedIn)
+  var alertsBtn = document.getElementById("alerts-btn");
+  alertsBtn.addEventListener("click", function () {
+    var labels = ["Validating alert rule…", "Deploying action group…", "Provisioning notification channel…"];
+    var i = 0;
+    alertsBtn.disabled = true;
+    var iv = setInterval(function () {
+      if (i < labels.length) { alertsBtn.textContent = labels[i++]; return; }
+      clearInterval(iv);
+      alertsBtn.style.display = "none";
+      document.getElementById("alerts-panel").style.display = "block";
+    }, 550);
+  });
 
   check();
   setInterval(check, 30000);
