@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Logo preview — microsoftuniversity.com</title>
+<style>
+  body { margin: 0; font-family: "Segoe UI", sans-serif; }
+  .row { padding: 56px; display: flex; align-items: center; justify-content: center; }
+  .light { background: #fff; }
+  .gray  { background: #f2f2f2; }
+  .dark  { background: #14181d; }
+  .blue  { background: linear-gradient(135deg, #003d6b, #0067b8); }
+  img { max-width: 90%; height: auto; }
+  .small img { height: 32px; width: auto; }
+  p { text-align: center; color: #737373; font-size: 13px; margin: 0; padding: 8px 0 24px; }
+</style>
+</head>
+<body>
+  <div class="row light"><img src="logo.svg" alt=""></div>
+  <p>logo.svg on white</p>
+  <div class="row gray"><img src="logo.svg" alt=""></div>
+  <p>logo.svg on Microsoft gray</p>
+  <div class="row dark"><img src="logo-dark.svg" alt=""></div>
+  <p>logo-dark.svg on dark</p>
+  <div class="row blue"><img src="logo-dark.svg" alt=""></div>
+  <p>logo-dark.svg on hero blue</p>
+  <div class="row light small"><img src="logo.svg" alt=""></div>
+  <p>header size (32px tall)</p>
+</body>
+</html>

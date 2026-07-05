@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 64" width="640" height="64" role="img" aria-label="microsoftuniversity.com">
+  <!-- Four-square symbol -->
+  <g transform="translate(4,6.5)">
+    <rect x="0"  y="0"  width="24" height="24" fill="#f25022"/>
+    <rect x="27" y="0"  width="24" height="24" fill="#7fba00"/>
+    <rect x="0"  y="27" width="24" height="24" fill="#00a4ef"/>
+    <rect x="27" y="27" width="24" height="24" fill="#ffb900"/>
+  </g>
+  <!-- Wordmark: white for dark backgrounds, light-blue accent -->
+  <text x="72" y="43" font-family="Segoe UI, -apple-system, Helvetica Neue, Arial, sans-serif" font-size="31" letter-spacing="-0.5">
+    <tspan fill="#d2d2d2" font-weight="400">microsoft</tspan><tspan fill="#ffffff" font-weight="600">university</tspan><tspan fill="#50b0f0" font-weight="600">.com</tspan>
+  </text>
+</svg>
