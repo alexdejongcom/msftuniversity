@@ -38,3 +38,16 @@ Everything is plain HTML. Colors and fonts live in the `:root` block at the top 
 ## Events workflow
 
 Events live in `js/events.js`. The events page sorts by date automatically and hides any event whose start date has passed. To add one: copy a block in that file, fill in date/title/city/url, commit, push. Or tell Claude: "new event <booking-url>" — it fetches the details (translated to English) and adds the entry.
+
+## Visitor counter (Azure Functions + Table Storage)
+
+The odometer in the footer is served by `/api/counter` (`api/src/functions/counter.js`), a managed
+Azure Function that increments a counter in Azure Table Storage. One-time setup:
+
+1. Create a Storage Account (any cheap LRS one, e.g. `stmsftuniversity`).
+2. Copy its connection string (Access keys blade).
+3. Static Web App → Environment variables → add `COUNTER_STORAGE` = that connection string.
+4. Push — the workflow deploys the `api/` folder automatically (api_location is set to "api").
+
+GET /api/counter returns the count; POST increments (once per visitor session, handled client-side).
+The widget hides itself if the API is unavailable.
