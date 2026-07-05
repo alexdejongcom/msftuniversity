@@ -21,6 +21,9 @@
   .legal ol { padding-left: 22px; }
   .legal ol li { margin-bottom: 8px; }
   .legal .meta { color: var(--ink-faint); font-size: 14px; margin-bottom: 32px; }
+  .cancel-table { border-collapse: collapse; margin: 10px 0 4px; width: 100%; max-width: 560px; }
+  .cancel-table th, .cancel-table td { border: 1px solid var(--border); padding: 8px 14px; font-size: 14.5px; text-align: left; }
+  .cancel-table th { background: var(--bg-alt); font-weight: 600; color: var(--ink); }
   .notice {
     background: var(--blue-light);
     border-left: 4px solid var(--blue);
@@ -66,24 +69,30 @@
   <div class="container legal">
 
     <p class="meta">
-      <strong>[Company name]</strong> · Chamber of Commerce (KvK): <strong>[KvK number]</strong> · VAT: <strong>[VAT number]</strong><br>
-      Registered office: <strong>[Address]</strong> · Contact: <a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a><br>
+      <strong>alexdejong.com</strong>, trading as Microsoft University<br>
+      Chamber of Commerce (KvK): <strong>17175279</strong> · VAT: <strong>NL001893614B59</strong><br>
+      Contact: <a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a> · <a href="https://msftuniversity.com">msftuniversity.com</a><br>
       Version: July 2026
     </p>
 
     <div class="notice">
-      These terms are a template and do not constitute legal advice. Have them reviewed by a Dutch legal professional before relying on them in contracts.
+      <strong>In this document:</strong>
+      <a href="#art1">Definitions</a> · <a href="#art2">Applicability</a> · <a href="#art3">Offers</a> · <a href="#art4">Performance</a> ·
+      <a href="#art5">Cancellation by Client</a> · <a href="#art6">Cancellation by Contractor</a> · <a href="#art7">Fees &amp; payment</a> ·
+      <a href="#art8">Intellectual property</a> · <a href="#art9">Confidentiality</a> · <a href="#art10">Privacy</a> ·
+      <a href="#art11">Liability</a> · <a href="#art12">Force majeure</a> · <a href="#art13">Independence</a> ·
+      <a href="#art14">Governing law</a> · <a href="#art15">Amendments</a>
     </div>
 
-    <h2>Article 1 — Definitions</h2>
+    <h2 id="art1">Article 1 — Definitions</h2>
     <ol>
-      <li><strong>Contractor:</strong> [Company name], represented by Alex de Jong, registered with the Dutch Chamber of Commerce under number [KvK number].</li>
+      <li><strong>Contractor:</strong> alexdejong.com, trading as Microsoft University, represented by Alex de Jong, registered with the Dutch Chamber of Commerce under number 17175279 (VAT: NL001893614B59).</li>
       <li><strong>Client:</strong> the legal entity or natural person acting in the course of a business or profession that engages the Contractor.</li>
       <li><strong>Engagement:</strong> any agreement under which the Contractor provides training, courses, keynotes, presentations, workshops, or advisory services (including "CTO as a Service").</li>
       <li><strong>Written / in writing:</strong> including by email.</li>
     </ol>
 
-    <h2>Article 2 — Applicability</h2>
+    <h2 id="art2">Article 2 — Applicability</h2>
     <ol>
       <li>These terms apply to all offers, quotations and Engagements between the Contractor and the Client.</li>
       <li>The applicability of any general (purchasing) terms of the Client is expressly rejected, unless accepted by the Contractor in writing.</li>
@@ -91,14 +100,14 @@
       <li>If any provision of these terms is void or voided, the remaining provisions remain in full force; the parties will replace the affected provision with one that approximates its purpose.</li>
     </ol>
 
-    <h2>Article 3 — Offers and formation of the agreement</h2>
+    <h2 id="art3">Article 3 — Offers and formation of the agreement</h2>
     <ol>
       <li>All offers and quotations are without obligation and valid for 30 days, unless stated otherwise.</li>
       <li>An Engagement is formed upon written confirmation by both parties, or when the Contractor commences performance at the Client's request.</li>
       <li>Quoted prices are exclusive of VAT and exclusive of travel, accommodation and venue costs, unless expressly stated otherwise.</li>
     </ol>
 
-    <h2>Article 4 — Performance of the Engagement</h2>
+    <h2 id="art4">Article 4 — Performance of the Engagement</h2>
     <ol>
       <li>The Contractor will perform the Engagement to the best of his knowledge and ability, in accordance with professional standards. All Engagements constitute obligations of best efforts (inspanningsverplichting), not obligations of result.</li>
       <li>Where official Microsoft courses are delivered, the Contractor follows the applicable official Microsoft curriculum and Microsoft Certified Trainer program requirements.</li>
@@ -107,31 +116,34 @@
       <li>The Contractor may engage third parties for the performance of the Engagement. Articles 7:404 and 7:407(2) of the Dutch Civil Code are excluded.</li>
     </ol>
 
-    <h2>Article 5 — Cancellation and rescheduling by the Client</h2>
+    <h2 id="art5">Article 5 — Cancellation and rescheduling by the Client</h2>
     <ol>
       <li>Cancellation must be made in writing. The following fees apply, calculated on the agreed fee for the cancelled part of the Engagement:
-        <br>— more than 4 weeks before the (first) delivery date: free of charge;
-        <br>— between 4 and 2 weeks before the (first) delivery date: 50% of the fee;
-        <br>— less than 2 weeks before the (first) delivery date: 100% of the fee.</li>
+        <table class="cancel-table">
+          <tr><th>Cancellation received</th><th>Fee due</th></tr>
+          <tr><td>More than 4 weeks before the (first) delivery date</td><td>Free of charge</td></tr>
+          <tr><td>Between 4 and 2 weeks before the (first) delivery date</td><td>50% of the fee</td></tr>
+          <tr><td>Less than 2 weeks before the (first) delivery date</td><td>100% of the fee</td></tr>
+        </table></li>
       <li>Costs already incurred by the Contractor (including non-refundable travel and accommodation) are payable in full in all cases.</li>
       <li>Rescheduling at the Client's request within 2 weeks of the delivery date is treated as a cancellation, unless the Contractor accepts the new date without additional charge.</li>
     </ol>
 
-    <h2>Article 6 — Cancellation by the Contractor</h2>
+    <h2 id="art6">Article 6 — Cancellation by the Contractor</h2>
     <ol>
       <li>In case of illness or other circumstances preventing delivery, the Contractor will where reasonably possible offer a replacement trainer of equivalent qualification or an alternative date.</li>
       <li>If no alternative is reasonably possible, amounts already invoiced for the undelivered part will be credited. The Contractor is not liable for any further damage arising from such cancellation.</li>
     </ol>
 
-    <h2>Article 7 — Fees and payment</h2>
+    <h2 id="art7">Article 7 — Fees and payment</h2>
     <ol>
       <li>Invoices are payable within <strong>14 days</strong> of the invoice date, without set-off or suspension.</li>
       <li>Upon expiry of the payment term the Client is in default by operation of law and owes the statutory commercial interest (art. 6:119a Dutch Civil Code) plus extrajudicial collection costs in accordance with the applicable Dutch regulations.</li>
-      <li>The Contractor may require full or partial advance payment for new Clients or engagements exceeding [amount].</li>
+      <li>The Contractor may require full or partial advance payment for new Clients or for engagements of substantial size or duration.</li>
       <li>Complaints regarding an invoice must be submitted in writing within 14 days of the invoice date and do not suspend the payment obligation.</li>
     </ol>
 
-    <h2>Article 8 — Intellectual property</h2>
+    <h2 id="art8">Article 8 — Intellectual property</h2>
     <ol>
       <li>All intellectual property rights in materials developed or provided by the Contractor (slides, demos, scripts, recordings, documentation) remain with the Contractor or its licensors.</li>
       <li>The Client receives a non-exclusive, non-transferable licence to use provided materials internally for the participants of the Engagement. Reproduction, distribution or commercial use requires prior written consent.</li>
@@ -139,20 +151,20 @@
       <li>Recording (audio/video) of trainings or keynotes requires the Contractor's prior written consent.</li>
     </ol>
 
-    <h2>Article 9 — Confidentiality</h2>
+    <h2 id="art9">Article 9 — Confidentiality</h2>
     <ol>
       <li>Both parties shall keep confidential all information of a confidential nature obtained in the context of the Engagement, during and after its term.</li>
       <li>This obligation does not apply to information that is publicly available, independently developed, or must be disclosed by law or court order.</li>
     </ol>
 
-    <h2>Article 10 — Privacy and data protection</h2>
+    <h2 id="art10">Article 10 — Privacy and data protection</h2>
     <ol>
       <li>Both parties shall comply with applicable data protection legislation, including the General Data Protection Regulation (GDPR / AVG).</li>
       <li>Where the Contractor processes personal data of participants (e.g. names, email addresses for course administration), he does so only for the purpose of performing the Engagement and retains such data no longer than necessary.</li>
       <li>If processing beyond course administration is agreed, the parties will conclude a data processing agreement (verwerkersovereenkomst) where required by the GDPR.</li>
     </ol>
 
-    <h2>Article 11 — Liability</h2>
+    <h2 id="art11">Article 11 — Liability</h2>
     <ol>
       <li>The Contractor's total liability for attributable failure, unlawful act or otherwise is limited to the amount paid by the Client for the Engagement concerned, or — for engagements longer than three months — the fee for the last three months.</li>
       <li>Liability for indirect damage (including consequential loss, lost profit, lost savings, business interruption and loss of data) is excluded.</li>
@@ -161,25 +173,25 @@
       <li>Any claim lapses 12 months after the Client became aware, or could reasonably have been aware, of the damage.</li>
     </ol>
 
-    <h2>Article 12 — Force majeure</h2>
+    <h2 id="art12">Article 12 — Force majeure</h2>
     <ol>
       <li>Neither party is required to perform any obligation if prevented by force majeure, including illness, travel restrictions, failures of third-party platforms or networks, and government measures.</li>
       <li>If force majeure lasts longer than 60 days, either party may terminate the Engagement in writing for the unperformed part, without liability for damages. Work already performed will be invoiced pro rata.</li>
     </ol>
 
-    <h2>Article 13 — Independence and no affiliation</h2>
+    <h2 id="art13">Article 13 — Independence and no affiliation</h2>
     <ol>
       <li>The Contractor performs Engagements as an independent contractor. Nothing in the Engagement creates an employment relationship, partnership or agency.</li>
       <li>The Contractor is a Microsoft Certified Trainer but is not an employee or representative of Microsoft Corporation. "Microsoft University" is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.</li>
     </ol>
 
-    <h2>Article 14 — Governing law and disputes</h2>
+    <h2 id="art14">Article 14 — Governing law and disputes</h2>
     <ol>
       <li>All Engagements and these terms are governed exclusively by Dutch law.</li>
       <li>Disputes will first be addressed through good-faith consultation. Failing resolution, disputes are submitted exclusively to the competent court of the district in which the Contractor is registered.</li>
     </ol>
 
-    <h2>Article 15 — Amendments</h2>
+    <h2 id="art15">Article 15 — Amendments</h2>
     <ol>
       <li>The Contractor may amend these terms. The version in force at the formation of an Engagement applies to that Engagement.</li>
     </ol>
