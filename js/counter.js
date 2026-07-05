@@ -22,7 +22,7 @@
   function render(count) {
     var digits = String(count).padStart(6, "0").split("");
     var box = document.createElement("span");
-    box.title = "Live from an Azure Function + Table Storage. Ask me how.";
+    box.title = "Live from an Azure Function + Table Storage. Ask us how.";
     box.style.cssText = "display:inline-flex;align-items:center;gap:6px";
     var label = document.createElement("span");
     label.textContent = "You are visitor";
