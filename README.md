@@ -34,3 +34,7 @@ Everything is plain HTML. Colors and fonts live in the `:root` block at the top 
 - `404.html` — BSOD-style not-found page (configure your host to serve it for 404s; on Azure Static Web Apps add a `staticwebapp.config.json` responseOverride).
 - `robots.txt` + `sitemap.xml` — SEO basics.
 - `js/site.js` — nav behavior + three easter eggs: browser console message, Konami code (↑↑↓↓←→←→BA) triggers a friendly BSOD, and clicking the logo squares 5× summons Clippy.
+
+## Events workflow
+
+Events live in `js/events.js`. The events page sorts by date automatically and hides any event whose start date has passed. To add one: copy a block in that file, fill in date/title/city/url, commit, push. Or tell Claude: "new event <booking-url>" — it fetches the details (translated to English) and adds the entry.

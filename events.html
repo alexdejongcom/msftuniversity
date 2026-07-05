@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact — Microsoft University</title>
-<meta name="description" content="Book a Microsoft training, keynote or advisory session with Alex de Jong.">
+<title>Upcoming Events — Microsoft University</title>
+<meta name="description" content="Where to see Alex de Jong next — upcoming Microsoft trainings, keynotes and workshops worldwide. Book your seat.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
-<link rel="canonical" href="https://msftuniversity.com/contact.html">
-<meta property="og:title" content="Contact — Microsoft University">
-<meta property="og:description" content="Book a Microsoft training, keynote or advisory session with Alex de Jong.">
-<meta property="og:url" content="https://msftuniversity.com/contact.html">
+<link rel="canonical" href="https://msftuniversity.com/events.html">
+<meta property="og:title" content="Upcoming Events — Microsoft University">
+<meta property="og:description" content="Where to see Alex de Jong next — upcoming Microsoft trainings, keynotes and workshops worldwide. Book your seat.">
+<meta property="og:url" content="https://msftuniversity.com/events.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="css/style.css">
@@ -28,87 +28,42 @@
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
       <li><a href="course-today.html">My Course Today</a></li>
-      <li><a href="events.html">Events</a></li>
+      <li><a href="events.html" class="active">Events</a></li>
       <li><a href="training.html">Training &amp; Services</a></li>
       <li><a href="resources.html">Learning Resources</a></li>
       <li><a href="about.html">About</a></li>
-      <li><a href="contact.html" class="nav-cta active">Book a Training</a></li>
+      <li><a href="contact.html" class="nav-cta">Book a Training</a></li>
     </ul>
   </div>
 </header>
 
 <section class="page-hero">
   <div class="container">
-    <h1>Get in touch</h1>
-    <p>Book an official Microsoft course, invite me to speak, or start a conversation about your cloud journey.</p>
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">On tour</div>
+    <h1>Upcoming Events</h1>
+    <p>Trainings, keynotes and workshops — around the world and online. Grab a seat before they're gone.</p>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="cta-band" style="margin-bottom: 56px">
-      <div>
-        <div class="eyebrow" style="color:rgba(255,255,255,.8)">The fastest way</div>
-        <h2>Book a meeting directly in my calendar</h2>
-        <p>Pick a slot that works for you — powered by Microsoft Bookings. No email ping-pong needed.</p>
-      </div>
-      <a class="btn btn-primary" href="https://outlook.office.com/bookwithme/user/9224ea12136f4ce0a77667b581e17b88%40alexdejong.com?anonymous&amp;ismsaljsauthenabled" target="_blank" rel="noopener">Book a meeting</a>
+    <div id="tour-list" class="tour-list">
+      <!-- rendered from js/events.js -->
     </div>
-    <div class="grid grid-2">
-      <div class="card contact-card">
-        <div class="card-icon">✉️</div>
-        <div>
-          <h3>Email</h3>
-          <p><a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a> — fastest way to reach me for bookings and enquiries.</p>
-        </div>
-      </div>
-      <div class="card contact-card">
-        <div class="card-icon">💼</div>
-        <div>
-          <h3>LinkedIn</h3>
-          <p><a href="https://www.linkedin.com/in/adjnl/" target="_blank" rel="noopener">linkedin.com/in/adjnl</a> — connect and message me directly.</p>
-        </div>
-      </div>
-      <div class="card contact-card">
-        <div class="card-icon">▶️</div>
-        <div>
-          <h3>YouTube</h3>
-          <p><a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">@microsoftuniversity</a> — free lectures and walkthroughs.</p>
-        </div>
-      </div>
-      <div class="card contact-card">
-        <div class="card-icon">𝕏</div>
-        <div>
-          <h3>X / Twitter</h3>
-          <p><a href="https://x.com/alexdejongcom" target="_blank" rel="noopener">@alexdejongcom</a> — updates and shorter thoughts.</p>
-        </div>
-      </div>
-    </div>
+    <p id="no-events" style="display:none;color:var(--ink-faint);text-align:center;padding:40px 0">
+      No public events on the calendar right now — <a href="contact.html">book a private training</a> instead.
+    </p>
   </div>
 </section>
 
 <section class="section alt">
   <div class="container">
-    <div class="section-head center">
-      <div class="eyebrow">Booking a training?</div>
-      <h2 class="section-title">How it works</h2>
-    </div>
-    <div class="grid grid-3">
-      <div class="card">
-        <div class="card-icon">1️⃣</div>
-        <h3>Tell me what you need</h3>
-        <p>The course or topic, your audience, preferred dates and whether it's in-person or virtual.</p>
+    <div class="cta-band">
+      <div>
+        <h2>Don't see a date that works?</h2>
+        <p>Private trainings and keynotes can be scheduled directly — in-person or virtual, worldwide.</p>
       </div>
-      <div class="card">
-        <div class="card-icon">2️⃣</div>
-        <h3>We plan it</h3>
-        <p>Direct booking or through one of my training partners — whichever works best for you.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon">3️⃣</div>
-        <h3>Your team learns</h3>
-        <p>Official Microsoft content, real-world stories, hands-on demos — and resources to keep learning afterwards.</p>
-      </div>
+      <a class="btn btn-primary" href="contact.html">Book privately</a>
     </div>
   </div>
 </section>
@@ -157,6 +112,54 @@
   </div>
 </footer>
 
+<script src="js/events.js"></script>
+<script>
+(function () {
+  var MONTHS = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+  var list = document.getElementById("tour-list");
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  // Only future events: anything that has already started (or finished) is hidden.
+  var upcoming = (typeof EVENTS !== "undefined" ? EVENTS : [])
+    .filter(function (e) { return new Date(e.date + "T00:00:00") > today; })
+    .sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+
+  if (!upcoming.length) {
+    document.getElementById("no-events").style.display = "block";
+    return;
+  }
+
+  upcoming.forEach(function (e) {
+    var d = new Date(e.date + "T00:00:00");
+    var dateBlock = '<div class="tour-date"><span class="d">' + d.getDate() + '</span><span class="m">' +
+      MONTHS[d.getMonth()] + '</span><span class="y">' + d.getFullYear() + '</span></div>';
+    var range = "";
+    if (e.end && e.end !== e.date) {
+      var de = new Date(e.end + "T00:00:00");
+      range = d.getDate() + "–" + de.getDate() + " " + MONTHS[de.getMonth()].charAt(0) + MONTHS[de.getMonth()].slice(1).toLowerCase();
+    }
+    var action;
+    if (e.soldout) {
+      action = '<span class="tour-soldout">Sold out</span>';
+    } else if (e.url) {
+      action = '<a class="btn btn-blue" href="' + e.url + '" target="_blank" rel="noopener">Book now ›</a>';
+    } else {
+      action = '<a class="btn btn-outline" href="contact.html">Enquire</a>';
+    }
+    var row = document.createElement("div");
+    row.className = "tour-row";
+    row.innerHTML =
+      dateBlock +
+      '<div class="tour-info">' +
+        '<span class="tour-type">' + (e.type || "Event") + (range ? " · " + range : "") + '</span>' +
+        '<h3>' + e.title + '</h3>' +
+        '<p>' + e.city + (e.venue ? ' · ' + e.venue : '') + '</p>' +
+      '</div>' +
+      '<div class="tour-action">' + action + '</div>';
+    list.appendChild(row);
+  });
+})();
+</script>
 <script src="js/site.js" defer></script>
 </body>
 </html>

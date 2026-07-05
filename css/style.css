@@ -436,6 +436,59 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .page-hero h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 700; letter-spacing: -.01em; }
 .page-hero p { margin-top: 12px; color: rgba(255, 255, 255, .85); font-size: 17.5px; max-width: 640px; }
 
+/* ---------- Tour dates (Events page) ---------- */
+.tour-list { display: flex; flex-direction: column; gap: 14px; max-width: 900px; margin: 0 auto; }
+
+.tour-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  border-radius: var(--radius);
+  padding: 20px 28px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.tour-row:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.tour-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+  line-height: 1.05;
+}
+.tour-date .d { font-size: 34px; font-weight: 700; color: var(--blue); font-family: var(--font-display); }
+.tour-date .m { font-size: 14px; font-weight: 700; letter-spacing: .12em; color: var(--ink); }
+.tour-date .y { font-size: 12px; color: var(--ink-faint); margin-top: 2px; }
+
+.tour-info { flex: 1; }
+.tour-info .tour-type {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+.tour-info h3 { font-size: 19px; font-weight: 600; margin: 2px 0; }
+.tour-info p { color: var(--ink-faint); font-size: 14.5px; }
+
+.tour-action { flex-shrink: 0; }
+.tour-soldout {
+  display: inline-block;
+  border: 2px solid var(--ink-faint);
+  color: var(--ink-faint);
+  border-radius: 4px;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
@@ -446,6 +499,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 
 @media (max-width: 640px) {
   .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .tour-row { flex-direction: column; text-align: center; gap: 12px; }
   .nav-toggle { display: block; }
   .nav-links {
     display: none;
