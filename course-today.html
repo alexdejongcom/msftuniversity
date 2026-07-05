@@ -45,22 +45,18 @@
 </section>
 
 <!-- ============================================================
-     TODAY'S COURSE — edit this block before each course.
-     Change the course code, title and the courseware/lab links,
-     then: git add -A && git commit -m "course today" && git push
+     TODAY'S COURSE — filled automatically from js/events.js.
+     Shows the event running today, or the next upcoming one.
      ============================================================ -->
 <section class="section">
   <div class="container">
-    <div class="cta-band">
+    <div class="cta-band" id="today-band">
       <div>
-        <div class="eyebrow" style="color:rgba(255,255,255,.8)">Now running</div>
-        <h2>AZ-104 — Microsoft Azure Administrator</h2>
-        <p>Update this block with today's course, courseware link and lab environment.</p>
+        <div class="eyebrow" style="color:rgba(255,255,255,.8)" id="today-eyebrow">Loading…</div>
+        <h2 id="today-title">&nbsp;</h2>
+        <p id="today-meta"></p>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a class="btn btn-primary" href="https://learn.microsoft.com/en-us/training/courses/az-104t00" target="_blank" rel="noopener">Course outline</a>
-        <a class="btn btn-secondary" href="https://esi.learnondemand.net" target="_blank" rel="noopener">Lab environment</a>
-      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap" id="today-actions"></div>
     </div>
   </div>
 </section>
@@ -185,6 +181,53 @@
   </div>
 </footer>
 
+<script src="js/events.js"></script>
+<script>
+(function () {
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function fmt(iso) {
+    var d = new Date(iso + "T00:00:00");
+    return d.getDate() + " " + MONTHS[d.getMonth()] + " " + d.getFullYear();
+  }
+  var today = new Date(); today.setHours(0,0,0,0);
+  var events = (typeof EVENTS !== "undefined" ? EVENTS : [])
+    .slice().sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+
+  var current = null, next = null;
+  events.forEach(function (e) {
+    var start = new Date(e.date + "T00:00:00");
+    var end = new Date((e.end || e.date) + "T00:00:00");
+    if (!current && start <= today && today <= end) current = e;
+    if (!next && start > today) next = e;
+  });
+
+  var ev = current || next;
+  var eyebrow = document.getElementById("today-eyebrow");
+  var title = document.getElementById("today-title");
+  var meta = document.getElementById("today-meta");
+  var actions = document.getElementById("today-actions");
+
+  if (!ev) {
+    eyebrow.textContent = "Between engagements";
+    title.textContent = "No course scheduled right now";
+    meta.textContent = "Want to change that? Book a training or check back soon.";
+    actions.innerHTML = '<a class="btn btn-primary" href="contact.html">Book a training</a>';
+    return;
+  }
+
+  var range = fmt(ev.date) + (ev.end && ev.end !== ev.date ? " – " + fmt(ev.end) : "");
+  eyebrow.textContent = current ? "Now running" : "Up next";
+  title.textContent = ev.title;
+  meta.textContent = range + " · " + ev.city + (ev.venue ? " · " + ev.venue : "");
+  var btns = "";
+  if (ev.url && !ev.soldout) {
+    btns += '<a class="btn btn-primary" href="' + ev.url + '" target="_blank" rel="noopener">' +
+            (current ? "Event details" : "Book now") + "</a>";
+  }
+  btns += '<a class="btn btn-secondary" href="events.html">All events</a>';
+  actions.innerHTML = btns;
+})();
+</script>
 <script src="js/site.js" defer></script>
 </body>
 </html>
