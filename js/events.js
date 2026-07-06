@@ -19,10 +19,11 @@
 const EVENTS = [
   {
     date: "2026-07-10",
-    title: "DSD Cloud Academy",
-    type: "Training",
+    title: "DSD Cloud Academy — Microsoft AI Security with Purview & Defender",
+    type: "Webinar",
     city: "Online",
-    soldout: true,
+    venue: "DSD Europe",
+    url: "https://dsdeurope.webinargeek.com/dsd-cloud-academy-microsoft-ai-security-met-purview-defender",
   },
   {
     date: "2026-07-14",
