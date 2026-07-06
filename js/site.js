@@ -33,6 +33,7 @@
     "color:#7fba00;font-family:monospace;font-size:12px"
   );
   console.log("%cLike poking around? You'd probably enjoy the KQL Detective game → https://detective.kusto.io", css2);
+  console.log("%cAchievements are live: explore, unlock, collect 1000G. Get-Achievements in the terminal shows your gamerscore.", css2);
   console.log("%cPsst: Konami code (↑↑↓↓←→←→BA) · logo squares 5× · press ~ for a terminal · type 'vista'.", css2);
 
   /* ---------- Egg #2: Konami code → BSOD ---------- */
@@ -67,6 +68,7 @@
       '<p style="font-size:13px;opacity:.7;margin-top:16px">Click anywhere (or press Esc) to reboot.</p>' +
       "</div>";
     document.body.appendChild(d);
+    window.__achieve && window.__achieve("bsod");
     var pct = 0;
     var t = setInterval(function () {
       pct = Math.min(100, pct + Math.floor(Math.random() * 17));
@@ -115,6 +117,7 @@
       '<button id="egg-clippy-no" style="background:none;border:1px solid #1b1b1b;padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:600">No (I\'ll regret this)</button>' +
       "</div>";
     document.body.appendChild(d);
+    window.__achieve && window.__achieve("clippy");
     document.getElementById("egg-clippy-no").addEventListener("click", function () {
       this.textContent = "Clippy never dies…";
       setTimeout(function () { d.remove(); }, 1200);

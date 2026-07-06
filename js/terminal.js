@@ -64,6 +64,7 @@
         "  Invoke-Keynote    Engage keynote mode\n" +
         "  Invoke-BSOD       You know what this does\n" +
         "  Get-Health        Service Health dashboard\n" +
+        "  Get-Achievements  Your gamerscore & trophies\n" +
         "  Enable-Aero       Windows Vista called...\n" +
         "  Disable-Aero      ...and 2026 answered\n" +
         "  cls / clear       Clear screen\n" +
@@ -110,6 +111,14 @@
     } else if (c === "disable-aero") {
       window.__setAero && window.__setAero(false);
       print("Aero glass disabled. Welcome back.");
+    } else if (c === "get-achievements") {
+      var A = window.__achievements;
+      if (!A) { print("Achievement module not loaded.", "#f77"); return; }
+      var out2 = "Gamerscore: " + A.score() + "G / 1000G\n\n";
+      A.defs.forEach(function (d) {
+        out2 += (A.unlocked[d.id] ? "[x] " : "[ ] ") + pad(d.name, 26) + " " + pad(String(d.g) + "G", 5) + " " + d.desc + "\n";
+      });
+      print(out2);
     } else if (c === "get-health" || c === "get-servicehealth") {
       print("Opening Service Health dashboard...");
       setTimeout(function () { window.location.href = "status.html"; }, 600);
@@ -129,7 +138,7 @@
     open = typeof force === "boolean" ? force : !open;
     if (!box) build();
     box.style.display = open ? "block" : "none";
-    if (open) input.focus();
+    if (open) { input.focus(); window.__achieve && window.__achieve("terminal"); }
   }
 
   document.addEventListener("keydown", function (e) {
@@ -150,6 +159,7 @@
       aeroCssLoaded = true;
     }
     document.body.classList.toggle("aero", on);
+    if (on && window.__achieve) window.__achieve("aero");
     try { localStorage.setItem("msftu-aero", on ? "1" : "0"); } catch (e) {}
   };
   try {

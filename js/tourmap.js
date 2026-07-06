@@ -115,6 +115,7 @@
 
   canvas.addEventListener("pointerdown", function (e) {
     dragging = true; lastX = e.clientX; lastY = e.clientY;
+    window.__achieve && window.__achieve("globe");
     canvas.setPointerCapture(e.pointerId);
     canvas.style.cursor = "grabbing";
   });

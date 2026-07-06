@@ -53,6 +53,7 @@
   btn.addEventListener("click", function () {
     var name = (nameInput.value || "").trim();
     if (!name) { nameInput.focus(); return; }
+    window.__achieve && window.__achieve("cert");
 
     var W = 2200, H = 1556;
     var c = document.createElement("canvas");
