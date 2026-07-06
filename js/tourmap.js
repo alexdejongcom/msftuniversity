@@ -154,6 +154,61 @@
 
   var CX = W / 2, CY = H / 2;
 
+  /* ---- NASA Blue Marble photo texture. While it loads (or if it
+     fails), the globe renders in the vector style instead. ---- */
+  var tex = null, texW = 0, texH = 0;
+  (function () {
+    var img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+      try {
+        var tc = document.createElement("canvas");
+        tc.width = img.width; tc.height = img.height;
+        var g = tc.getContext("2d");
+        g.drawImage(img, 0, 0);
+        tex = new Uint32Array(g.getImageData(0, 0, img.width, img.height).data.buffer);
+        texW = img.width; texH = img.height;
+      } catch (e) { tex = null; }
+    };
+    img.src = "https://cdn.jsdelivr.net/npm/three-globe@2.31.1/example/img/earth-blue-marble.jpg";
+  })();
+
+  // offscreen buffer for the per-pixel inverse-projection render
+  var TSCALE = 0.7, S = Math.round(2 * R * TSCALE);
+  var buf = document.createElement("canvas");
+  buf.width = S; buf.height = S;
+  var bctx = buf.getContext("2d");
+  var bimg = bctx.createImageData(S, S);
+  var bpix = new Uint32Array(bimg.data.buffer);
+
+  function drawTexturedSphere() {
+    var r = projection.rotate();
+    var lamC = -r[0] * Math.PI / 180, phiC = -r[1] * Math.PI / 180;
+    var sinP = Math.sin(phiC), cosP = Math.cos(phiC);
+    var half = S / 2, TWO_PI = 2 * Math.PI, k = 0;
+    for (var j = 0; j < S; j++) {
+      var yUp = (half - 0.5 - j) / half;
+      for (var i = 0; i < S; i++, k++) {
+        var xv = (i - half + 0.5) / half;
+        var d2 = xv * xv + yUp * yUp;
+        if (d2 > 1) { bpix[k] = 0; continue; }
+        var z = Math.sqrt(1 - d2);
+        var phi = Math.asin(yUp * cosP + z * sinP);
+        var lam = lamC + Math.atan2(xv, z * cosP - yUp * sinP);
+        var u = lam / TWO_PI + 0.5; u -= Math.floor(u);
+        var ty = (0.5 - phi / Math.PI) * texH | 0;
+        if (ty > texH - 1) ty = texH - 1;
+        bpix[k] = tex[ty * texW + (u * texW | 0)];
+      }
+    }
+    bctx.putImageData(bimg, 0, 0);
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, 7); ctx.clip();
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(buf, CX - R, CY - R, 2 * R, 2 * R);
+    ctx.restore();
+  }
+
   function render() {
     ctx.clearRect(0, 0, W, H);
 
@@ -164,28 +219,35 @@
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(CX, CY, R + 26, 0, 7); ctx.fill();
 
-    // ocean — lit from the upper left for a 3D feel
-    var ocean = ctx.createRadialGradient(CX - R * 0.4, CY - R * 0.4, R * 0.1, CX, CY, R);
-    ocean.addColorStop(0, "#8ec9f0");
-    ocean.addColorStop(0.6, "#4a9fd8");
-    ocean.addColorStop(1, "#1e5e94");
-    ctx.beginPath(); path({ type: "Sphere" });
-    ctx.fillStyle = ocean; ctx.fill();
+    if (tex) {
+      // photo mode: real satellite imagery
+      drawTexturedSphere();
+      if (tourCountries) {
+        ctx.beginPath(); path(tourCountries);
+        ctx.fillStyle = "rgba(255,209,102,.22)"; ctx.fill();
+        ctx.strokeStyle = "rgba(255,209,102,.9)"; ctx.lineWidth = 1.2; ctx.stroke();
+      }
+    } else {
+      // vector mode (texture loading / unavailable)
+      var ocean = ctx.createRadialGradient(CX - R * 0.4, CY - R * 0.4, R * 0.1, CX, CY, R);
+      ocean.addColorStop(0, "#8ec9f0");
+      ocean.addColorStop(0.6, "#4a9fd8");
+      ocean.addColorStop(1, "#1e5e94");
+      ctx.beginPath(); path({ type: "Sphere" });
+      ctx.fillStyle = ocean; ctx.fill();
 
-    // graticule
-    ctx.beginPath(); path(graticule);
-    ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1; ctx.stroke();
+      ctx.beginPath(); path(graticule);
+      ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 1; ctx.stroke();
 
-    // land
-    ctx.beginPath(); path(land);
-    ctx.fillStyle = "#9fce8b"; ctx.fill();
-    ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = .6; ctx.stroke();
+      ctx.beginPath(); path(land);
+      ctx.fillStyle = "#9fce8b"; ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = .6; ctx.stroke();
 
-    // countries on the tour — highlighted
-    if (tourCountries) {
-      ctx.beginPath(); path(tourCountries);
-      ctx.fillStyle = "#ffd166"; ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = .8; ctx.stroke();
+      if (tourCountries) {
+        ctx.beginPath(); path(tourCountries);
+        ctx.fillStyle = "#ffd166"; ctx.fill();
+        ctx.strokeStyle = "rgba(255,255,255,.8)"; ctx.lineWidth = .8; ctx.stroke();
+      }
     }
 
     // day/night-style edge shading to round the sphere
