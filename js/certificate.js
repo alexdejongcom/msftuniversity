@@ -147,6 +147,24 @@
                "This document confirms attendance and is not a Microsoft Corporation certification.", W / 2, 1480);
     x.textAlign = "left";
 
+    // QR code → live verification page (drawn only if the QR lib loaded)
+    var verifyUrl = "https://msftuniversity.com/verify.html?code=" + code;
+    try {
+      if (window.QRCode) {
+        var qdiv = document.createElement("div");
+        new QRCode(qdiv, { text: verifyUrl, width: 200, height: 200, correctLevel: QRCode.CorrectLevel.M });
+        var qc = qdiv.querySelector("canvas");
+        if (qc) {
+          x.fillStyle = "#ffffff"; x.fillRect(W - M - 250, 900, 260, 260);
+          x.drawImage(qc, W - M - 220, 920, 200, 200);
+          x.textAlign = "center";
+          x.fillStyle = "#737373"; x.font = "400 26px " + SEGOE;
+          x.fillText("Scan to verify", W - M - 120, 1180);
+          x.textAlign = "left";
+        }
+      }
+    } catch (e) {}
+
     // register the certificate (fire-and-forget; generation works regardless)
     try {
       fetch("/api/certificate", {
@@ -159,8 +177,20 @@
     var url = c.toDataURL("image/png");
     result.innerHTML =
       '<img src="' + url + '" alt="Certificate of attendance" style="width:100%;max-width:860px;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-md)">' +
-      '<p style="margin-top:14px"><a class="btn btn-blue" download="certificate-of-attendance.png" href="' + url + '">Download certificate</a>' +
-      ' <span style="font-size:13.5px;color:var(--ink-faint);margin-left:10px">Tip: print to PDF for a crisp A4 copy.</span></p>';
+      '<p style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">' +
+      '<a class="btn btn-blue" download="certificate-of-attendance.png" href="' + url + '">Download certificate</a>' +
+      '<a class="btn btn-outline" target="_blank" rel="noopener" href="' + linkedInUrl() + '">Add to LinkedIn profile</a>' +
+      '<span style="font-size:13.5px;color:var(--ink-faint)">Tip: print to PDF for a crisp A4 copy.</span></p>';
+
+    function linkedInUrl() {
+      return "https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME" +
+        "&name=" + encodeURIComponent("Certificate of Attendance — " + ev.title) +
+        "&organizationName=" + encodeURIComponent("Microsoft University (Alex de Jong)") +
+        "&issueYear=" + ev.date.slice(0, 4) +
+        "&issueMonth=" + Number(ev.date.slice(5, 7)) +
+        "&certUrl=" + encodeURIComponent(verifyUrl) +
+        "&certId=" + code;
+    }
   });
 
   function wrapLeft(ctx, text, lx, y, maxW, lineH) {

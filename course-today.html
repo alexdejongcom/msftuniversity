@@ -58,6 +58,13 @@
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap" id="today-actions"></div>
     </div>
+    <div id="pulse-widget" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px">
+      <span style="font-size:15px;color:var(--ink-soft)">In class right now — how's the pace?</span>
+      <button class="pulse-btn" data-vote="slow" title="Too fast — slow down" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">🐢</button>
+      <button class="pulse-btn" data-vote="good" title="Just right" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">👍</button>
+      <button class="pulse-btn" data-vote="fast" title="Faster — bring it on" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">🚀</button>
+      <span id="pulse-msg" style="font-size:13.5px;color:var(--ink-faint)"></span>
+    </div>
   </div>
 </section>
 
@@ -126,6 +133,38 @@
 </section>
 
 <section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Swag bag</div>
+      <h2 class="section-title">Digital swag — take it home</h2>
+      <p>Wear the colors. Free downloads for attendees (and honestly, everyone else too).</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="card-icon">🎥</div>
+        <h3>Teams backgrounds</h3>
+        <p>Look sharp on your next call — dark and light Microsoft University meeting backgrounds.</p>
+        <a class="card-link" href="assets/swag/teams-background-dark.png" download>Download dark</a><br>
+        <a class="card-link" href="assets/swag/teams-background-light.png" download>Download light</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖥️</div>
+        <h3>4K wallpaper</h3>
+        <p>A clean Microsoft University desktop wallpaper in 3840×2160.</p>
+        <a class="card-link" href="assets/swag/wallpaper-4k-dark.png" download>Download wallpaper</a>
+      </div>
+      <div class="card">
+        <div class="card-icon">💻</div>
+        <h3>Laptop stickers</h3>
+        <p>Print-ready transparent stickers — designed for dark laptop lids.</p>
+        <a class="card-link" href="assets/sticker-microsoft-university-dark.png" download>Download sticker</a><br>
+        <a class="card-link" href="assets/sticker-microsoft-university-dark-bold.png" download>Download bold version</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="section-head">
       <div class="eyebrow">After the course</div>
@@ -246,8 +285,35 @@
   actions.innerHTML = btns;
 })();
 </script>
+<script>
+(function () {
+  var w = document.getElementById("pulse-widget");
+  if (!w) return;
+  var msg = document.getElementById("pulse-msg");
+  var KEY = "msftu-pulse-at";
+  function coolingDown() {
+    try { return Date.now() - (+localStorage.getItem(KEY) || 0) < 3 * 60 * 1000; } catch (e) { return false; }
+  }
+  w.addEventListener("click", function (e) {
+    var b = e.target.closest(".pulse-btn");
+    if (!b) return;
+    if (coolingDown()) { msg.textContent = "Noted already — you can vote again in a few minutes."; return; }
+    fetch("/api/pulse", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ vote: b.getAttribute("data-vote") })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      try { localStorage.setItem(KEY, Date.now()); } catch (e) {}
+      msg.textContent = "Thanks! Current pulse: 🐢 " + (d.slow || 0) + " · 👍 " + (d.good || 0) + " · 🚀 " + (d.fast || 0);
+    }).catch(function () {
+      msg.textContent = "Pulse offline — tell me in person 😄";
+    });
+  });
+})();
+</script>
 <script src="js/achievements.js" defer></script>
 <script src="js/terminal.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <script src="js/certificate.js" defer></script>
 <script src="js/counter.js" defer></script>
 <script src="js/site.js" defer></script>

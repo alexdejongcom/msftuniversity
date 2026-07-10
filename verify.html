@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verify a Certificate — Microsoft University</title>
+<meta name="description" content="Verify the authenticity of a Microsoft University certificate of attendance.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="canonical" href="https://msftuniversity.com/verify.html">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="course-today.html">My Course Today</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="training.html">Training &amp; Services</a></li>
+      <li><a href="resources.html">Learning Resources</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Book a Training</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">Certificate registry</div>
+    <h1>Verify a certificate</h1>
+    <p>Enter the certificate ID (or scan the QR code on the certificate) to confirm it was issued by us.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width:760px">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px">
+      <input id="verify-code" placeholder="MU-20260710-9F3A21C4" spellcheck="false" autocapitalize="characters"
+             style="padding:11px 16px;font:600 15px Consolas,monospace;border:1px solid var(--border);border-radius:4px;min-width:300px;flex:1">
+      <button id="verify-btn" class="btn btn-blue" style="cursor:pointer">Verify</button>
+    </div>
+    <div id="verify-result"></div>
+    <p style="margin-top:32px;font-size:13.5px;color:var(--ink-faint)">
+      Certificates of attendance are issued during our courses and registered at issue time.
+      Verification confirms the ID, course and issue date — attendee names are never shown here.
+      Questions? <a href="contact.html">Contact us</a>.
+    </p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Microsoft University</h4>
+        <p>Microsoft training, keynotes and cloud advisory by Alex de Jong — Microsoft Certified Trainer and international speaker.</p>
+        <p style="margin-top:14px;font-size:12.5px;color:#767676">Microsoft, Azure, Microsoft 365, Copilot, Intune and related marks are trademarks of the Microsoft group of companies. This independent website is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="course-today.html">My Course Today</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="training.html">Training &amp; Services</a></li>
+          <li><a href="resources.html">Learning Resources</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/adjnl/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://x.com/alexdejongcom" target="_blank" rel="noopener">X / Twitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a></li>
+          <li><a href="https://outlook.office.com/bookwithme/user/9224ea12136f4ce0a77667b581e17b88%40alexdejong.com?anonymous&amp;ismsaljsauthenabled" target="_blank" rel="noopener">Book a meeting</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>🌐 English (United States)</span>
+      <span>© 2026 Alex de Jong · Microsoft University</span>
+      <span>Not affiliated with Microsoft Corporation</span>
+      <span><a href="status.html" style="color:inherit">✅ Service Health</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/events.js"></script>
+<script>
+(function () {
+  var input = document.getElementById("verify-code");
+  var btn = document.getElementById("verify-btn");
+  var out = document.getElementById("verify-result");
+
+  function card(color, icon, title, body) {
+    return '<div style="border:1px solid var(--border);border-left:6px solid ' + color + ';border-radius:8px;padding:20px 24px;background:#fff">' +
+      '<div style="font-size:17px;font-weight:600;margin-bottom:6px">' + icon + " " + title + "</div>" +
+      '<div style="font-size:14.5px;color:var(--ink-soft)">' + body + "</div></div>";
+  }
+
+  function check() {
+    var code = (input.value || "").trim().toUpperCase();
+    if (!/^MU-\d{8}-[0-9A-F]{8}$/.test(code)) {
+      out.innerHTML = card("#997000", "⚠️", "That doesn't look like a certificate ID",
+        "Expected format: <code>MU-YYYYMMDD-XXXXXXXX</code>.");
+      return;
+    }
+    out.innerHTML = card("#8a8886", "⏳", "Checking…", "Querying the certificate registry.");
+    fetch("/api/certificate?code=" + encodeURIComponent(code))
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.valid) {
+          out.innerHTML = card("#107c10", "✅", "Valid certificate",
+            "<strong>" + (d.course || "Course") + "</strong><br>" +
+            "Course date: " + (d.courseDate || "—") + "<br>" +
+            "First issued: " + (d.firstIssued ? new Date(d.firstIssued).toLocaleString() : "—") + "<br>" +
+            "ID: <code>" + code + "</code>");
+        } else {
+          out.innerHTML = card("#d13438", "❌", "Not found",
+            "This ID is not in the registry. Check for typos — or the certificate was not issued by us.");
+        }
+      })
+      .catch(function () {
+        out.innerHTML = card("#997000", "⚠️", "Registry unreachable", "Please try again in a moment.");
+      });
+  }
+
+  btn.addEventListener("click", check);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter") check(); });
+
+  var q = new URLSearchParams(location.search).get("code");
+  if (q) { input.value = q.toUpperCase(); check(); }
+})();
+</script>
+<script src="js/achievements.js" defer></script>
+<script src="js/terminal.js" defer></script>
+<script src="js/counter.js" defer></script>
+<script src="js/site.js" defer></script>
+</body>
+</html>
