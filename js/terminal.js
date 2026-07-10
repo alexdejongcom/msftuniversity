@@ -65,7 +65,8 @@
         "  Invoke-BSOD       You know what this does\n" +
         "  Get-Health        Service Health dashboard\n" +
         "  Get-Achievements  Your gamerscore & trophies\n" +
-        "  Start-Break [min] Break screen for the projector\n" +
+        "  Start-Break 15    Break screen for the projector (minutes...\n" +
+        "  Start-Break 10:45 ...or an exact resume time)\n" +
         "  Enable-Aero       Windows Vista called...\n" +
         "  Disable-Aero      ...and 2026 answered\n" +
         "  cls / clear       Clear screen\n" +
@@ -121,8 +122,20 @@
       });
       print(out2);
     } else if (c.indexOf("start-break") === 0) {
-      var mins = parseFloat(cmd.split(/\s+/)[1]) || 15;
-      print("Deploying scheduled maintenance window (" + mins + " min)...");
+      var arg = cmd.split(/\s+/).filter(Boolean)[1] || "15";
+      var mins;
+      var hm = arg.match(/^(\d{1,2})[:.](\d{2})$/);
+      if (hm) {
+        // absolute resume time, e.g. Start-Break 10:45 (rolls to tomorrow if past)
+        var target = new Date();
+        target.setHours(+hm[1], +hm[2], 0, 0);
+        if (target <= new Date()) target.setDate(target.getDate() + 1);
+        mins = (target - new Date()) / 60000;
+        print("Break until " + arg + " — deploying scheduled maintenance window...");
+      } else {
+        mins = parseFloat(arg) || 15;
+        print("Deploying scheduled maintenance window (" + mins + " min)...");
+      }
       setTimeout(function () { startBreak(mins); }, 700);
     } else if (c === "stop-break") {
       window.__stopBreak("Break ended. Back to work.");
