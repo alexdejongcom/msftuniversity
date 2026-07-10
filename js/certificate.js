@@ -114,10 +114,9 @@
     wrapLeft(x, ev.title, M, 985, W - M - 420, 82);
 
     var range = fmt(ev.date) + (ev.end && ev.end !== ev.date ? " – " + fmt(ev.end) : "");
-    var loc = ev.city + (ev.venue ? " · " + ev.venue : "");
     x.fillStyle = "#454545";
     x.font = "400 42px " + SEGOE;
-    x.fillText(range + "   ·   " + loc, M, 1130);
+    x.fillText(range + "   ·   " + ev.city, M, 1130);
 
     // baseline rule above the footer row
     x.strokeStyle = "#e1e1e1"; x.lineWidth = 2;
