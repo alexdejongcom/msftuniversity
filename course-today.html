@@ -58,13 +58,6 @@
       </div>
       <div style="display:flex;gap:12px;flex-wrap:wrap" id="today-actions"></div>
     </div>
-    <div id="pulse-widget" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px">
-      <span style="font-size:15px;color:var(--ink-soft)">In class right now — how's the pace?</span>
-      <button class="pulse-btn" data-vote="slow" title="Too fast — slow down" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">🐢</button>
-      <button class="pulse-btn" data-vote="good" title="Just right" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">👍</button>
-      <button class="pulse-btn" data-vote="fast" title="Faster — bring it on" style="font-size:26px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:6px 16px;cursor:pointer">🚀</button>
-      <span id="pulse-msg" style="font-size:13.5px;color:var(--ink-faint)"></span>
-    </div>
   </div>
 </section>
 
@@ -283,32 +276,6 @@
   }
   btns += '<a class="btn btn-secondary" href="events.html">All events</a>';
   actions.innerHTML = btns;
-})();
-</script>
-<script>
-(function () {
-  var w = document.getElementById("pulse-widget");
-  if (!w) return;
-  var msg = document.getElementById("pulse-msg");
-  var KEY = "msftu-pulse-at";
-  function coolingDown() {
-    try { return Date.now() - (+localStorage.getItem(KEY) || 0) < 3 * 60 * 1000; } catch (e) { return false; }
-  }
-  w.addEventListener("click", function (e) {
-    var b = e.target.closest(".pulse-btn");
-    if (!b) return;
-    if (coolingDown()) { msg.textContent = "Noted already — you can vote again in a few minutes."; return; }
-    fetch("/api/pulse", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ vote: b.getAttribute("data-vote") })
-    }).then(function (r) { return r.json(); }).then(function (d) {
-      try { localStorage.setItem(KEY, Date.now()); } catch (e) {}
-      msg.textContent = "Thanks! Current pulse: 🐢 " + (d.slow || 0) + " · 👍 " + (d.good || 0) + " · 🚀 " + (d.fast || 0);
-    }).catch(function () {
-      msg.textContent = "Pulse offline — tell me in person 😄";
-    });
-  });
 })();
 </script>
 <script src="js/achievements.js" defer></script>

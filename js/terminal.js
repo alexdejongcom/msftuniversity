@@ -66,7 +66,6 @@
         "  Get-Health        Service Health dashboard\n" +
         "  Get-Achievements  Your gamerscore & trophies\n" +
         "  Start-Break [min] Break screen for the projector\n" +
-        "  Get-Pulse         Live class pace telemetry\n" +
         "  Enable-Aero       Windows Vista called...\n" +
         "  Disable-Aero      ...and 2026 answered\n" +
         "  cls / clear       Clear screen\n" +
@@ -127,14 +126,6 @@
       setTimeout(function () { startBreak(mins); }, 700);
     } else if (c === "stop-break") {
       window.__stopBreak("Break ended. Back to work.");
-    } else if (c === "get-pulse") {
-      print("Fetching class telemetry...");
-      fetch("/api/pulse").then(function (r) { return r.json(); }).then(function (d) {
-        print("Pace pulse for " + (d.date || "today") + ":\n" +
-          "  🐢 Too fast, slow down : " + (d.slow || 0) + "\n" +
-          "  👍 Just right          : " + (d.good || 0) + "\n" +
-          "  🚀 Faster, bring it on : " + (d.fast || 0));
-      }).catch(function () { print("Pulse API unreachable.", "#f77"); });
     } else if (c === "get-health" || c === "get-servicehealth") {
       print("Opening Service Health dashboard...");
       setTimeout(function () { window.location.href = "status.html"; }, 600);
