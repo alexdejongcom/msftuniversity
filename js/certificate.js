@@ -59,83 +59,94 @@
     var c = document.createElement("canvas");
     c.width = W; c.height = H;
     var x = c.getContext("2d");
+    var SEGOE = "'Segoe UI', 'Selawik', 'Helvetica Neue', sans-serif";
+    var M = 170; // left margin — Microsoft's flat, left-aligned layout
 
-    // background + double border
+    // clean white sheet
     x.fillStyle = "#ffffff"; x.fillRect(0, 0, W, H);
-    x.strokeStyle = "#003d6b"; x.lineWidth = 10;
-    x.strokeRect(70, 70, W - 140, H - 140);
-    x.strokeStyle = "#0067b8"; x.lineWidth = 2;
-    x.strokeRect(95, 95, W - 190, H - 190);
 
-    // four-square mark, centered top
-    var sq = 34, gap = 6, bx = W / 2 - sq - gap / 2, by = 175;
-    x.fillStyle = "#f25022"; x.fillRect(bx, by, sq, sq);
-    x.fillStyle = "#7fba00"; x.fillRect(bx + sq + gap, by, sq, sq);
-    x.fillStyle = "#00a4ef"; x.fillRect(bx, by + sq + gap, sq, sq);
-    x.fillStyle = "#ffb900"; x.fillRect(bx + sq + gap, by + sq + gap, sq, sq);
+    // giant four-square watermark, bottom-right, barely-there
+    (function () {
+      var s = 340, g = 28, wx = W - 2 * s - g - 120, wy = H - 2 * s - g - 120;
+      x.globalAlpha = 0.05;
+      x.fillStyle = "#f25022"; x.fillRect(wx, wy, s, s);
+      x.fillStyle = "#7fba00"; x.fillRect(wx + s + g, wy, s, s);
+      x.fillStyle = "#00a4ef"; x.fillRect(wx, wy + s + g, s, s);
+      x.fillStyle = "#ffb900"; x.fillRect(wx + s + g, wy + s + g, s, s);
+      x.globalAlpha = 1;
+    })();
 
-    x.textAlign = "center";
+    // brand lockup, top-left: four squares + wordmark (like the MS logo)
+    var sq = 52, gap = 9, by = 130;
+    x.fillStyle = "#f25022"; x.fillRect(M, by, sq, sq);
+    x.fillStyle = "#7fba00"; x.fillRect(M + sq + gap, by, sq, sq);
+    x.fillStyle = "#00a4ef"; x.fillRect(M, by + sq + gap, sq, sq);
+    x.fillStyle = "#ffb900"; x.fillRect(M + sq + gap, by + sq + gap, sq, sq);
+    x.textAlign = "left";
     x.fillStyle = "#737373";
-    x.font = "600 34px 'Segoe UI', sans-serif";
-    x.fillText("M I C R O S O F T   U N I V E R S I T Y", W / 2, 305);
-    x.fillStyle = "#003d6b";
-    x.font = "700 96px 'Segoe UI', Georgia, serif";
-    x.fillText("Certificate of Attendance", W / 2, 430);
+    x.font = "400 64px " + SEGOE;
+    x.fillText("Microsoft University", M + 2 * sq + gap + 40, by + sq + gap + 14);
 
-    x.fillStyle = "#454545";
-    x.font = "400 40px 'Segoe UI', sans-serif";
-    x.fillText("This is to certify that", W / 2, 560);
+    // heading — Segoe UI Light, the Microsoft certificate voice
+    x.fillStyle = "#1b1b1b";
+    x.font = "200 128px " + SEGOE;
+    x.fillText("Certificate of Attendance", M, 480);
 
-    // attendee name
-    x.fillStyle = "#171717";
-    x.font = "italic 700 110px Georgia, 'Times New Roman', serif";
-    x.fillText(name, W / 2, 710);
-    var nw = Math.min(x.measureText(name).width + 80, W - 500);
-    x.strokeStyle = "#0067b8"; x.lineWidth = 3;
-    x.beginPath(); x.moveTo(W / 2 - nw / 2, 745); x.lineTo(W / 2 + nw / 2, 745); x.stroke();
+    // Microsoft-blue accent rule
+    x.fillStyle = "#0067b8";
+    x.fillRect(M, 530, 220, 8);
 
-    x.fillStyle = "#454545";
-    x.font = "400 40px 'Segoe UI', sans-serif";
-    x.fillText("has attended the course", W / 2, 840);
+    x.fillStyle = "#737373";
+    x.font = "400 42px " + SEGOE;
+    x.fillText("This certificate is presented to", M, 660);
 
-    x.fillStyle = "#003d6b";
-    x.font = "700 62px 'Segoe UI', sans-serif";
-    wrap(x, ev.title, W / 2, 930, W - 500, 74);
+    // attendee name — big, semibold, flat (no script fonts in Fluent)
+    x.fillStyle = "#0067b8";
+    x.font = "600 118px " + SEGOE;
+    x.fillText(name, M, 800);
+
+    x.fillStyle = "#737373";
+    x.font = "400 42px " + SEGOE;
+    x.fillText("for attending", M, 900);
+
+    x.fillStyle = "#1b1b1b";
+    x.font = "600 68px " + SEGOE;
+    wrapLeft(x, ev.title, M, 985, W - M - 420, 82);
 
     var range = fmt(ev.date) + (ev.end && ev.end !== ev.date ? " – " + fmt(ev.end) : "");
     var loc = ev.city + (ev.venue ? " · " + ev.venue : "");
     x.fillStyle = "#454545";
-    x.font = "400 40px 'Segoe UI', sans-serif";
-    x.fillText(range, W / 2, 1075);
-    x.fillText(loc, W / 2, 1135);
+    x.font = "400 42px " + SEGOE;
+    x.fillText(range + "   ·   " + loc, M, 1130);
 
-    // signature block (left)
-    x.textAlign = "left";
-    x.fillStyle = "#171717";
-    x.font = "italic 64px 'Segoe Script', 'Brush Script MT', cursive";
-    x.fillText("Alex de Jong", 240, 1300);
-    x.strokeStyle = "#454545"; x.lineWidth = 2;
-    x.beginPath(); x.moveTo(230, 1330); x.lineTo(700, 1330); x.stroke();
-    x.fillStyle = "#454545";
-    x.font = "400 30px 'Segoe UI', sans-serif";
-    x.fillText("Alex de Jong — Microsoft Certified Trainer", 230, 1375);
+    // baseline rule above the footer row
+    x.strokeStyle = "#e1e1e1"; x.lineWidth = 2;
+    x.beginPath(); x.moveTo(M, 1240); x.lineTo(W - M, 1240); x.stroke();
 
-    // verification block (right)
+    // footer row — signature left, verification right
+    x.fillStyle = "#1b1b1b";
+    x.font = "italic 58px 'Segoe Script', 'Brush Script MT', cursive";
+    x.fillText("Alex de Jong", M, 1330);
+    x.fillStyle = "#737373";
+    x.font = "400 30px " + SEGOE;
+    x.fillText("Alex de Jong · Microsoft Certified Trainer", M, 1382);
+
     var code = "MU-" + ev.date.replace(/-/g, "") + "-" + verifyCode(name, ev.date);
     x.textAlign = "right";
-    x.fillStyle = "#454545";
-    x.font = "600 30px Consolas, monospace";
-    x.fillText(code, W - 230, 1300);
-    x.font = "400 28px 'Segoe UI', sans-serif";
-    x.fillText("Issued " + fmt(new Date().toISOString().slice(0, 10)), W - 230, 1345);
-    x.fillText("microsoftuniversity.com", W - 230, 1385);
+    x.fillStyle = "#1b1b1b";
+    x.font = "600 32px Consolas, monospace";
+    x.fillText("Certificate ID: " + code, W - M, 1330);
+    x.fillStyle = "#737373";
+    x.font = "400 30px " + SEGOE;
+    x.fillText("Issued " + fmt(new Date().toISOString().slice(0, 10)) + " · msftuniversity.com", W - M, 1382);
 
     // honesty footer
     x.textAlign = "center";
     x.fillStyle = "#9a9a9a";
-    x.font = "400 24px 'Segoe UI', sans-serif";
+    x.font = "400 24px " + SEGOE;
     x.fillText("Issued by Microsoft University (Alex de Jong), an independent training practice. " +
-               "This document confirms attendance and is not a Microsoft Corporation certification.", W / 2, 1445);
+               "This document confirms attendance and is not a Microsoft Corporation certification.", W / 2, 1480);
+    x.textAlign = "left";
 
     var url = c.toDataURL("image/png");
     result.innerHTML =
@@ -144,7 +155,7 @@
       ' <span style="font-size:13.5px;color:var(--ink-faint);margin-left:10px">Tip: print to PDF for a crisp A4 copy.</span></p>';
   });
 
-  function wrap(ctx, text, cx, y, maxW, lineH) {
+  function wrapLeft(ctx, text, lx, y, maxW, lineH) {
     var words = text.split(" "), line = "", lines = [];
     words.forEach(function (w) {
       var test = line ? line + " " + w : w;
@@ -152,6 +163,6 @@
       else line = test;
     });
     lines.push(line);
-    lines.forEach(function (l, i) { ctx.fillText(l, cx, y + i * lineH); });
+    lines.forEach(function (l, i) { ctx.fillText(l, lx, y + i * lineH); });
   }
 })();
