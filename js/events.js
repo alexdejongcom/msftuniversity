@@ -34,6 +34,12 @@ const EVENTS = [
     soldout: true,
   },
   {
+    date: "2026-07-15",
+    title: "Enhance Endpoint Security with Intune & Security Copilot (MD-4011)",
+    type: "Training",
+    city: "Eindhoven, NL",
+  },
+  {
     date: "2026-08-04", end: "2026-08-05",
     title: "TechMentor & Cybersecurity Live! @ Microsoft HQ",
     type: "Conference",
