@@ -120,10 +120,11 @@ const EVENTS = [
   },
   {
     date: "2026-09-30", end: "2026-10-02",
-    title: "DSD Cloud University — Copilot and Agents",
+    title: "DSD Cloud University — Microsoft 365 Copilot and Agents",
     type: "Training",
     city: "Rosmalen, NL",
     venue: "DSD Europe",
+    url: "https://www.dsdeurope.nl/dsd-cloud-university-microsoft-365-copilot-agents",
   },
   {
     date: "2026-10-13", end: "2026-10-15",
