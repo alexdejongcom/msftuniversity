@@ -1,0 +1,23 @@
+{
+  "name": "Microsoft University",
+  "background": "#012456",
+  "foreground": "#EEEDF0",
+  "cursorColor": "#FFB900",
+  "selectionBackground": "#0067B8",
+  "black": "#0C0C0C",
+  "red": "#F25022",
+  "green": "#7FBA00",
+  "yellow": "#FFB900",
+  "blue": "#00A4EF",
+  "purple": "#886CE4",
+  "cyan": "#2FD3E0",
+  "white": "#CCCCCC",
+  "brightBlack": "#767676",
+  "brightRed": "#FF6A47",
+  "brightGreen": "#9FE037",
+  "brightYellow": "#FFD457",
+  "brightBlue": "#3BC1FF",
+  "brightPurple": "#B196FF",
+  "brightCyan": "#61E8F2",
+  "brightWhite": "#F2F2F2"
+}
