@@ -148,6 +148,15 @@
                "This document confirms attendance and is not a Microsoft Corporation certification.", W / 2, 1480);
     x.textAlign = "left";
 
+    // register the certificate (fire-and-forget; generation works regardless)
+    try {
+      fetch("/api/certificate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, code: code, course: ev.title, date: ev.date }),
+      }).catch(function () {});
+    } catch (e) {}
+
     var url = c.toDataURL("image/png");
     result.innerHTML =
       '<img src="' + url + '" alt="Certificate of attendance" style="width:100%;max-width:860px;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow-md)">' +
