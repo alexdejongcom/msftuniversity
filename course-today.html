@@ -194,6 +194,52 @@
   </div>
 </section>
 
+<!-- ============================================================
+     COURSE EVALUATION — shown only while a course is running
+     (+3 days grace), same gating as the certificate. Submissions
+     go to /api/evaluation (evaluations table, COUNTER_STORAGE).
+     ============================================================ -->
+<section class="section alt" id="eval-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">For attendees</div>
+      <h2 class="section-title">How was your course?</h2>
+      <p>Two minutes, completely anonymous — and it directly shapes the next course.</p>
+    </div>
+
+    <div id="eval-form" style="max-width:640px">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:8px 24px;align-items:center;margin-bottom:20px">
+        <div><strong>Course content</strong><br><span style="font-size:13px;color:var(--ink-faint)">Relevance, depth, demos and labs</span></div>
+        <div class="eval-stars" data-field="content" role="radiogroup" aria-label="Course content rating"></div>
+        <div><strong>Instructor</strong><br><span style="font-size:13px;color:var(--ink-faint)">Knowledge, clarity, energy</span></div>
+        <div class="eval-stars" data-field="instructor" role="radiogroup" aria-label="Instructor rating"></div>
+        <div><strong>Overall experience</strong><br><span style="font-size:13px;color:var(--ink-faint)">Would you recommend this course?</span></div>
+        <div class="eval-stars" data-field="overall" role="radiogroup" aria-label="Overall rating"></div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <strong>Pace of the course</strong>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:8px">
+          <label style="cursor:pointer"><input type="radio" name="eval-pace" value="slow"> 🐢 Too slow</label>
+          <label style="cursor:pointer"><input type="radio" name="eval-pace" value="right"> 👍 Just right</label>
+          <label style="cursor:pointer"><input type="radio" name="eval-pace" value="fast"> 🚀 Too fast</label>
+        </div>
+      </div>
+
+      <div style="margin-bottom:20px">
+        <strong>Anything else?</strong><br>
+        <textarea id="eval-comment" rows="4" maxlength="2000" placeholder="What should we keep, change or drop? (optional)" style="width:100%;margin-top:8px;padding:11px 16px;font:inherit;border:1px solid var(--border);border-radius:4px;resize:vertical"></textarea>
+      </div>
+
+      <button id="eval-submit" class="btn btn-blue" style="cursor:pointer">Submit evaluation</button>
+      <p style="font-size:13px;color:var(--ink-faint);margin-top:12px">Evaluations are anonymous — no name, email or IP address is stored.</p>
+    </div>
+
+    <p id="eval-notice" style="display:none;color:var(--ink-faint)">Evaluations open while a course is running (and for a few days after it ends). Join us on one of the <a href="events.html">upcoming events</a>!</p>
+    <div id="eval-result"></div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -290,6 +336,7 @@
 <script src="js/terminal.js" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <script src="js/certificate.js" defer></script>
+<script src="js/evaluation.js" defer></script>
 <script src="js/counter.js" defer></script>
 <script src="js/site.js" defer></script>
 </body>
