@@ -22,14 +22,18 @@
   function runningEvent() {
     var t = new Date(); t.setHours(0, 0, 0, 0);
     var evs = (typeof EVENTS !== "undefined" ? EVENTS : []);
+    var graceMatch = null;
     for (var i = 0; i < evs.length; i++) {
       var e = evs[i];
       var start = new Date(e.date + "T00:00:00");
       var end = new Date((e.end || e.date) + "T00:00:00");
+      if (start <= t && t <= end) return e; // actually running today wins
       var graceEnd = new Date(end); graceEnd.setDate(graceEnd.getDate() + GRACE_DAYS);
-      if (start <= t && t <= graceEnd) return e;
+      if (start <= t && t <= graceEnd && (!graceMatch || end > graceMatch._end)) {
+        graceMatch = e; graceMatch._end = end;
+      }
     }
-    return null;
+    return graceMatch; // most recently ended course, if nothing runs today
   }
 
   var ev = runningEvent();
