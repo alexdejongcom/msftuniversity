@@ -110,7 +110,18 @@
       "background:#fffbe6;border:2px solid #1b1b1b;border-radius:12px;padding:18px 20px;" +
       "box-shadow:0 12px 32px rgba(0,0,0,.25);font-family:'Segoe UI',sans-serif;font-size:14.5px;color:#1b1b1b";
     d.innerHTML =
-      '<div style="font-size:40px;line-height:1;margin-bottom:8px">📎</div>' +
+      '<svg width="58" height="81" viewBox="0 0 100 140" aria-hidden="true" style="display:block;margin-bottom:8px;transform:rotate(-6deg)">' +
+      '<g fill="none" stroke-linecap="round">' +
+      '<path d="M30 128 L30 38 A20 20 0 0 1 70 38 L70 106 A14 14 0 0 1 42 106 L42 56 A8 8 0 0 1 58 56 L58 96" stroke="#6f7880" stroke-width="9"/>' +
+      '<path d="M30 128 L30 38 A20 20 0 0 1 70 38 L70 106 A14 14 0 0 1 42 106 L42 56 A8 8 0 0 1 58 56 L58 96" stroke="#c8cdd2" stroke-width="3.5"/>' +
+      '</g>' +
+      '<path d="M26 8 Q35 2 44 7" stroke="#1b1b1b" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M56 7 Q65 2 74 8" stroke="#1b1b1b" stroke-width="4" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="38" cy="26" rx="10.5" ry="13.5" fill="#fff" stroke="#1b1b1b" stroke-width="3"/>' +
+      '<ellipse cx="62" cy="26" rx="10.5" ry="13.5" fill="#fff" stroke="#1b1b1b" stroke-width="3"/>' +
+      '<circle cx="40.5" cy="29" r="4" fill="#1b1b1b"/>' +
+      '<circle cx="59.5" cy="29" r="4" fill="#1b1b1b"/>' +
+      '</svg>' +
       "<p style='margin:0 0 12px'><b>It looks like you're trying to become Microsoft certified.</b><br>Would you like help with that?</p>" +
       '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
       '<a href="training.html" style="background:#0067b8;color:#fff;padding:7px 14px;border-radius:6px;text-decoration:none;font-weight:600">Yes, obviously</a>' +
