@@ -142,6 +142,12 @@
     } else if (c === "get-health" || c === "get-servicehealth") {
       print("Opening Service Health dashboard...");
       setTimeout(function () { window.location.href = "status.html"; }, 600);
+    } else if (c === "get-visitors" || c === "show-visitors") {
+      print("ACCESS GRANTED", "#7fba00");
+      print("Decrypting visitor telemetry\u2026 opening classified map.");
+      try { sessionStorage.setItem("msftu-geo-key", "granted"); } catch (e) {}
+      setTimeout(function () { window.location.href = "visitors.html"; }, 900);
+
     } else if (c === "cls" || c === "clear") {
       out.innerHTML = "";
     } else if (c === "exit") {

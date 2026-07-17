@@ -10,6 +10,18 @@
   var counted = false;
   try { counted = sessionStorage.getItem("msftu-counted") === "1"; } catch (e) {}
 
+  // once per session: anonymous geo ping — browser timezone only, no IP stored
+  if (!counted) {
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (tz) fetch("/api/geo", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tz: tz }),
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
   fetch("/api/counter", { method: counted ? "GET" : "POST" })
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (data) {

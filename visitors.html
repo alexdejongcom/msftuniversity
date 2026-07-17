@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visitor Telemetry — Microsoft University</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* Secret page — only reachable via the terminal's Get-Visitors cmdlet.
+   Client-side gate (obscurity, not security — the data is anonymous
+   aggregates anyway). */
+if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("index.html");
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">🔓 Classified — you found the secret page</div>
+    <h1>Visitor telemetry</h1>
+    <p>Where in the world our visitors come from. Derived from browser timezones — no IP addresses, no cookies, no tracking. Just countries and counts.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Live data</div>
+      <h2 class="section-title">The world map</h2>
+    </div>
+    <div id="geo-map-wrap" style="border:1px solid var(--border);border-radius:8px;background:#fff;padding:10px">
+      <svg id="geo-map" viewBox="0 0 1000 520" style="width:100%;height:auto;display:block"></svg>
+    </div>
+    <p id="geo-status" style="color:var(--ink-faint);margin-top:12px">Loading visitor data…</p>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container" style="max-width:760px">
+    <div class="section-head">
+      <div class="eyebrow">Leaderboard</div>
+      <h2 class="section-title">Visitors by country</h2>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table id="geo-table" style="width:100%;border-collapse:collapse;font-size:14.5px">
+        <thead>
+          <tr style="background:var(--blue);color:#fff;text-align:left">
+            <th style="padding:12px 18px;width:44px">#</th>
+            <th style="padding:12px 18px">Country</th>
+            <th style="padding:12px 18px;text-align:right">Visitors</th>
+            <th style="padding:12px 18px;width:34%">Share</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom">
+      <span>🌐 English (United States)</span>
+      <span>© 2026 Alex de Jong · Microsoft University</span>
+      <span>You were never here. 🕶️</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function () {
+  "use strict";
+  var status = document.getElementById("geo-status");
+  var tbody = document.querySelector("#geo-table tbody");
+
+  /* ISO2 → ISO3, to match features in the world GeoJSON (ids are ISO3). */
+  var ISO3 = {AD:"AND",AE:"ARE",AF:"AFG",AL:"ALB",AM:"ARM",AO:"AGO",AR:"ARG",AT:"AUT",AU:"AUS",AW:"ABW",AZ:"AZE",
+  BA:"BIH",BB:"BRB",BD:"BGD",BE:"BEL",BG:"BGR",BH:"BHR",BM:"BMU",BN:"BRN",BO:"BOL",BR:"BRA",BT:"BTN",BW:"BWA",BY:"BLR",BZ:"BLZ",
+  CA:"CAN",CD:"COD",CH:"CHE",CI:"CIV",CL:"CHL",CM:"CMR",CN:"CHN",CO:"COL",CR:"CRI",CU:"CUB",CV:"CPV",CW:"CUW",CY:"CYP",CZ:"CZE",
+  DE:"DEU",DK:"DNK",DO:"DOM",DZ:"DZA",EC:"ECU",EE:"EST",EG:"EGY",ES:"ESP",ET:"ETH",FI:"FIN",FJ:"FJI",FO:"FRO",FR:"FRA",
+  GB:"GBR",GE:"GEO",GG:"GGY",GH:"GHA",GI:"GIB",GR:"GRC",GT:"GTM",GU:"GUM",GY:"GUY",HK:"HKG",HN:"HND",HR:"HRV",HT:"HTI",HU:"HUN",
+  ID:"IDN",IE:"IRL",IL:"ISR",IM:"IMN",IN:"IND",IQ:"IRQ",IR:"IRN",IS:"ISL",IT:"ITA",JE:"JEY",JM:"JAM",JO:"JOR",JP:"JPN",
+  KE:"KEN",KG:"KGZ",KH:"KHM",KP:"PRK",KR:"KOR",KW:"KWT",KZ:"KAZ",LA:"LAO",LB:"LBN",LK:"LKA",LT:"LTU",LU:"LUX",LV:"LVA",LY:"LBY",
+  MA:"MAR",MC:"MCO",MD:"MDA",ME:"MNE",MG:"MDG",MK:"MKD",ML:"MLI",MM:"MMR",MN:"MNG",MO:"MAC",MT:"MLT",MU:"MUS",MX:"MEX",MY:"MYS",MZ:"MOZ",
+  NA:"NAM",NC:"NCL",NG:"NGA",NI:"NIC",NL:"NLD",NO:"NOR",NP:"NPL",NZ:"NZL",OM:"OMN",PA:"PAN",PE:"PER",PF:"PYF",PG:"PNG",PH:"PHL",
+  PK:"PAK",PL:"POL",PR:"PRI",PT:"PRT",PY:"PRY",QA:"QAT",RO:"ROU",RS:"SRB",RU:"RUS",SA:"SAU",SD:"SDN",SE:"SWE",SG:"SGP",SI:"SVN",
+  SK:"SVK",SN:"SEN",SR:"SUR",SV:"SLV",SY:"SYR",TH:"THA",TJ:"TJK",TM:"TKM",TN:"TUN",TO:"TON",TR:"TUR",TT:"TTO",TW:"TWN",TZ:"TZA",
+  UA:"UKR",UG:"UGA",US:"USA",UY:"URY",UZ:"UZB",VA:"VAT",VE:"VEN",VN:"VNM",WS:"WSM",YE:"YEM",ZA:"ZAF",ZM:"ZMB",ZW:"ZWE"};
+
+  function flag(iso2) {
+    return iso2.replace(/./g, function (c) { return String.fromCodePoint(127397 + c.charCodeAt(0)); });
+  }
+  var NAMES;
+  try { NAMES = new Intl.DisplayNames(["en"], { type: "region" }); } catch (e) {}
+  function countryName(iso2) {
+    try { return (NAMES && NAMES.of(iso2)) || iso2; } catch (e) { return iso2; }
+  }
+
+  Promise.all([
+    fetch("/api/geo").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+    fetch("https://cdn.jsdelivr.net/gh/johan/world.geo.json/countries.geo.json").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+  ]).then(function (res) {
+    var data = res[0], world = res[1];
+    if (!data.length) {
+      status.textContent = "No visitor data yet — the counters have only just been deployed. Check back tomorrow.";
+      return;
+    }
+    var total = data.reduce(function (s, d) { return s + d.count; }, 0);
+    var byIso3 = {};
+    data.forEach(function (d) { if (ISO3[d.country]) byIso3[ISO3[d.country]] = d.count; });
+
+    /* ---- map ---- */
+    var svg = d3.select("#geo-map");
+    var projection = d3.geoNaturalEarth1().fitSize([1000, 520], { type: "Sphere" });
+    var path = d3.geoPath(projection);
+    var max = d3.max(data, function (d) { return d.count; });
+    var color = d3.scaleSequential(d3.interpolateBlues).domain([0, Math.log(max + 1)]);
+
+    svg.append("path")
+      .attr("d", path({ type: "Sphere" }))
+      .attr("fill", "#eaf3fb").attr("stroke", "none");
+
+    svg.append("g").selectAll("path")
+      .data(world.features)
+      .join("path")
+      .attr("d", path)
+      .attr("fill", function (f) {
+        var c = byIso3[f.id];
+        return c ? color(Math.log(c + 1)) : "#dcdcdc";
+      })
+      .attr("stroke", "#fff").attr("stroke-width", 0.5)
+      .append("title")
+      .text(function (f) {
+        var c = byIso3[f.id];
+        return (f.properties && f.properties.name || f.id) + ": " + (c ? c + " visitor" + (c === 1 ? "" : "s") : "no visitors yet");
+      });
+
+    /* ---- table ---- */
+    data.forEach(function (d, i) {
+      var pct = total ? (100 * d.count / total) : 0;
+      var tr = document.createElement("tr");
+      tr.style.cssText = "border-top:1px solid var(--border)" + (i % 2 ? ";background:#fafafa" : "");
+
+      function td(txt, style) {
+        var el = document.createElement("td");
+        el.style.cssText = "padding:10px 18px" + (style || "");
+        el.textContent = txt;
+        return el;
+      }
+      tr.appendChild(td(String(i + 1)));
+      tr.appendChild(td(flag(d.country) + "  " + countryName(d.country)));
+      tr.appendChild(td(d.count.toLocaleString(), ";text-align:right;font-variant-numeric:tabular-nums"));
+
+      var share = document.createElement("td");
+      share.style.cssText = "padding:10px 18px";
+      var bar = document.createElement("div");
+      bar.style.cssText = "background:var(--blue);height:10px;border-radius:5px;min-width:2px;width:" + pct.toFixed(1) + "%";
+      bar.title = pct.toFixed(1) + "%";
+      var lbl = document.createElement("span");
+      lbl.textContent = pct.toFixed(1) + "%";
+      lbl.style.cssText = "font-size:12px;color:var(--ink-faint)";
+      share.appendChild(bar); share.appendChild(lbl);
+      tr.appendChild(share);
+      tbody.appendChild(tr);
+    });
+
+    status.textContent = total.toLocaleString() + " located visitors across " + data.length +
+      " countries. Countries are shaded by visitor count (log scale); grey = no visitors yet.";
+  }).catch(function () {
+    status.textContent = "Could not load visitor data — the geo API may not be deployed yet.";
+  });
+})();
+</script>
+</body>
+</html>
