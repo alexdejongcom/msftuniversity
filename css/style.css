@@ -298,13 +298,19 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 /* ---------- Logo / partner strip ---------- */
 .logo-strip {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px 32px;
+  flex-direction: column;
+  gap: 20px;
   align-items: center;
-  justify-content: center;
   color: var(--ink-faint);
   font-weight: 600;
   font-size: 17px;
+}
+.logo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 36px;
+  align-items: center;
+  justify-content: center;
 }
 .logo-strip span { opacity: .75; }
 .logo-strip .pl {
