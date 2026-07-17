@@ -109,36 +109,54 @@
   var btn = document.getElementById("verify-btn");
   var out = document.getElementById("verify-result");
 
-  function card(color, icon, title, body) {
-    return '<div style="border:1px solid var(--border);border-left:6px solid ' + color + ';border-radius:8px;padding:20px 24px;background:#fff">' +
-      '<div style="font-size:17px;font-weight:600;margin-bottom:6px">' + icon + " " + title + "</div>" +
-      '<div style="font-size:14.5px;color:var(--ink-soft)">' + body + "</div></div>";
+  /* Render with textContent only — registry values are external input
+     and must never be interpolated into HTML (stored-XSS defense). */
+  function card(color, icon, title, bodyLines) {
+    var box = document.createElement("div");
+    box.style.cssText = "border:1px solid var(--border);border-left:6px solid " + color +
+      ";border-radius:8px;padding:20px 24px;background:#fff";
+    var head = document.createElement("div");
+    head.style.cssText = "font-size:17px;font-weight:600;margin-bottom:6px";
+    head.textContent = icon + " " + title;
+    box.appendChild(head);
+    var body = document.createElement("div");
+    body.style.cssText = "font-size:14.5px;color:var(--ink-soft)";
+    (bodyLines || []).forEach(function (line, i) {
+      if (i) body.appendChild(document.createElement("br"));
+      var el = document.createElement(line.strong ? "strong" : line.code ? "code" : "span");
+      el.textContent = line.text;
+      body.appendChild(el);
+    });
+    box.appendChild(body);
+    out.innerHTML = "";
+    out.appendChild(box);
   }
 
   function check() {
     var code = (input.value || "").trim().toUpperCase();
     if (!/^MU-\d{8}-[0-9A-F]{8}$/.test(code)) {
-      out.innerHTML = card("#997000", "⚠️", "That doesn't look like a certificate ID",
-        "Expected format: <code>MU-YYYYMMDD-XXXXXXXX</code>.");
+      card("#997000", "⚠️", "That doesn't look like a certificate ID",
+        [{ text: "Expected format: " }, { code: true, text: "MU-YYYYMMDD-XXXXXXXX" }]);
       return;
     }
-    out.innerHTML = card("#8a8886", "⏳", "Checking…", "Querying the certificate registry.");
+    card("#8a8886", "⏳", "Checking…", [{ text: "Querying the certificate registry." }]);
     fetch("/api/certificate?code=" + encodeURIComponent(code))
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d.valid) {
-          out.innerHTML = card("#107c10", "✅", "Valid certificate",
-            "<strong>" + (d.course || "Course") + "</strong><br>" +
-            "Course date: " + (d.courseDate || "—") + "<br>" +
-            "First issued: " + (d.firstIssued ? new Date(d.firstIssued).toLocaleString() : "—") + "<br>" +
-            "ID: <code>" + code + "</code>");
+          card("#107c10", "✅", "Valid certificate", [
+            { strong: true, text: String(d.course || "Course") },
+            { text: "Course date: " + String(d.courseDate || "—") },
+            { text: "First issued: " + (d.firstIssued ? new Date(d.firstIssued).toLocaleString() : "—") },
+            { text: "ID: " }, { code: true, text: code },
+          ]);
         } else {
-          out.innerHTML = card("#d13438", "❌", "Not found",
-            "This ID is not in the registry. Check for typos — or the certificate was not issued by us.");
+          card("#d13438", "❌", "Not found",
+            [{ text: "This ID is not in the registry. Check for typos — or the certificate was not issued by us." }]);
         }
       })
       .catch(function () {
-        out.innerHTML = card("#997000", "⚠️", "Registry unreachable", "Please try again in a moment.");
+        card("#997000", "⚠️", "Registry unreachable", [{ text: "Please try again in a moment." }]);
       });
   }
 

@@ -50,11 +50,23 @@ app.http("certificate", {
 
       // POST → register a generated certificate
       const body = await request.json().catch(() => ({}));
-      const name = String(body.name || "").trim().slice(0, 200);
+      const clean = (s, n) => String(s || "").replace(/[<>&"']/g, "").trim().slice(0, n);
+      const name = clean(body.name, 200);
       const code = String(body.code || "").trim().toUpperCase();
-      const course = String(body.course || "").slice(0, 300);
+      const course = clean(body.course, 300);
       const courseDate = String(body.date || "").slice(0, 10);
       if (!name || !CODE_RE.test(code)) return json({ error: "invalid payload" }, 400);
+
+      // The date inside the code must match the course date, and must be
+      // recent: certificates are only generated while a course is running
+      // (max ~5 days) plus a 3-day grace period. Blocks back/forward-dating.
+      const codeDate = code.slice(3, 11); // MU-YYYYMMDD-...
+      const isoDate = codeDate.slice(0, 4) + "-" + codeDate.slice(4, 6) + "-" + codeDate.slice(6, 8);
+      if (courseDate !== isoDate) return json({ error: "invalid payload" }, 400);
+      const ageDays = (Date.now() - Date.parse(isoDate + "T00:00:00Z")) / 86400000;
+      if (isNaN(ageDays) || ageDays < -1.5 || ageDays > 14) {
+        return json({ error: "outside issue window" }, 400);
+      }
 
       const now = new Date().toISOString();
       let count = 1, firstIssued = now;
