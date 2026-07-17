@@ -166,6 +166,26 @@
   </div>
 </section>
 
+<!-- ============================================================
+     LATEST MICROSOFT NEWS — live feed via /api/news (server-side
+     RSS proxy of official Microsoft blogs, 15-min cache).
+     Section hides itself if the feed is unreachable.
+     ============================================================ -->
+<section class="section alt" id="news-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Live from Redmond</div>
+      <h2 class="section-title">Latest Microsoft news</h2>
+      <p>Fresh from the official Microsoft, Microsoft 365 and Azure blogs — updated automatically.</p>
+    </div>
+    <div class="card resource-group">
+      <ul class="resource-list" id="news-list">
+        <li><span class="desc">Loading the latest posts…</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <div class="container">
     <div class="footer-grid">
@@ -215,6 +235,7 @@
 <script src="js/achievements.js" defer></script>
 <script src="js/terminal.js" defer></script>
 <script src="js/counter.js" defer></script>
+<script src="js/news.js" defer></script>
 <script src="js/site.js" defer></script>
 </body>
 </html>
