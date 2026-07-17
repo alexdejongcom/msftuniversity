@@ -307,6 +307,16 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   font-size: 17px;
 }
 .logo-strip span { opacity: .75; }
+.logo-strip .pl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  filter: grayscale(1);
+  opacity: .6;
+  transition: filter .25s, opacity .25s;
+  cursor: default;
+}
+.logo-strip .pl:hover { filter: none; opacity: 1; }
 
 /* ---------- Resource lists ---------- */
 .resource-group h3 {
