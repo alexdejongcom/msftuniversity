@@ -96,6 +96,30 @@
     return false;
   }
 
+  /* ---- live travel trail from Polarsteps (via our own API) ---- */
+  var TRAVEL = null;
+  fetch("/api/travel")
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || d.error) return;
+      if (d.trail && d.trail.length > 1) TRAVEL = d;
+      // badge under the globe (values are external data → textContent only)
+      var el = document.getElementById("travel-live");
+      if (el && d.lastSeen && d.lastSeen.locality) {
+        var when = d.lastSeen.time ? new Date(d.lastSeen.time) : null;
+        var txt = "Last seen: " + d.lastSeen.locality +
+          (d.lastSeen.country ? ", " + d.lastSeen.country : "") +
+          (when ? " (" + when.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) + ")" : "");
+        if (d.stats && d.stats.km) {
+          txt += " · " + d.stats.km.toLocaleString("en-US") + " km and " +
+                 d.stats.countries + " countries this season";
+        }
+        el.textContent = txt + " — live from Polarsteps.";
+        el.style.display = "block";
+      }
+    })
+    .catch(function () {});
+
   fetch("https://cdn.jsdelivr.net/gh/johan/world.geo.json/countries.geo.json")
     .then(function (r) { return r.json(); })
     .then(function (geo) {
@@ -260,6 +284,22 @@
     ctx.beginPath(); path({ type: "Sphere" });
     ctx.fillStyle = shade; ctx.fill();
     ctx.strokeStyle = "rgba(20,60,100,.5)"; ctx.lineWidth = 1.5; ctx.stroke();
+
+    // real travel trail (Polarsteps) — solid gold, under the planned route
+    if (TRAVEL) {
+      ctx.beginPath(); path({ type: "LineString", coordinates: TRAVEL.trail });
+      ctx.strokeStyle = "rgba(255,185,0,.9)"; ctx.lineWidth = 2; ctx.stroke();
+      var ls = TRAVEL.lastSeen;
+      if (ls && isFinite(ls.lat) && visible([ls.lon, ls.lat])) {
+        var lp = projection([ls.lon, ls.lat]);
+        var pulse = 5 + 2.5 * Math.abs(Math.sin(performance.now() / 500));
+        ctx.beginPath(); ctx.arc(lp[0], lp[1], pulse + 4, 0, 7);
+        ctx.strokeStyle = "rgba(127,186,0,.5)"; ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(lp[0], lp[1], 5, 0, 7);
+        ctx.fillStyle = "#7fba00"; ctx.fill();
+        ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
+      }
+    }
 
     // route (geoPath draws LineStrings as great circles, clipped to the front)
     ctx.beginPath(); path(route);
