@@ -88,7 +88,7 @@ const EVENTS = [
   },
   {
     date: "2026-08-31", end: "2026-09-04",
-    title: "Microsoft University (internal)",
+    title: "Microsoft University, Azure Architect (internal)",
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
@@ -96,7 +96,7 @@ const EVENTS = [
   },
   {
     date: "2026-09-07", end: "2026-09-11",
-    title: "Microsoft University (internal)",
+    title: "Microsoft University, Azure Architect (internal)",
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
@@ -104,7 +104,7 @@ const EVENTS = [
   },
   {
     date: "2026-09-14", end: "2026-09-18",
-    title: "Microsoft University (internal)",
+    title: "Microsoft University, Azure Architect (internal)",
     type: "Event",
     city: "Oslo, NO",
     venue: "Glasspaper",
