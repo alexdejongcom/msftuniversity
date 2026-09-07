@@ -159,6 +159,14 @@ const EVENTS = [
     url: "https://www.glasspaper.no/kurs/sc-401-information-security-administrator/",
   },
   {
+    date: "2026-10-26", end: "2026-10-29",
+    title: "Microsoft Identity and Access Administrator (SC-300)",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    url: "https://www.glasspaper.no/kurs/sc-300-microsoft-identity-and-access-administrator/",
+  },
+  {
     date: "2026-11-15", end: "2026-11-20",
     title: "Live! 360 Tech Con 2026",
     type: "Conference",
