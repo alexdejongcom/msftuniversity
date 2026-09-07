@@ -135,6 +135,22 @@ const EVENTS = [
     url: "https://www.dsdeurope.nl/dsd-cloud-university-microsoft-365-copilot-agents",
   },
   {
+    date: "2026-10-05",
+    title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
+    type: "Workshop",
+    city: "Zurich, CH",
+    venue: "Microsoft Office Zurich — The Circle",
+    url: "https://www.skilling-hub.com/en-US/listing/implement-agent-365-secure-al-apps-copilot-agents::zurich::pr",
+  },
+  {
+    date: "2026-10-06",
+    title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
+    type: "Workshop",
+    city: "Zurich, CH",
+    venue: "Microsoft Office Zurich — The Circle",
+    url: "https://www.skilling-hub.com/en-US/listing/drive-agentic-ai-conversations-m365-copilot-copilotstudio-zurich-pr",
+  },
+  {
     date: "2026-10-13", end: "2026-10-15",
     title: "NIC 2026 — Nordic Infrastructure Conference",
     type: "Conference",
