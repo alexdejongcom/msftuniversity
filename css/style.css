@@ -542,3 +542,12 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
 .card-icon { line-height: 1; }
 .fi-h3 { width: 21px; height: 21px; fill: var(--blue, #0067b8); vertical-align: -3px; margin-right: 9px; }
 .fi-sm { width: 15px; height: 15px; fill: currentColor; vertical-align: -2px; margin-right: 5px; }
+
+/* Organizer logo on event rows */
+.tour-logo {
+  width: 46px; height: 46px; flex: none;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: #fff; padding: 5px; object-fit: contain;
+  box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,.06));
+}
+@media (max-width: 640px) { .tour-logo { display: none; } }

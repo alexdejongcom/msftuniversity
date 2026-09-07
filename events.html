@@ -141,6 +141,32 @@
     return;
   }
 
+  // Organizer logo: explicit map on venue/title keywords, else the
+  // booking link's domain. Favicons served by Google's favicon API.
+  var ORG_DOMAINS = [
+    ["glasspaper", "glasspaper.no"],
+    ["dsd", "dsdeurope.nl"],
+    ["ingram", "ingrammicro.com"],
+    ["microsoft", "microsoft.com"],
+    ["techmentor", "techmentorevents.com"],
+    ["live! 360", "live360events.com"],
+    ["nic 2026", "nicconf.com"],
+  ];
+  function logoUrl(e) {
+    var hay = ((e.venue || "") + " " + e.title).toLowerCase();
+    for (var i = 0; i < ORG_DOMAINS.length; i++) {
+      if (hay.indexOf(ORG_DOMAINS[i][0]) !== -1) {
+        return "https://www.google.com/s2/favicons?domain=" + ORG_DOMAINS[i][1] + "&sz=128";
+      }
+    }
+    if (e.url) {
+      try {
+        return "https://www.google.com/s2/favicons?domain=" + new URL(e.url).hostname + "&sz=128";
+      } catch (err) {}
+    }
+    return null;
+  }
+
   upcoming.forEach(function (e) {
     var d = new Date(e.date + "T00:00:00");
     var dateBlock = '<div class="tour-date"><span class="d">' + d.getDate() + '</span><span class="m">' +
@@ -158,10 +184,15 @@
     } else {
       action = '<a class="btn btn-outline" href="contact.html">Enquire</a>';
     }
+    var logo = logoUrl(e);
+    var logoBlock = logo
+      ? '<img class="tour-logo" src="' + logo + '" alt="" loading="lazy" onerror="this.remove()">'
+      : "";
     var row = document.createElement("div");
     row.className = "tour-row";
     row.innerHTML =
       dateBlock +
+      logoBlock +
       '<div class="tour-info">' +
         '<span class="tour-type">' + (e.type || "Event") + (range ? " · " + range : "") + '</span>' +
         '<h3>' + e.title + '</h3>' +
