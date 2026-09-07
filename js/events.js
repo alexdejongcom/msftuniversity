@@ -111,14 +111,6 @@ const EVENTS = [
     soldout: true,
   },
   {
-    date: "2026-09-21",
-    title: "Mastering Microsoft Device Management",
-    type: "Training",
-    city: "Oslo, NO",
-    venue: "Glasspaper",
-    url: "https://www.glasspaper.no/kurs/mastering-microsoft-device-management/orderform?dId=12976592",
-  },
-  {
     date: "2026-09-22",
     title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
     type: "Workshop",
@@ -157,14 +149,6 @@ const EVENTS = [
     city: "Oslo, NO",
     venue: "Oslo Spektrum",
     url: "https://nicconf.com/tickets",
-  },
-  {
-    date: "2026-10-20", end: "2026-10-22",
-    title: "In-company Training (internal)",
-    type: "Training",
-    city: "Eindhoven, NL",
-    venue: "Ictivity",
-    soldout: true,
   },
   {
     date: "2026-11-15", end: "2026-11-20",
