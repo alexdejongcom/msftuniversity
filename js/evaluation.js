@@ -41,7 +41,7 @@
   function thanks(already) {
     form.style.display = "none";
     result.innerHTML =
-      '<p style="font-size:17px">✅ ' +
+      '<p style="font-size:17px"><svg aria-hidden="true" style="width:18px;height:18px;fill:#107c10;vertical-align:-3px;margin-right:6px" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20m0 1.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17m-1.25 9.94 4.47-4.47a.75.75 0 0 1 1.13.98l-.07.08-5 5a.75.75 0 0 1-.98.07l-.08-.07-2.5-2.5a.75.75 0 0 1 .98-1.13l.08.07zl4.47-4.47z"/></svg>' +
       (already ? "You already evaluated this course — thank you!"
                : "Thank you! Your evaluation helps make the next course even better.") +
       "</p>";

@@ -536,3 +536,9 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   .hero { padding: 64px 0; }
   .cta-band { padding: 40px 28px; }
 }
+
+/* Fluent 2 icon sizing (replaces emoji) */
+.fi { width: 34px; height: 34px; fill: var(--blue, #0067b8); }
+.card-icon { line-height: 1; }
+.fi-h3 { width: 21px; height: 21px; fill: var(--blue, #0067b8); vertical-align: -3px; margin-right: 9px; }
+.fi-sm { width: 15px; height: 15px; fill: currentColor; vertical-align: -2px; margin-right: 5px; }
