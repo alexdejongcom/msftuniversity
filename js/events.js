@@ -119,6 +119,14 @@ const EVENTS = [
     url: "https://www.glasspaper.no/kurs/mastering-microsoft-device-management/orderform?dId=12976592",
   },
   {
+    date: "2026-09-22",
+    title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
+    type: "Workshop",
+    city: "Athens, GR",
+    venue: "Microsoft Office Athens",
+    url: "https://www.skilling-hub.com/en-US/listing/implement-agent-365-secure-al-apps-copilot-agents::athens::pr",
+  },
+  {
     date: "2026-09-30", end: "2026-10-02",
     title: "DSD Cloud University — Microsoft 365 Copilot and Agents",
     type: "Training",
