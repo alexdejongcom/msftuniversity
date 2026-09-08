@@ -65,6 +65,7 @@
         "  Invoke-BSOD       You know what this does\n" +
         "  Get-Health        Service Health dashboard\n" +
         "  Get-Achievements  Your gamerscore & trophies\n" +
+        "  Start-StudyEngine Secret exam practice engine\n" +
         "  Start-Break 15    Break screen for the projector (minutes...\n" +
         "  Start-Break 10:45 ...or an exact resume time)\n" +
         "  Enable-Aero       Windows Vista called...\n" +
@@ -139,6 +140,10 @@
       setTimeout(function () { startBreak(mins); }, 700);
     } else if (c === "stop-break") {
       window.__stopBreak("Break ended. Back to work.");
+    } else if (c === "start-studyengine" || c === "get-studyengine") {
+      print("Launching the Microsoft Exam Study Engine...");
+      print("Practice questions, study sets, domains and case studies.", "#7fdbff");
+      window.open("https://www.pdsmm.xyz/", "_blank", "noopener");
     } else if (c === "get-health" || c === "get-servicehealth") {
       print("Opening Service Health dashboard...");
       setTimeout(function () { window.location.href = "status.html"; }, 600);
