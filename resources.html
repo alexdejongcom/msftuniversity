@@ -237,6 +237,61 @@
 </footer>
 
 <script src="js/events.js"></script>
+<script>
+/* Secret: the study engine. Type "study" anywhere on this page,
+   or click the Practice Assessments icon five times. Sssh. */
+(function () {
+  var URL = "https://www.pdsmm.xyz/";
+  var fired = false;
+
+  function unlock() {
+    if (fired) return;
+    fired = true;
+    var d = document.createElement("div");
+    d.style.cssText =
+      "position:fixed;left:50%;bottom:28px;transform:translate(-50%,120px);z-index:99996;" +
+      "background:#1f1f1f;color:#fff;border-radius:40px;padding:12px 26px;font-family:'Segoe UI',sans-serif;" +
+      "font-size:15px;box-shadow:0 12px 40px rgba(0,0,0,.45);transition:transform .45s cubic-bezier(.2,.9,.3,1.2)";
+    d.textContent = "Secret unlocked: opening the exam study engine…";
+    document.body.appendChild(d);
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { d.style.transform = "translate(-50%,0)"; });
+    });
+    setTimeout(function () {
+      window.open(URL, "_blank", "noopener");
+      d.style.transform = "translate(-50%,120px)";
+      setTimeout(function () { d.remove(); fired = false; }, 500);
+    }, 900);
+  }
+
+  // trigger 1: type "study" (outside inputs)
+  var buf = "";
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "INPUT" || tag === "TEXTAREA" || e.key.length !== 1) return;
+    buf = (buf + e.key.toLowerCase()).slice(-5);
+    if (buf === "study") { buf = ""; unlock(); }
+  });
+
+  // trigger 2: five quick clicks on the Practice Assessments card icon
+  var cards = document.querySelectorAll(".card h3");
+  for (var i = 0; i < cards.length; i++) {
+    if (cards[i].textContent.indexOf("Practice Assessments") !== -1) {
+      var icon = cards[i].parentElement.querySelector(".card-icon");
+      if (!icon) break;
+      icon.style.cursor = "pointer";
+      var clicks = 0, timer = null;
+      icon.addEventListener("click", function () {
+        clicks++;
+        clearTimeout(timer);
+        timer = setTimeout(function () { clicks = 0; }, 2500);
+        if (clicks >= 5) { clicks = 0; unlock(); }
+      });
+      break;
+    }
+  }
+})();
+</script>
 <script src="js/achievements.js" defer></script>
 <script src="js/terminal.js" defer></script>
 <script src="js/counter.js" defer></script>
