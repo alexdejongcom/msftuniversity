@@ -103,14 +103,6 @@ const EVENTS = [
     soldout: true,
   },
   {
-    date: "2026-09-14", end: "2026-09-18",
-    title: "Microsoft University, Azure Architect",
-    type: "Event",
-    city: "Oslo, NO",
-    venue: "Glasspaper",
-    soldout: true,
-  },
-  {
     date: "2026-09-14", end: "2026-09-16",
     title: "Azure Infrastructure (internal)",
     type: "Training",
