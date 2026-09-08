@@ -111,6 +111,14 @@ const EVENTS = [
     soldout: true,
   },
   {
+    date: "2026-09-14", end: "2026-09-16",
+    title: "Azure Infrastructure (internal)",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    soldout: true,
+  },
+  {
     date: "2026-09-22",
     title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
     type: "Workshop",
