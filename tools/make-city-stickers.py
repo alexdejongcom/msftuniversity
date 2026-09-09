@@ -347,6 +347,72 @@ def skyline_bergen(d, ground, u, dark, mid, light):
                (sx - 8 * u, ground - 10 * u)], fill=light)
 
 
+
+def skyline_online(d, ground, u, dark, mid, light):
+    """"The Internet" — a skyline of server racks under a network sky."""
+    # network constellation overhead
+    nodes = [(6, -44), (19, -53), (32, -41), (46, -55), (60, -43), (74, -51), (88, -40), (97, -47)]
+    for (x1, y1), (x2, y2) in zip(nodes, nodes[1:]):
+        d.line([(x1 * u, ground + y1 * u), (x2 * u, ground + y2 * u)],
+               fill=mid, width=int(u * 0.35))
+    d.line([(nodes[0][0] * u, ground + nodes[0][1] * u),
+            (nodes[3][0] * u, ground + nodes[3][1] * u)], fill=mid, width=int(u * 0.28))
+    d.line([(nodes[4][0] * u, ground + nodes[4][1] * u),
+            (nodes[7][0] * u, ground + nodes[7][1] * u)], fill=mid, width=int(u * 0.28))
+    for i, (x, y) in enumerate(nodes):
+        r = 2.0 * u if i % 3 else 2.8 * u
+        d.ellipse([x * u - r, ground + y * u - r, x * u + r, ground + y * u + r], fill=light)
+
+    # the cloud
+    ccx, ccy = 32 * u, ground - 36 * u
+    for dx, dy, rr in [(-13, 2, 9), (-4, -3, 12), (7, -1, 10), (15, 3, 8)]:
+        d.ellipse([ccx + dx * u - rr * u, ccy + dy * u - rr * u,
+                   ccx + dx * u + rr * u, ccy + dy * u + rr * u], fill=light)
+    d.rectangle([ccx - 21 * u, ccy + 1 * u, ccx + 22 * u, ccy + 10 * u], fill=light)
+    d.ellipse([ccx - 24 * u, ccy + 1 * u, ccx - 18 * u, ccy + 11 * u], fill=light)
+    d.ellipse([ccx + 19 * u, ccy + 1 * u, ccx + 25 * u, ccy + 11 * u], fill=light)
+    # download / upload arrows under the cloud
+    d.line([(ccx, ccy + 12 * u), (ccx, ccy + 21 * u)], fill=light, width=int(u * 1.1))
+    d.polygon([(ccx - 3 * u, ccy + 19 * u), (ccx + 3 * u, ccy + 19 * u),
+               (ccx, ccy + 24 * u)], fill=light)
+
+    # server racks as the "buildings"
+    racks = [(6, 30, 12), (20, 44, 12), (34, 26, 12), (48, 38, 12), (62, 48, 12)]
+    for i, (x, h, w) in enumerate(racks):
+        x, h, w = x * u, h * u, w * u
+        d.rectangle([x, ground - h, x + w, ground], fill=dark)
+        d.rectangle([x, ground - h, x + w, ground - h + 1.4 * u], fill=mid)
+        slots = int(h / (4.6 * u))
+        for r in range(slots):
+            yy = ground - h + 3.4 * u + r * 4.6 * u
+            if yy + 3 * u > ground - 1.5 * u:
+                break
+            d.rectangle([x + 1.6 * u, yy, x + w - 1.6 * u, yy + 3 * u], fill=mid)
+            for k in range(3):   # status LEDs
+                col = MS_COLORS[(i + r + k) % 4]
+                lx = x + w - 5.2 * u + k * 1.5 * u
+                d.ellipse([lx, yy + 0.9 * u, lx + 1.1 * u, yy + 2.0 * u], fill=rgb(col))
+
+    # antenna mast with Wi-Fi arcs
+    ax = 78 * u
+    d.polygon([(ax - 5 * u, ground), (ax - 1.6 * u, ground - 38 * u),
+               (ax + 1.6 * u, ground - 38 * u), (ax + 5 * u, ground)], fill=dark)
+    for yy in (10, 22, 34):
+        d.line([(ax - 4.2 * u + yy * 0.06 * u, ground - yy * u),
+                (ax + 4.2 * u - yy * 0.06 * u, ground - yy * u)], fill=dark, width=int(u * 0.5))
+    for k, rr in enumerate((6, 10, 14)):
+        d.arc([ax - rr * u, ground - 38 * u - rr * u, ax + rr * u, ground - 38 * u + rr * u],
+              205, 335, fill=light, width=int(u * 0.9))
+    d.ellipse([ax - 1.8 * u, ground - 40 * u, ax + 1.8 * u, ground - 36.4 * u], fill=light)
+
+    # satellite dish, far right
+    sx, sy = 95 * u, ground - 12 * u
+    d.polygon([(sx - 2 * u, ground), (sx + 2 * u, ground), (sx + 1 * u, sy), (sx - 1 * u, sy)],
+              fill=dark)
+    d.pieslice([sx - 9 * u, sy - 12 * u, sx + 7 * u, sy + 4 * u], 200, 20, fill=mid)
+    d.line([(sx - 1 * u, sy - 4 * u), (sx + 3 * u, sy - 10 * u)], fill=dark, width=int(u * 0.5))
+
+
 CITIES = [
     dict(key="oslo", name="OSLO", sub="NORWAY",
          top="#08203f", bot="#2b6f9e", dark="#071726", mid="#123a5c", light="#eaf4ff",
@@ -369,6 +435,9 @@ CITIES = [
     dict(key="bergen", name="BERGEN", sub="NORWAY",
          top="#0b2c40", bot="#7fb6cd", dark="#0a1f2e", mid="#265a75", light="#f2fbff",
          glow="#cfeaf7", draw=skyline_bergen),
+    dict(key="online", name="ONLINE", sub="THE INTERNET",
+         top="#04142b", bot="#0a6fb8", dark="#071a2c", mid="#1f6ea8", light="#eaf7ff",
+         glow="#7fdbff", draw=skyline_online),
 ]
 
 
@@ -393,7 +462,9 @@ def arc_text(base, text, radius, font_, fill, span_deg=150, center_deg=270):
         gw, gh = max(1, bbox[2] - bbox[0]), max(1, bbox[3] - bbox[1])
         pad = int(max(gw, gh) * 0.6) + 4
         g = Image.new("RGBA", (gw + pad * 2, gh + pad * 2), (0, 0, 0, 0))
-        ImageDraw.Draw(g).text((pad - bbox[0], pad - bbox[1]), c, font=font_, fill=fill)
+        ImageDraw.Draw(g).text((pad - bbox[0], pad - bbox[1]), c, font=font_, fill=fill,
+                              stroke_width=max(1, int(font_.size * 0.10)),
+                              stroke_fill=(0, 0, 0, 120))
         g = g.rotate(-(math.degrees(theta) + 90), resample=Image.BICUBIC, expand=True)
         x = CX + math.cos(theta) * radius
         y = CY + math.sin(theta) * radius
@@ -469,8 +540,9 @@ def make(city):
         x += ring.textlength(c, font=f_city) + track
 
     # country on the top arc
+    span = min(120, max(72, 8.5 * len(city["sub"])))
     arc_text(art, city["sub"], R_RING * 0.885, font("segoeui.ttf", int(34 * SS)),
-             (255, 255, 255, 215), span_deg=72, center_deg=270)
+             (255, 255, 255, 215), span_deg=span, center_deg=270)
 
     art = art.resize((SIZE, SIZE), Image.LANCZOS)
     os.makedirs(OUT_DIR, exist_ok=True)
