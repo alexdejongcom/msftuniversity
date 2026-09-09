@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://msftuniversity.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://msftuniversity.com/exams.html</loc><priority>0.9</priority></url>
   <url><loc>https://msftuniversity.com/course-today.html</loc><priority>0.9</priority></url>
   <url><loc>https://msftuniversity.com/events.html</loc><priority>0.9</priority></url>
   <url><loc>https://msftuniversity.com/training.html</loc><priority>0.9</priority></url>
@@ -8,4 +9,50 @@
   <url><loc>https://msftuniversity.com/about.html</loc><priority>0.7</priority></url>
   <url><loc>https://msftuniversity.com/contact.html</loc><priority>0.8</priority></url>
   <url><loc>https://msftuniversity.com/terms.html</loc><priority>0.3</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ab-100.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ab-730.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ab-731.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ab-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ai-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-104.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-140.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-204.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-305.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-400.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-500.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-700.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-800.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-801.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/az-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/dp-300.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/dp-420.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/dp-600.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/dp-700.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/dp-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/gh-100.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/gh-200.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/gh-300.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/gh-500.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/gh-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-230.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-240.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-280.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-310.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-330.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-500.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-800.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/mb-820.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/md-102.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ms-102.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ms-700.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/ms-721.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/pl-200.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/pl-300.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/pl-400.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/pl-900.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/sc-100.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/sc-200.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/sc-300.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/sc-401.html</loc><priority>0.7</priority></url>
+  <url><loc>https://msftuniversity.com/exam/sc-900.html</loc><priority>0.7</priority></url>
 </urlset>
