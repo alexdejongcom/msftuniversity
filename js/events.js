@@ -167,6 +167,14 @@ const EVENTS = [
     url: "https://www.glasspaper.no/kurs/sc-300-microsoft-identity-and-access-administrator/",
   },
   {
+    date: "2026-10-30",
+    title: "Implement Information Protection and Data Loss Prevention with Microsoft Purview (SC-5003)",
+    type: "Training",
+    city: "Online",
+    venue: "Fast Lane",
+    url: "https://www.flane.nl/addbooking?eventid=2194718",
+  },
+  {
     date: "2026-11-15", end: "2026-11-20",
     title: "Live! 360 Tech Con 2026",
     type: "Conference",
