@@ -142,30 +142,43 @@
     return;
   }
 
-  // Organizer logo: explicit map on venue/title keywords, else the
-  // booking link's domain. Favicons served by Google's favicon API.
-  var ORG_DOMAINS = [
+  // Organizer logo. Priority: the venue (that IS the organizer), then the
+  // booking link's domain, then the title as a last resort — so a course
+  // *about* Microsoft doesn't steal the Microsoft logo from its host.
+  // Favicons served by Google's favicon API.
+  var VENUE_DOMAINS = [
     ["glasspaper", "glasspaper.no"],
+    ["fast lane", "flane.nl"],
     ["dsd", "dsdeurope.nl"],
     ["ingram", "ingrammicro.com"],
-    ["microsoft", "microsoft.com"],
+    ["oslo spektrum", "nicconf.com"],
+    ["royal pacific", "live360events.com"],
+    ["microsoft partner skilling", "microsoft.com"],
+    ["microsoft office", "microsoft.com"],
+  ];
+  var TITLE_DOMAINS = [
     ["techmentor", "techmentorevents.com"],
     ["live! 360", "live360events.com"],
     ["nic 2026", "nicconf.com"],
+    ["microsoft university", "microsoft.com"],
   ];
-  function logoUrl(e) {
-    var hay = ((e.venue || "") + " " + e.title).toLowerCase();
-    for (var i = 0; i < ORG_DOMAINS.length; i++) {
-      if (hay.indexOf(ORG_DOMAINS[i][0]) !== -1) {
-        return "https://www.google.com/s2/favicons?domain=" + ORG_DOMAINS[i][1] + "&sz=128";
-      }
-    }
-    if (e.url) {
-      try {
-        return "https://www.google.com/s2/favicons?domain=" + new URL(e.url).hostname + "&sz=128";
-      } catch (err) {}
+  function favicon(domain) {
+    return "https://www.google.com/s2/favicons?domain=" + domain + "&sz=128";
+  }
+  function match(list, hay) {
+    for (var i = 0; i < list.length; i++) {
+      if (hay.indexOf(list[i][0]) !== -1) return list[i][1];
     }
     return null;
+  }
+  function logoUrl(e) {
+    var d = match(VENUE_DOMAINS, (e.venue || "").toLowerCase());
+    if (d) return favicon(d);
+    if (e.url) {
+      try { return favicon(new URL(e.url).hostname); } catch (err) {}
+    }
+    d = match(TITLE_DOMAINS, e.title.toLowerCase());
+    return d ? favicon(d) : null;
   }
 
   upcoming.forEach(function (e) {
