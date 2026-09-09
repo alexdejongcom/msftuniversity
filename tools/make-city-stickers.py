@@ -525,19 +525,337 @@ def skyline_johannesburg(d, ground, u, dark, mid, light):
             d.line([(pxx * u, top + 1.5 * u), (pxx * u + off, deck)], fill=dark, width=int(u * 0.32))
 
 
+
+def gable(d, x, w, base, h, col, kind):
+    """A canal-house facade with a Dutch/Nordic gable on top."""
+    d.rectangle([x, base - h, x + w, base], fill=col)
+    t = base - h
+    if kind == "step":
+        steps = 4
+        sw = w / (steps * 2 + 1)
+        for i in range(steps):
+            d.rectangle([x + sw * i, t - (i + 1) * 2.2 * u_(), x + w - sw * i, t], fill=col)
+            t2 = t
+    elif kind == "bell":
+        d.pieslice([x - 0.4 * (w * 0.5), t - w * 0.55, x + w + 0.4 * (w * 0.5), t + w * 0.55],
+                   180, 360, fill=col)
+    elif kind == "neck":
+        d.rectangle([x + w * 0.28, t - w * 0.5, x + w * 0.72, t], fill=col)
+        d.pieslice([x + w * 0.28, t - w * 0.72, x + w * 0.72, t - w * 0.28], 180, 360, fill=col)
+    else:  # point
+        d.polygon([(x - w * 0.06, t), (x + w * 1.06, t), (x + w * 0.5, t - w * 0.62)], fill=col)
+
+
+_U = [1.0]
+
+
+def u_():
+    return _U[0]
+
+
+def skyline_amsterdam(d, ground, u, dark, mid, light):
+    """Canal houses, the Westerkerk and a bridge over the gracht."""
+    _U[0] = u
+    # canal-house row with assorted gables
+    specs = [(4, 9, 30, "step"), (14, 8, 26, "bell"), (23, 9, 33, "neck"), (33, 8, 27, "step"),
+             (42, 9, 31, "point"), (52, 8, 25, "bell")]
+    for x, w, h, kind in specs:
+        gable(d, x * u, w * u, ground - 6 * u, h * u, dark, kind)
+        windows(d, x * u, w * u, h * u, ground - 6 * u, light, cols=2, rows=4)
+
+    # Westerkerk — tiered tower with its crown
+    wx = 66 * u
+    d.rectangle([wx, ground - 44 * u, wx + 11 * u, ground - 6 * u], fill=dark)
+    d.rectangle([wx + 1.4 * u, ground - 52 * u, wx + 9.6 * u, ground - 44 * u], fill=dark)
+    d.polygon([(wx + 0.4 * u, ground - 52 * u), (wx + 10.6 * u, ground - 52 * u),
+               (wx + 5.5 * u, ground - 58 * u)], fill=dark)
+    d.rectangle([wx + 3.4 * u, ground - 64 * u, wx + 7.6 * u, ground - 58 * u], fill=dark)
+    d.polygon([(wx + 2.4 * u, ground - 64 * u), (wx + 8.6 * u, ground - 64 * u),
+               (wx + 5.5 * u, ground - 70 * u)], fill=dark)
+    d.ellipse([wx + 3.6 * u, ground - 75 * u, wx + 7.4 * u, ground - 70 * u], fill=light)  # crown
+    d.ellipse([wx + 2.8 * u, ground - 36 * u, wx + 8.2 * u, ground - 30 * u], fill=light)  # clock
+
+    # a few more houses right of the church
+    for x, w, h, kind in [(80, 9, 28, "step"), (90, 8, 24, "bell")]:
+        gable(d, x * u, w * u, ground - 6 * u, h * u, dark, kind)
+        windows(d, x * u, w * u, h * u, ground - 6 * u, light, cols=2, rows=4)
+
+    # the canal and its bridge
+    d.rectangle([0, ground - 8 * u, 104 * u, ground], fill=lerp(mid, dark, 0.55))
+    for bx2 in (14, 32, 50):
+        d.pieslice([bx2 * u, ground - 13 * u, (bx2 + 14) * u, ground - 3 * u], 180, 360, fill=dark)
+    d.rectangle([10 * u, ground - 14 * u, 68 * u, ground - 11 * u], fill=dark)
+
+    # a bicycle leaning on the bridge rail
+    bx, by, r = 76 * u, ground - 3 * u, 3.4 * u
+    for cx2 in (bx, bx + 8 * u):
+        d.ellipse([cx2 - r, by - r, cx2 + r, by + r], outline=dark, width=int(u * 0.55))
+    d.line([(bx, by), (bx + 4 * u, by - 5 * u), (bx + 8 * u, by)], fill=dark, width=int(u * 0.5))
+    d.line([(bx + 4 * u, by - 5 * u), (bx + 2.5 * u, by - 7 * u)], fill=dark, width=int(u * 0.5))
+
+
+def skyline_berlin(d, ground, u, dark, mid, light):
+    """Brandenburger Tor, the Dom and the Fernsehturm."""
+    # Brandenburg Gate
+    gx, gw = 6 * u, 30 * u
+    d.rectangle([gx, ground - 22 * u, gx + gw, ground], fill=dark)
+    for i in range(5):
+        cx2 = gx + 2.5 * u + i * 6.4 * u
+        d.rectangle([cx2, ground - 20 * u, cx2 + 3.2 * u, ground], fill=lerp(dark, mid, 0.55))
+    d.rectangle([gx - 1.5 * u, ground - 28 * u, gx + gw + 1.5 * u, ground - 22 * u], fill=dark)
+    # quadriga on top
+    qx = gx + gw / 2
+    d.rectangle([qx - 6 * u, ground - 31 * u, qx + 6 * u, ground - 28 * u], fill=dark)
+    for k in range(4):
+        d.rectangle([qx - 5 * u + k * 2.6 * u, ground - 35 * u,
+                     qx - 3.6 * u + k * 2.6 * u, ground - 31 * u], fill=dark)
+    d.polygon([(qx - 6 * u, ground - 35 * u), (qx - 1 * u, ground - 35 * u),
+               (qx - 3 * u, ground - 39 * u)], fill=dark)
+
+    # Berliner Dom
+    dx = 40 * u
+    d.rectangle([dx, ground - 20 * u, dx + 18 * u, ground], fill=dark)
+    d.pieslice([dx + 3 * u, ground - 34 * u, dx + 15 * u, ground - 16 * u], 180, 360, fill=dark)
+    d.rectangle([dx + 8 * u, ground - 38 * u, dx + 10 * u, ground - 32 * u], fill=dark)
+    d.ellipse([dx + 7.4 * u, ground - 41 * u, dx + 10.6 * u, ground - 37.5 * u], fill=light)
+    for k in (0, 1):
+        cx2 = dx + 1 * u + k * 14 * u
+        d.rectangle([cx2, ground - 26 * u, cx2 + 3 * u, ground - 16 * u], fill=dark)
+        d.pieslice([cx2, ground - 30 * u, cx2 + 3 * u, ground - 24 * u], 180, 360, fill=dark)
+
+    # Fernsehturm — shaft, sphere, antenna
+    fx = 70 * u
+    d.polygon([(fx - 3.4 * u, ground), (fx - 1.4 * u, ground - 44 * u),
+               (fx + 1.4 * u, ground - 44 * u), (fx + 3.4 * u, ground)], fill=dark)
+    d.ellipse([fx - 9 * u, ground - 55 * u, fx + 9 * u, ground - 37 * u], fill=dark)
+    d.arc([fx - 9 * u, ground - 55 * u, fx + 9 * u, ground - 37 * u], 200, 340,
+          fill=light, width=int(u * 1.0))
+    d.rectangle([fx - 1 * u, ground - 72 * u, fx + 1 * u, ground - 53 * u], fill=dark)
+    d.polygon([(fx - 1 * u, ground - 72 * u), (fx + 1 * u, ground - 72 * u),
+               (fx, ground - 80 * u)], fill=dark)
+
+    for x, h, w in [(84, 24, 8), (93, 18, 7)]:
+        tower(d, x * u, w * u, h * u, ground, dark)
+        windows(d, x * u, w * u, h * u, ground, light, cols=3, rows=4)
+
+
+def skyline_brussels(d, ground, u, dark, mid, light):
+    """The Atomium and the Grand-Place spire."""
+    # Grand-Place: Town Hall spire and guild gables
+    tx = 12 * u
+    d.rectangle([tx, ground - 26 * u, tx + 14 * u, ground], fill=dark)
+    d.rectangle([tx + 4.5 * u, ground - 44 * u, tx + 9.5 * u, ground - 26 * u], fill=dark)
+    d.polygon([(tx + 3 * u, ground - 44 * u), (tx + 11 * u, ground - 44 * u),
+               (tx + 7 * u, ground - 62 * u)], fill=dark)
+    d.ellipse([tx + 5.6 * u, ground - 65 * u, tx + 8.4 * u, ground - 61.5 * u], fill=light)
+    d.ellipse([tx + 5 * u, ground - 38 * u, tx + 9 * u, ground - 34 * u], fill=light)
+    for x, w, h in [(1, 8, 20), (28, 8, 23), (37, 7, 19)]:
+        gable(d, x * u, w * u, ground, h * u, dark, "step")
+        windows(d, x * u, w * u, h * u, ground, light, cols=2, rows=3)
+
+    # Atomium — nine spheres on their rods
+    acx, acy, R = 70 * u, ground - 38 * u, 20 * u
+    r = 5.4 * u
+    pts = [(0, 0)]
+    for k in range(8):
+        a = math.pi * 2 * k / 8 - math.pi / 2
+        pts.append((math.cos(a) * R, math.sin(a) * R))
+    for i in range(1, 9):
+        d.line([(acx, acy), (acx + pts[i][0], acy + pts[i][1])], fill=mid, width=int(u * 0.8))
+    for i in range(1, 9):
+        j = i + 1 if i < 8 else 1
+        d.line([(acx + pts[i][0], acy + pts[i][1]), (acx + pts[j][0], acy + pts[j][1])],
+               fill=mid, width=int(u * 0.5))
+    for px, py in pts:
+        d.ellipse([acx + px - r, acy + py - r, acx + px + r, acy + py + r], fill=light)
+        d.ellipse([acx + px - r * 0.45, acy + py - r * 0.7,
+                   acx + px + r * 0.1, acy + py - r * 0.15], fill=lerp(light, mid, 0.35))
+    # legs to the ground
+    for lx in (-1, 1):
+        d.line([(acx + lx * R * 0.7, acy + R * 0.7), (acx + lx * R * 1.05, ground)],
+               fill=mid, width=int(u * 1.1))
+    d.line([(acx, acy + R), (acx, ground)], fill=mid, width=int(u * 1.2))
+
+
+def skyline_copenhagen(d, ground, u, dark, mid, light):
+    """Nyhavn, Borsen's twisted spire, the Round Tower and Frederik's dome."""
+    # Nyhavn facades
+    facades = ["#d24b3e", "#e8b64c", "#f2ece0", "#4f7fa8", "#c9603f"]
+    x = 2 * u
+    for i, col in enumerate(facades):
+        w, h = 8.6 * u, (22 + (i % 3) * 3) * u
+        d.rectangle([x, ground - h, x + w, ground], fill=rgb(col))
+        d.polygon([(x - 0.6 * u, ground - h), (x + w + 0.6 * u, ground - h),
+                   (x + w / 2, ground - h - 5 * u)], fill=rgb(col))
+        for r in range(3):
+            ty = ground - h + 3.5 * u + r * 5.5 * u
+            if ty + 3.4 * u > ground - 6 * u:
+                break
+            for c2 in range(2):
+                d.rectangle([x + 1.6 * u + c2 * 3.8 * u, ty,
+                             x + 3.8 * u + c2 * 3.8 * u, ty + 3.4 * u], fill=dark)
+        x += w + 1 * u
+
+    # Rundetaarn — the round tower
+    rx = 50 * u
+    d.rectangle([rx, ground - 30 * u, rx + 11 * u, ground], fill=dark)
+    d.pieslice([rx, ground - 36 * u, rx + 11 * u, ground - 24 * u], 180, 360, fill=dark)
+    d.rectangle([rx + 4.4 * u, ground - 40 * u, rx + 6.6 * u, ground - 34 * u], fill=dark)
+    d.rectangle([rx + 2.5 * u, ground - 22 * u, rx + 8.5 * u, ground - 17 * u], fill=light)
+
+    # Borsen — the twisted dragon-tail spire
+    bx = 66 * u
+    d.rectangle([bx, ground - 18 * u, bx + 16 * u, ground], fill=dark)
+    d.polygon([(bx + 4 * u, ground - 18 * u), (bx + 12 * u, ground - 18 * u),
+               (bx + 8 * u, ground - 26 * u)], fill=dark)
+    cxs = bx + 8 * u
+    d.polygon([(cxs - 5 * u, ground - 26 * u), (cxs + 5 * u, ground - 26 * u),
+               (cxs + 1.1 * u, ground - 58 * u), (cxs - 1.1 * u, ground - 58 * u)], fill=dark)
+    for k in range(6):   # the twist, read as alternating barbs
+        yy = ground - 29 * u - k * 5 * u
+        wdt = (4.3 - k * 0.62) * u
+        sgn = 1 if k % 2 else -1
+        d.polygon([(cxs, yy), (cxs + sgn * (wdt + 2.4 * u), yy - 1.6 * u),
+                   (cxs, yy - 3.6 * u)], fill=dark)
+    d.line([(cxs, ground - 58 * u), (cxs, ground - 65 * u)], fill=dark, width=int(u * 0.55))
+    d.ellipse([cxs - 1.6 * u, ground - 68 * u, cxs + 1.6 * u, ground - 64.8 * u], fill=light)
+
+    # Frederik's Church dome
+    fx = 88 * u
+    d.rectangle([fx, ground - 18 * u, fx + 16 * u, ground], fill=dark)
+    d.pieslice([fx + 1 * u, ground - 34 * u, fx + 15 * u, ground - 12 * u], 180, 360, fill=dark)
+    d.arc([fx + 1 * u, ground - 34 * u, fx + 15 * u, ground - 12 * u], 200, 340,
+          fill=light, width=int(u * 0.7))
+    d.rectangle([fx + 7 * u, ground - 38 * u, fx + 9 * u, ground - 32 * u], fill=dark)
+
+
+def skyline_stockholm(d, ground, u, dark, mid, light):
+    """Stadshuset, Riddarholmen's lattice spire and the Gamla Stan waterfront."""
+    # Gamla Stan waterfront row
+    for i in range(7):
+        x = (2 + i * 7.4) * u
+        h = (18 + (i % 3) * 4) * u
+        d.rectangle([x, ground - h - 6 * u, x + 6.6 * u, ground - 6 * u], fill=dark)
+        d.polygon([(x - 0.5 * u, ground - h - 6 * u), (x + 7.1 * u, ground - h - 6 * u),
+                   (x + 3.3 * u, ground - h - 10 * u)], fill=dark)
+        windows(d, x, 6.6 * u, h, ground - 6 * u, light, cols=2, rows=3)
+
+    # Riddarholmen church — openwork iron spire
+    rx = 40 * u
+    d.rectangle([rx, ground - 26 * u, rx + 9 * u, ground - 6 * u], fill=dark)
+    cxr = rx + 4.5 * u
+    d.polygon([(cxr - 5.6 * u, ground - 26 * u), (cxr + 5.6 * u, ground - 26 * u),
+               (cxr, ground - 58 * u)], fill=dark)
+    for k, off in enumerate((-4.4, 4.4)):   # corner turrets
+        d.polygon([(cxr + off * u - 1.4 * u, ground - 26 * u),
+                   (cxr + off * u + 1.4 * u, ground - 26 * u),
+                   (cxr + off * u, ground - 35 * u)], fill=dark)
+    d.line([(cxr, ground - 58 * u), (cxr, ground - 64 * u)], fill=dark, width=int(u * 0.5))
+    d.ellipse([cxr - 1.5 * u, ground - 67 * u, cxr + 1.5 * u, ground - 64 * u], fill=light)
+
+    # Stadshuset — the City Hall tower with its lantern and three crowns
+    sx = 62 * u
+    d.rectangle([sx, ground - 16 * u, sx + 34 * u, ground - 6 * u], fill=dark)
+    d.rectangle([sx + 18 * u, ground - 52 * u, sx + 31 * u, ground - 6 * u], fill=dark)
+    windows(d, sx + 18 * u, 13 * u, 46 * u, ground - 6 * u, light, cols=3, rows=6)
+    d.rectangle([sx + 17 * u, ground - 56 * u, sx + 32 * u, ground - 52 * u], fill=dark)
+    for k in range(4):   # corner pinnacles
+        px = sx + 17.5 * u + k * 4.6 * u
+        d.polygon([(px, ground - 56 * u), (px + 2.4 * u, ground - 56 * u),
+                   (px + 1.2 * u, ground - 61 * u)], fill=dark)
+    d.rectangle([sx + 22 * u, ground - 64 * u, sx + 27 * u, ground - 56 * u], fill=dark)
+    d.polygon([(sx + 21 * u, ground - 64 * u), (sx + 28 * u, ground - 64 * u),
+               (sx + 24.5 * u, ground - 70 * u)], fill=dark)
+    for off in (-3.4, 0, 3.4):   # the three crowns
+        d.ellipse([sx + 24.5 * u + off * u - 1.7 * u, ground - 76 * u,
+                   sx + 24.5 * u + off * u + 1.7 * u, ground - 72.4 * u], fill=rgb("#ffb900"))
+
+    # water and a little steamer
+    d.rectangle([0, ground - 6 * u, 104 * u, ground], fill=lerp(mid, dark, 0.45))
+    d.polygon([(6 * u, ground - 5 * u), (22 * u, ground - 5 * u), (19 * u, ground - 1 * u),
+               (9 * u, ground - 1 * u)], fill=dark)
+    d.rectangle([12 * u, ground - 10 * u, 16 * u, ground - 5 * u], fill=dark)
+    d.rectangle([17 * u, ground - 12 * u, 18.6 * u, ground - 5 * u], fill=dark)
+
+
+def skyline_london(d, ground, u, dark, mid, light):
+    """The Eye, Big Ben, St Paul's, the Gherkin and the Shard."""
+    # The London Eye, low and left where the badge is widest
+    ex, ey, er = 17 * u, ground - 25 * u, 15 * u
+    d.ellipse([ex - er, ey - er, ex + er, ey + er], outline=dark, width=int(u * 1.2))
+    for k in range(16):
+        a = math.pi * 2 * k / 16
+        px, py = ex + math.cos(a) * er, ey + math.sin(a) * er
+        d.line([(ex, ey), (px, py)], fill=dark, width=int(u * 0.3))
+        d.ellipse([px - 1.4 * u, py - 1.4 * u, px + 1.4 * u, py + 1.4 * u], fill=light)
+    d.ellipse([ex - 2.2 * u, ey - 2.2 * u, ex + 2.2 * u, ey + 2.2 * u], fill=dark)
+    d.line([(ex, ey), (ex - 6 * u, ground)], fill=dark, width=int(u * 1.3))
+    d.line([(ex, ey), (ex + 3 * u, ground)], fill=dark, width=int(u * 1.3))
+
+    # Elizabeth Tower (Big Ben), brought in towards the middle
+    bx = 36 * u
+    d.rectangle([bx, ground - 44 * u, bx + 9 * u, ground], fill=dark)
+    windows(d, bx, 9 * u, 28 * u, ground, light, cols=2, rows=4)
+    d.rectangle([bx - 1 * u, ground - 50 * u, bx + 10 * u, ground - 44 * u], fill=dark)
+    d.ellipse([bx + 1.4 * u, ground - 49 * u, bx + 7.6 * u, ground - 45 * u], fill=light)
+    d.polygon([(bx - 1 * u, ground - 50 * u), (bx + 10 * u, ground - 50 * u),
+               (bx + 4.5 * u, ground - 60 * u)], fill=dark)
+    d.line([(bx + 4.5 * u, ground - 60 * u), (bx + 4.5 * u, ground - 64 * u)],
+           fill=dark, width=int(u * 0.5))
+
+    # The Shard, tallest, so keep it near the centre
+    hx = 52 * u
+    d.polygon([(hx, ground), (hx + 13 * u, ground), (hx + 8.6 * u, ground - 58 * u),
+               (hx + 6.8 * u, ground - 68 * u), (hx + 5.4 * u, ground - 58 * u)], fill=dark)
+    for k in range(5):
+        yy = ground - 10 * u - k * 10 * u
+        d.line([(hx + 1.6 * u + k * 0.8 * u, yy), (hx + 11.4 * u - k * 0.9 * u, yy)],
+               fill=light, width=int(u * 0.28))
+
+    # St Paul's
+    sx = 68 * u
+    d.rectangle([sx, ground - 15 * u, sx + 16 * u, ground], fill=dark)
+    d.pieslice([sx + 2 * u, ground - 30 * u, sx + 14 * u, ground - 11 * u], 180, 360, fill=dark)
+    d.rectangle([sx + 7.1 * u, ground - 35 * u, sx + 8.9 * u, ground - 28 * u], fill=dark)
+    d.ellipse([sx + 6.3 * u, ground - 38 * u, sx + 9.7 * u, ground - 34 * u], fill=light)
+
+    # The Gherkin
+    gx = 88 * u
+    d.polygon([(gx, ground), (gx, ground - 22 * u), (gx + 2 * u, ground - 31 * u),
+               (gx + 5 * u, ground - 35 * u), (gx + 8 * u, ground - 31 * u),
+               (gx + 10 * u, ground - 22 * u), (gx + 10 * u, ground)], fill=dark)
+    for k in range(4):
+        yy = ground - 8 * u - k * 6 * u
+        d.line([(gx + 0.6 * u, yy), (gx + 9.4 * u, yy - 3 * u)], fill=light, width=int(u * 0.35))
+
 CITIES = [
+    dict(key="amsterdam", name="AMSTERDAM", sub="NETHERLANDS",
+         top="#122845", bot="#e8a052", dark="#0d1b2e", mid="#2a4a70", light="#fff3df",
+         glow="#ffd08a", draw=skyline_amsterdam),
     dict(key="athens", name="ATHENS", sub="GREECE",
          top="#0d3b63", bot="#f2a63b", dark="#10263c", mid="#1d4a6e", light="#fff6e3",
          glow="#ffd166", draw=skyline_athens),
     dict(key="bergen", name="BERGEN", sub="NORWAY",
          top="#0b2c40", bot="#7fb6cd", dark="#0a1f2e", mid="#265a75", light="#f2fbff",
          glow="#cfeaf7", draw=skyline_bergen),
+    dict(key="berlin", name="BERLIN", sub="GERMANY",
+         top="#132436", bot="#d8904a", dark="#0e1a28", mid="#2d4a63", light="#fff4e4",
+         glow="#ffc98a", draw=skyline_berlin),
+    dict(key="brussels", name="BRUSSELS", sub="BELGIUM",
+         top="#0e1c33", bot="#dcae5e", dark="#0a1526", mid="#3a5a80", light="#fff6e6",
+         glow="#ffd98f", draw=skyline_brussels),
+    dict(key="copenhagen", name="COPENHAGEN", sub="DENMARK",
+         top="#1b2c4e", bot="#efa088", dark="#12203a", mid="#3d5b85", light="#fff2ea",
+         glow="#ffd0bb", draw=skyline_copenhagen),
     dict(key="eindhoven", name="EINDHOVEN", sub="NETHERLANDS",
          top="#101c3d", bot="#e8843c", dark="#0d1526", mid="#26365e", light="#fff4dc",
          glow="#ffc46b", draw=skyline_eindhoven),
     dict(key="johannesburg", name="JOHANNESBURG", sub="SOUTH AFRICA",
          top="#251239", bot="#ef8f3c", dark="#170c23", mid="#4d2c50", light="#fff3e2",
          glow="#ffc978", draw=skyline_johannesburg),
+    dict(key="london", name="LONDON", sub="UNITED KINGDOM",
+         top="#101d33", bot="#c98a62", dark="#0b1424", mid="#2f4a6b", light="#fff1e2",
+         glow="#ffc48f", draw=skyline_london),
     dict(key="new-york", name="NEW YORK", sub="USA",
          top="#241a4a", bot="#f2662a", dark="#160f28", mid="#3a2a5c", light="#fff3e0",
          glow="#ffb900", draw=skyline_newyork),
@@ -553,6 +871,9 @@ CITIES = [
     dict(key="redmond", name="REDMOND", sub="WASHINGTON",
          top="#12314a", bot="#9ec9d8", dark="#0e2233", mid="#2f6b86", light="#f4fbff",
          glow="#d9eef7", draw=skyline_redmond),
+    dict(key="stockholm", name="STOCKHOLM", sub="SWEDEN",
+         top="#0d2440", bot="#7aa8cd", dark="#0a1a2e", mid="#2c5479", light="#f2f9ff",
+         glow="#cfe6f7", draw=skyline_stockholm),
     dict(key="zurich", name="ZURICH", sub="SWITZERLAND",
          top="#0a3350", bot="#7fc0e8", dark="#0b2033", mid="#2d5f85", light="#f3fbff",
          glow="#bfe6ff", draw=skyline_zurich),

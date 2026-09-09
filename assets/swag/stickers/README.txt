@@ -4,6 +4,12 @@ Circular die-cut stickers, 1200x1200 transparent PNG, one per tour city
 plus an "Online" badge for remote attendees.
 Each shows a city skyline, the MicrosoftUniversity wordmark and the city name.
 
+  sticker-amsterdam.png  Canal houses, the Westerkerk, a bridge and a bicycle
+  sticker-berlin.png     Brandenburger Tor, Berliner Dom, Fernsehturm
+  sticker-brussels.png   The Atomium and the Grand-Place town hall spire
+  sticker-copenhagen.png Nyhavn, Borsen's twisted spire, Rundetaarn, Frederik's dome
+  sticker-london.png     London Eye, Big Ben, the Shard, St Paul's, the Gherkin
+  sticker-stockholm.png  Stadshuset with the three crowns, Gamla Stan, Riddarholmen
   sticker-athens.png     Acropolis with the Parthenon, Lycabettus hill
   sticker-bergen.png     Bryggen wharf houses, Floyen funicular, fjord ship
   sticker-eindhoven.png  Evoluon, Philips Lichttoren, Strijp-S sheds
