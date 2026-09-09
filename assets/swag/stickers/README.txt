@@ -11,6 +11,7 @@ Each shows a city skyline, the MicrosoftUniversity wordmark and the city name.
   sticker-orlando.png    Castle, big wheel, palms, rocket launch
   sticker-eindhoven.png  Evoluon, Philips Lichttoren, Strijp-S sheds
   sticker-bergen.png     Bryggen wharf houses, Floyen funicular, fjord ship
+  sticker-redmond.png    Microsoft campus, evergreens, Mount Rainier
   sticker-online.png     ONLINE / THE INTERNET - server racks, cloud, Wi-Fi mast
                          (for attendees who joined a session remotely)
 

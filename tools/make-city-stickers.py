@@ -413,6 +413,61 @@ def skyline_online(d, ground, u, dark, mid, light):
     d.line([(sx - 1 * u, sy - 4 * u), (sx + 3 * u, sy - 10 * u)], fill=dark, width=int(u * 0.5))
 
 
+
+def fir(d, x, base, h, u, col):
+    """A Douglas fir: trunk plus three stacked tiers."""
+    d.rectangle([x - 0.9 * u, base - h * 0.16, x + 0.9 * u, base], fill=col)
+    for i, (wf, yf, hf) in enumerate([(1.0, 0.14, 0.40), (0.78, 0.42, 0.36), (0.55, 0.68, 0.32)]):
+        w = h * 0.34 * wf
+        top = base - h * (yf + hf)
+        bot = base - h * yf
+        d.polygon([(x - w, bot), (x + w, bot), (x, top)], fill=col)
+
+
+def skyline_redmond(d, ground, u, dark, mid, light):
+    """The Microsoft campus in the evergreens, with Rainier on the horizon."""
+    # Mount Rainier — broad shoulders, rounded summit
+    d.polygon([(38 * u, ground), (56 * u, ground - 30 * u), (66 * u, ground - 48 * u),
+               (72 * u, ground - 52 * u), (79 * u, ground - 46 * u), (90 * u, ground - 26 * u),
+               (106 * u, ground)], fill=mid)
+    d.polygon([(66 * u, ground - 48 * u), (72 * u, ground - 52 * u), (79 * u, ground - 46 * u),
+               (76 * u, ground - 41 * u), (73 * u, ground - 44 * u), (70 * u, ground - 40 * u),
+               (67 * u, ground - 43 * u)], fill=light)
+    # foothills
+    d.polygon([(0, ground), (14 * u, ground - 20 * u), (34 * u, ground - 7 * u),
+               (48 * u, ground - 15 * u), (60 * u, ground)], fill=mid)
+
+    # evergreens get their own colour so they read against the buildings
+    fir_far = rgb("#2f6b63")
+    fir_near = rgb("#123f38")
+
+    # a treeline in the middle distance
+    for x in range(0, 104, 5):
+        fir(d, x * u, ground - 1 * u, 14 * u, u, fir_far)
+
+    # campus buildings — low and wide, glass grids
+    for x, w, h in [(9, 18, 17), (31, 14, 23), (48, 18, 15), (73, 11, 25)]:
+        tower(d, x * u, w * u, h * u, ground, dark)
+        windows(d, x * u, w * u, h * u, ground, light, cols=4, rows=5)
+    # angled glass atrium linking the middle blocks
+    d.polygon([(45 * u, ground), (46.5 * u, ground - 19 * u), (51 * u, ground - 19 * u),
+               (51 * u, ground)], fill=dark)
+    d.rectangle([47.6 * u, ground - 17 * u, 50 * u, ground - 7 * u], fill=light)
+
+    # the campus sign out front, clear of everything
+    sx = 62 * u
+    d.rectangle([sx + 3.4 * u, ground - 4 * u, sx + 5 * u, ground], fill=dark)
+    d.rectangle([sx, ground - 14 * u, sx + 8.4 * u, ground - 4 * u], fill=dark)
+    q, g = 2.4 * u, 0.5 * u
+    ox, oy = sx + (8.4 * u - (2 * q + g)) / 2, ground - 13 * u
+    for col, (dx, dy) in zip(MS_COLORS, [(0, 0), (q + g, 0), (0, q + g), (q + g, q + g)]):
+        d.rectangle([ox + dx, oy + dy, ox + dx + q, oy + dy + q], fill=rgb(col))
+
+    # big evergreens framing the badge, in front of the campus
+    for x, h in [(1, 34), (5.5, 26), (27, 21), (44, 18), (58, 23), (86, 36), (93, 27), (99, 31)]:
+        fir(d, x * u, ground, h * u, u, fir_near)
+
+
 CITIES = [
     dict(key="oslo", name="OSLO", sub="NORWAY",
          top="#08203f", bot="#2b6f9e", dark="#071726", mid="#123a5c", light="#eaf4ff",
@@ -435,6 +490,9 @@ CITIES = [
     dict(key="bergen", name="BERGEN", sub="NORWAY",
          top="#0b2c40", bot="#7fb6cd", dark="#0a1f2e", mid="#265a75", light="#f2fbff",
          glow="#cfeaf7", draw=skyline_bergen),
+    dict(key="redmond", name="REDMOND", sub="WASHINGTON",
+         top="#12314a", bot="#9ec9d8", dark="#0e2233", mid="#2f6b86", light="#f4fbff",
+         glow="#d9eef7", draw=skyline_redmond),
     dict(key="online", name="ONLINE", sub="THE INTERNET",
          top="#04142b", bot="#0a6fb8", dark="#071a2c", mid="#1f6ea8", light="#eaf7ff",
          glow="#7fdbff", draw=skyline_online),
