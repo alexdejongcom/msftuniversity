@@ -8,6 +8,8 @@ Each shows a city skyline, the MicrosoftUniversity wordmark and the city name.
   sticker-athens.png     Acropolis with the Parthenon, Lycabettus hill
   sticker-zurich.png     Grossmunster, Fraumunster, St. Peter, Alps, lake
   sticker-orlando.png    Castle, big wheel, palms, rocket launch
+  sticker-eindhoven.png  Evoluon, Philips Lichttoren, Strijp-S sheds
+  sticker-bergen.png     Bryggen wharf houses, Floyen funicular, fjord ship
 
 Regenerate (also to add a new city) with:
   python3 tools/make-city-stickers.py

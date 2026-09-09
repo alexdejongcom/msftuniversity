@@ -3,7 +3,7 @@
 """
 Generate the Microsoft University city stickers.
 
-Five circular die-cut stickers, each with a city skyline silhouette, the
+Circular die-cut stickers, each with a city skyline silhouette, the
 MicrosoftUniversity wordmark and the city name. Transparent PNG, 1200x1200.
 
 Run:  python3 tools/make-city-stickers.py
@@ -268,6 +268,85 @@ def skyline_orlando(d, ground, u, dark, mid, light):
                    rx + 3 * u + rr, ground - 30 * u + k * 4 * u + rr], fill=mid)
 
 
+
+def skyline_eindhoven(d, ground, u, dark, mid, light):
+    """Evoluon, the Philips Lichttoren and the Strijp-S skyline."""
+    # Philips Lichttoren — brick tower with the lamp on top
+    lx = 6 * u
+    tower(d, lx, 13 * u, 46 * u, ground, dark)
+    windows(d, lx, 13 * u, 46 * u, ground, light, cols=4, rows=7)
+    d.rectangle([lx + 4 * u, ground - 52 * u, lx + 9 * u, ground - 46 * u], fill=dark)
+    d.ellipse([lx + 3 * u, ground - 60 * u, lx + 10 * u, ground - 51 * u], fill=light)
+    # Klokgebouw / Strijp-S sheds
+    d.rectangle([22 * u, ground - 16 * u, 40 * u, ground], fill=dark)
+    for i in range(4):  # saw-tooth factory roof
+        x = 22 * u + i * 4.5 * u
+        d.polygon([(x, ground - 16 * u), (x + 4.5 * u, ground - 16 * u),
+                   (x + 4.5 * u, ground - 21 * u)], fill=dark)
+    d.rectangle([29 * u, ground - 26 * u, 33 * u, ground - 16 * u], fill=dark)
+    d.ellipse([28.5 * u, ground - 30 * u, 33.5 * u, ground - 25 * u], fill=light)   # clock
+    # Evoluon — the flying saucer
+    ecx, ecy = 62 * u, ground - 30 * u
+    d.polygon([(ecx - 4 * u, ground), (ecx - 2 * u, ecy + 2 * u),
+               (ecx + 2 * u, ecy + 2 * u), (ecx + 4 * u, ground)], fill=dark)
+    for lx2 in (-13, -6.5, 0, 6.5, 13):   # concrete legs
+        d.line([(ecx + lx2 * u, ecy + 3 * u), (ecx + lx2 * u * 1.35, ground)],
+               fill=dark, width=int(u * 1.3))
+    d.ellipse([ecx - 24 * u, ecy - 4 * u, ecx + 24 * u, ecy + 7 * u], fill=dark)     # rim
+    d.pieslice([ecx - 17 * u, ecy - 17 * u, ecx + 17 * u, ecy + 6 * u], 180, 360, fill=dark)
+    d.pieslice([ecx - 17 * u, ecy - 17 * u, ecx + 17 * u, ecy + 6 * u], 180, 360,
+               outline=light, width=int(u * 0.45))
+    for i in range(7):   # lit windows around the rim
+        wx2 = ecx - 19 * u + i * 6.3 * u
+        d.ellipse([wx2 - 1.5 * u, ecy - 0.6 * u, wx2 + 1.5 * u, ecy + 2.4 * u], fill=light)
+    # Admirant / high-rise blocks on the right
+    for x, h, w in [(88, 30, 8), (96, 22, 6)]:
+        tower(d, x * u, w * u, h * u, ground, dark)
+        windows(d, x * u, w * u, h * u, ground, light, cols=3, rows=5)
+
+
+def skyline_bergen(d, ground, u, dark, mid, light):
+    """Bryggen's gabled wharf under the seven mountains."""
+    # Floyen and Ulriken behind
+    d.polygon([(0, ground), (18 * u, ground - 40 * u), (40 * u, ground - 12 * u),
+               (58 * u, ground - 34 * u), (78 * u, ground - 10 * u), (100 * u, ground)],
+              fill=mid)
+    # funicular line up Floyen
+    d.line([(18 * u, ground - 40 * u), (30 * u, ground - 18 * u)], fill=light, width=int(u * 0.4))
+    d.rectangle([26 * u, ground - 25 * u, 29 * u, ground - 22 * u], fill=light)
+    # Bryggen — the row of colourful gabled Hanseatic houses
+    facades = ["#c94f3d", "#d9a441", "#e8e2d0", "#7a9e4f", "#b8563f",
+               "#e0c060", "#efe8d8", "#6f8fa8"]
+    x = 12 * u
+    for i, col in enumerate(facades):
+        w = 9.4 * u
+        h = (24 + (i % 3) * 3) * u
+        d.rectangle([x, ground - h, x + w, ground], fill=rgb(col))
+        d.polygon([(x - 0.8 * u, ground - h), (x + w + 0.8 * u, ground - h),
+                   (x + w / 2, ground - h - 9 * u)], fill=rgb(col))
+        # dark window grid
+        for r in range(3):
+            top_y = ground - h + 4 * u + r * 6 * u
+            bot_y = top_y + 4.5 * u
+            if bot_y > ground - 9 * u:
+                break
+            for c2 in range(2):
+                d.rectangle([x + 1.9 * u + c2 * 4.2 * u, top_y,
+                             x + 4.4 * u + c2 * 4.2 * u, bot_y], fill=dark)
+        d.rectangle([x + 3.4 * u, ground - 7 * u, x + 6 * u, ground], fill=dark)  # door
+        x += w + 1.2 * u
+    # quay + a sailing ship on the Vagen
+    d.rectangle([0, ground - 3 * u, 100 * u, ground], fill=dark)
+    sx = 90 * u
+    d.polygon([(sx - 9 * u, ground - 3 * u), (sx + 9 * u, ground - 3 * u),
+               (sx + 6 * u, ground - 8 * u), (sx - 6 * u, ground - 8 * u)], fill=dark)
+    d.line([(sx, ground - 8 * u), (sx, ground - 34 * u)], fill=dark, width=int(u * 0.7))
+    d.polygon([(sx + 1 * u, ground - 32 * u), (sx + 1 * u, ground - 10 * u),
+               (sx + 11 * u, ground - 10 * u)], fill=light)
+    d.polygon([(sx - 1 * u, ground - 28 * u), (sx - 1 * u, ground - 10 * u),
+               (sx - 8 * u, ground - 10 * u)], fill=light)
+
+
 CITIES = [
     dict(key="oslo", name="OSLO", sub="NORWAY",
          top="#08203f", bot="#2b6f9e", dark="#071726", mid="#123a5c", light="#eaf4ff",
@@ -284,6 +363,12 @@ CITIES = [
     dict(key="orlando", name="ORLANDO", sub="FLORIDA",
          top="#2a1747", bot="#ff7a4d", dark="#1a0f2e", mid="#4a2a63", light="#fff1e6",
          glow="#ffd48a", draw=skyline_orlando),
+    dict(key="eindhoven", name="EINDHOVEN", sub="NETHERLANDS",
+         top="#101c3d", bot="#e8843c", dark="#0d1526", mid="#26365e", light="#fff4dc",
+         glow="#ffc46b", draw=skyline_eindhoven),
+    dict(key="bergen", name="BERGEN", sub="NORWAY",
+         top="#0b2c40", bot="#7fb6cd", dark="#0a1f2e", mid="#265a75", light="#f2fbff",
+         glow="#cfeaf7", draw=skyline_bergen),
 ]
 
 
