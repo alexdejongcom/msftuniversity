@@ -551,3 +551,10 @@ h1, h2, h3, h4 { font-family: var(--font-display); }
   box-shadow: var(--shadow-sm, 0 1px 2px rgba(0,0,0,.06));
 }
 @media (max-width: 640px) { .tour-logo { display: none; } }
+
+/* YouTube channel avatars in the Video Lectures list */
+.chan-logo {
+  width: 22px; height: 22px; border-radius: 50%;
+  object-fit: cover; vertical-align: -6px; margin-right: 9px;
+  border: 1px solid var(--border); background: #fff;
+}
