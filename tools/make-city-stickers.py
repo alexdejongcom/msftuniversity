@@ -468,6 +468,63 @@ def skyline_redmond(d, ground, u, dark, mid, light):
         fir(d, x * u, ground, h * u, u, fir_near)
 
 
+
+def skyline_johannesburg(d, ground, u, dark, mid, light):
+    """Hillbrow Tower, Ponte City, the Carlton Centre and the Mandela Bridge."""
+    # gold-mine dumps rolling behind the city
+    d.polygon([(0, ground), (10 * u, ground - 15 * u), (24 * u, ground - 11 * u),
+               (36 * u, ground - 18 * u), (52 * u, ground - 9 * u), (64 * u, ground)], fill=mid)
+    d.polygon([(58 * u, ground), (72 * u, ground - 13 * u), (88 * u, ground - 8 * u),
+               (100 * u, ground - 14 * u), (104 * u, ground)], fill=mid)
+
+    # acacia on the left — flat-topped highveld tree
+    ax = 8 * u
+    d.rectangle([ax - 1.1 * u, ground - 17 * u, ax + 1.1 * u, ground], fill=dark)
+    d.line([(ax, ground - 15 * u), (ax - 6 * u, ground - 21 * u)], fill=dark, width=int(u * 0.8))
+    d.line([(ax, ground - 15 * u), (ax + 6 * u, ground - 20 * u)], fill=dark, width=int(u * 0.8))
+    d.ellipse([ax - 12 * u, ground - 27 * u, ax + 12 * u, ground - 19 * u], fill=dark)
+    d.ellipse([ax - 7 * u, ground - 30 * u, ax + 8 * u, ground - 23 * u], fill=dark)
+
+    # Carlton Centre — the big slab
+    tower(d, 24 * u, 13 * u, 44 * u, ground, dark)
+    windows(d, 24 * u, 13 * u, 44 * u, ground, light, cols=4, rows=7)
+
+    # Ponte City — the cylinder with its rounded crown
+    px = 40 * u
+    tower(d, px, 11 * u, 38 * u, ground, dark, roof="dome")
+    windows(d, px, 11 * u, 38 * u, ground, light, cols=3, rows=6)
+    d.rectangle([px + 3 * u, ground - 46 * u, px + 8 * u, ground - 42 * u], fill=mid)
+
+    # Hillbrow Tower — slim shaft, observation collar, mast
+    hx = 58 * u
+    d.polygon([(hx - 3.6 * u, ground), (hx - 2.0 * u, ground - 44 * u),
+               (hx + 2.0 * u, ground - 44 * u), (hx + 3.6 * u, ground)], fill=dark)
+    d.rectangle([hx - 6.5 * u, ground - 52 * u, hx + 6.5 * u, ground - 44 * u], fill=dark)
+    d.ellipse([hx - 6.5 * u, ground - 55 * u, hx + 6.5 * u, ground - 49 * u], fill=dark)
+    for k in range(4):
+        wx2 = hx - 4.6 * u + k * 3.0 * u
+        d.rectangle([wx2, ground - 50 * u, wx2 + 1.8 * u, ground - 47 * u], fill=light)
+    d.rectangle([hx - 1.1 * u, ground - 66 * u, hx + 1.1 * u, ground - 52 * u], fill=dark)
+    d.ellipse([hx - 2.2 * u, ground - 69 * u, hx + 2.2 * u, ground - 64.6 * u], fill=light)
+
+    # a couple of Sandton blocks
+    for x, h, w in [(68, 26, 8), (78, 20, 7)]:
+        tower(d, x * u, w * u, h * u, ground, dark)
+        windows(d, x * u, w * u, h * u, ground, light, cols=3, rows=4)
+
+    # Nelson Mandela Bridge, cable-stayed, on the right
+    deck = ground - 7 * u
+    d.rectangle([70 * u, deck, 104 * u, deck + 2.2 * u], fill=dark)
+    for pxx, ph in [(80, 30), (96, 26)]:
+        top = ground - ph * u
+        d.polygon([(pxx * u - 2.4 * u, deck), (pxx * u - 0.7 * u, top),
+                   (pxx * u + 0.7 * u, top), (pxx * u + 2.4 * u, deck)], fill=dark)
+        for k in range(4):
+            off = (k + 1) * 4.2 * u
+            d.line([(pxx * u, top + 1.5 * u), (pxx * u - off, deck)], fill=dark, width=int(u * 0.32))
+            d.line([(pxx * u, top + 1.5 * u), (pxx * u + off, deck)], fill=dark, width=int(u * 0.32))
+
+
 CITIES = [
     dict(key="oslo", name="OSLO", sub="NORWAY",
          top="#08203f", bot="#2b6f9e", dark="#071726", mid="#123a5c", light="#eaf4ff",
@@ -490,6 +547,9 @@ CITIES = [
     dict(key="bergen", name="BERGEN", sub="NORWAY",
          top="#0b2c40", bot="#7fb6cd", dark="#0a1f2e", mid="#265a75", light="#f2fbff",
          glow="#cfeaf7", draw=skyline_bergen),
+    dict(key="johannesburg", name="JOHANNESBURG", sub="SOUTH AFRICA",
+         top="#251239", bot="#ef8f3c", dark="#170c23", mid="#4d2c50", light="#fff3e2",
+         glow="#ffc978", draw=skyline_johannesburg),
     dict(key="redmond", name="REDMOND", sub="WASHINGTON",
          top="#12314a", bot="#9ec9d8", dark="#0e2233", mid="#2f6b86", light="#f4fbff",
          glow="#d9eef7", draw=skyline_redmond),
