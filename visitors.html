@@ -7,6 +7,56 @@
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  /* ---- headline stats ---- */
+  .geo-stats { display:flex; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
+  .geo-stat {
+    flex:1 1 180px; background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+    padding:16px 20px; box-shadow:var(--shadow-sm);
+  }
+  .geo-stat strong {
+    display:block; font-family:var(--font-display); font-size:30px; font-weight:600;
+    line-height:1.15; color:var(--blue); font-variant-numeric:tabular-nums;
+  }
+  .geo-stat span { font-size:13px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+
+  /* ---- map frame ---- */
+  #geo-map-wrap {
+    position:relative; border:1px solid var(--border); border-radius:var(--radius);
+    background:linear-gradient(180deg,#fbfdff 0%,#f4f9fd 100%); padding:10px 10px 0;
+    box-shadow:var(--shadow-sm); overflow:hidden;
+  }
+  #geo-map { width:100%; height:auto; display:block; cursor:grab; touch-action:none; }
+  #geo-map:active { cursor:grabbing; }
+  .geo-country { transition:fill .15s ease; }
+  .geo-country.hit { cursor:pointer; }
+
+  /* ---- tooltip ---- */
+  .geo-tip {
+    position:absolute; pointer-events:none; opacity:0; transform:translate(-50%,-135%);
+    background:rgba(23,23,23,.94); color:#fff; padding:7px 11px; border-radius:6px;
+    font-size:13px; line-height:1.35; white-space:nowrap; box-shadow:var(--shadow-md);
+    transition:opacity .12s ease; z-index:5;
+  }
+  .geo-tip strong { display:block; font-weight:600; font-size:13.5px; }
+  .geo-tip em { font-style:normal; color:#8ecbff; }
+  .geo-tip.show { opacity:1; }
+
+  /* ---- legend + hint ---- */
+  .geo-legend {
+    display:flex; align-items:center; gap:9px; flex-wrap:wrap;
+    padding:10px 6px 12px; font-size:12.5px; color:var(--ink-faint);
+  }
+  .geo-ramp { width:150px; height:9px; border-radius:5px; border:1px solid rgba(0,0,0,.08); }
+  .geo-legend-none { display:flex; align-items:center; gap:6px; margin-left:auto; }
+  .geo-legend-none i { width:13px; height:9px; border-radius:3px; background:#dfe4e8; border:1px solid rgba(0,0,0,.08); }
+  .geo-hint {
+    position:absolute; right:14px; top:14px; font-size:11.5px; color:var(--ink-faint);
+    background:rgba(255,255,255,.82); border:1px solid var(--border); border-radius:20px;
+    padding:4px 12px; pointer-events:none; backdrop-filter:blur(3px);
+  }
+  @media (max-width:640px) { .geo-hint { display:none; } .geo-stat strong { font-size:24px; } }
+</style>
 <script>
 /* Secret page — only reachable via the terminal's Get-Visitors cmdlet.
    Client-side gate (obscurity, not security — the data is anonymous
@@ -39,8 +89,22 @@ if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("ind
       <div class="eyebrow">Live data</div>
       <h2 class="section-title">The world map</h2>
     </div>
-    <div id="geo-map-wrap" style="border:1px solid var(--border);border-radius:8px;background:#fff;padding:10px">
-      <svg id="geo-map" viewBox="0 0 1000 520" style="width:100%;height:auto;display:block"></svg>
+    <div class="geo-stats">
+      <div class="geo-stat"><strong id="geo-total">—</strong><span>visitors located</span></div>
+      <div class="geo-stat"><strong id="geo-countries">—</strong><span>countries</span></div>
+      <div class="geo-stat"><strong id="geo-top">—</strong><span>most visitors</span></div>
+    </div>
+
+    <div id="geo-map-wrap">
+      <svg id="geo-map" viewBox="0 0 1000 540" role="img" aria-label="World map shaded by visitor count"></svg>
+      <div id="geo-tip" class="geo-tip"></div>
+      <div class="geo-legend">
+        <span class="geo-legend-label">fewer</span>
+        <span id="geo-ramp" class="geo-ramp"></span>
+        <span class="geo-legend-label">more</span>
+        <span class="geo-legend-none"><i></i>no visitors yet</span>
+      </div>
+      <div class="geo-hint">Scroll to zoom · drag to pan · double-click to reset</div>
     </div>
     <p id="geo-status" style="color:var(--ink-faint);margin-top:12px">Loading visitor data…</p>
   </div>
@@ -85,19 +149,32 @@ if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("ind
   var status = document.getElementById("geo-status");
   var tbody = document.querySelector("#geo-table tbody");
 
-  /* ISO2 → ISO3, to match features in the world GeoJSON (ids are ISO3). */
-  var ISO3 = {AD:"AND",AE:"ARE",AF:"AFG",AL:"ALB",AM:"ARM",AO:"AGO",AR:"ARG",AT:"AUT",AU:"AUS",AW:"ABW",AZ:"AZE",
-  BA:"BIH",BB:"BRB",BD:"BGD",BE:"BEL",BG:"BGR",BH:"BHR",BM:"BMU",BN:"BRN",BO:"BOL",BR:"BRA",BT:"BTN",BW:"BWA",BY:"BLR",BZ:"BLZ",
-  CA:"CAN",CD:"COD",CH:"CHE",CI:"CIV",CL:"CHL",CM:"CMR",CN:"CHN",CO:"COL",CR:"CRI",CU:"CUB",CV:"CPV",CW:"CUW",CY:"CYP",CZ:"CZE",
-  DE:"DEU",DK:"DNK",DO:"DOM",DZ:"DZA",EC:"ECU",EE:"EST",EG:"EGY",ES:"ESP",ET:"ETH",FI:"FIN",FJ:"FJI",FO:"FRO",FR:"FRA",
-  GB:"GBR",GE:"GEO",GG:"GGY",GH:"GHA",GI:"GIB",GR:"GRC",GT:"GTM",GU:"GUM",GY:"GUY",HK:"HKG",HN:"HND",HR:"HRV",HT:"HTI",HU:"HUN",
-  ID:"IDN",IE:"IRL",IL:"ISR",IM:"IMN",IN:"IND",IQ:"IRQ",IR:"IRN",IS:"ISL",IT:"ITA",JE:"JEY",JM:"JAM",JO:"JOR",JP:"JPN",
-  KE:"KEN",KG:"KGZ",KH:"KHM",KP:"PRK",KR:"KOR",KW:"KWT",KZ:"KAZ",LA:"LAO",LB:"LBN",LK:"LKA",LT:"LTU",LU:"LUX",LV:"LVA",LY:"LBY",
-  MA:"MAR",MC:"MCO",MD:"MDA",ME:"MNE",MG:"MDG",MK:"MKD",ML:"MLI",MM:"MMR",MN:"MNG",MO:"MAC",MT:"MLT",MU:"MUS",MX:"MEX",MY:"MYS",MZ:"MOZ",
-  NA:"NAM",NC:"NCL",NG:"NGA",NI:"NIC",NL:"NLD",NO:"NOR",NP:"NPL",NZ:"NZL",OM:"OMN",PA:"PAN",PE:"PER",PF:"PYF",PG:"PNG",PH:"PHL",
-  PK:"PAK",PL:"POL",PR:"PRI",PT:"PRT",PY:"PRY",QA:"QAT",RO:"ROU",RS:"SRB",RU:"RUS",SA:"SAU",SD:"SDN",SE:"SWE",SG:"SGP",SI:"SVN",
-  SK:"SVK",SN:"SEN",SR:"SUR",SV:"SLV",SY:"SYR",TH:"THA",TJ:"TJK",TM:"TKM",TN:"TUN",TO:"TON",TR:"TUR",TT:"TTO",TW:"TWN",TZ:"TZA",
-  UA:"UKR",UG:"UGA",US:"USA",UY:"URY",UZ:"UZB",VA:"VAT",VE:"VEN",VN:"VNM",WS:"WSM",YE:"YEM",ZA:"ZAF",ZM:"ZMB",ZW:"ZWE"};
+  /* ISO2 → ISO 3166-1 numeric, which is how world-atlas ids the features. */
+  var ISO_N = {
+  AD:"020",AE:"784",AF:"004",AL:"008",AM:"051",AO:"024",AR:"032",AT:"040",AU:"036",AW:"533",AZ:"031",
+  BA:"070",BB:"052",BD:"050",BE:"056",BG:"100",BH:"048",BM:"060",BN:"096",BO:"068",BR:"076",BT:"064",
+  BW:"072",BY:"112",BZ:"084",CA:"124",CD:"180",CH:"756",CI:"384",CL:"152",CM:"120",CN:"156",CO:"170",
+  CR:"188",CU:"192",CV:"132",CW:"531",CY:"196",CZ:"203",DE:"276",DK:"208",DO:"214",DZ:"012",EC:"218",
+  EE:"233",EG:"818",ES:"724",ET:"231",FI:"246",FJ:"242",FO:"234",FR:"250",GB:"826",GE:"268",GG:"831",
+  GH:"288",GI:"292",GR:"300",GT:"320",GU:"316",GY:"328",HK:"344",HN:"340",HR:"191",HT:"332",HU:"348",
+  ID:"360",IE:"372",IL:"376",IM:"833",IN:"356",IQ:"368",IR:"364",IS:"352",IT:"380",JE:"832",JM:"388",
+  JO:"400",JP:"392",KE:"404",KG:"417",KH:"116",KP:"408",KR:"410",KW:"414",KZ:"398",LA:"418",LB:"422",
+  LK:"144",LT:"440",LU:"442",LV:"428",LY:"434",MA:"504",MC:"492",MD:"498",ME:"499",MG:"450",MK:"807",
+  ML:"466",MM:"104",MN:"496",MO:"446",MT:"470",MU:"480",MX:"484",MY:"458",MZ:"508",NA:"516",NC:"540",
+  NG:"566",NI:"558",NL:"528",NO:"578",NP:"524",NZ:"554",OM:"512",PA:"591",PE:"604",PF:"258",PG:"598",
+  PH:"608",PK:"586",PL:"616",PR:"630",PT:"620",PY:"600",QA:"634",RO:"642",RS:"688",RU:"643",SA:"682",
+  SD:"729",SE:"752",SG:"702",SI:"705",SK:"703",SN:"686",SR:"740",SV:"222",SY:"760",TH:"764",TJ:"762",
+  TM:"795",TN:"788",TO:"776",TR:"792",TT:"780",TW:"158",TZ:"834",UA:"804",UG:"800",US:"840",UY:"858",
+  UZ:"860",VA:"336",VE:"862",VN:"704",WS:"882",YE:"887",ZA:"710",ZM:"894",ZW:"716"
+  };
+
+  /* Countries too small to draw at 110m resolution get a dot at their centroid
+     instead, so Singapore and Malta are not invisible. [lon, lat] */
+  var DOTS = {"AD":[1.5,42.5],"AW":[-69.97,12.5],"BB":[-59.53,13.17],"BH":[50.55,26],"BM":[-64.75,32.33],
+  "CV":[-24,16],"CW":[-68.93,12.12],"FO":[-7,62],"GG":[-2.58,49.47],"GI":[-5.35,36.13],"GU":[144.78,13.47],
+  "HK":[114.19,22.27],"IM":[-4.5,54.25],"JE":[-2.17,49.25],"MC":[7.4,43.73],"MO":[113.55,22.17],
+  "MT":[14.58,35.83],"MU":[57.55,-20.28],"PF":[-140,-15],"SG":[103.8,1.37],"TO":[-175,-20],
+  "VA":[12.45,41.9],"WS":[-172.33,-13.58]};
 
   function flag(iso2) {
     return iso2.replace(/./g, function (c) { return String.fromCodePoint(127397 + c.charCodeAt(0)); });
@@ -110,7 +187,7 @@ if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("ind
 
   Promise.all([
     fetch("/api/geo").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
-    fetch("https://cdn.jsdelivr.net/gh/johan/world.geo.json/countries.geo.json").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+    fetch("assets/geo/world-110m.geo.json").then(function (r) { if (!r.ok) throw 0; return r.json(); }),
   ]).then(function (res) {
     var data = res[0], world = res[1];
     if (!data.length) {
@@ -118,34 +195,134 @@ if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("ind
       return;
     }
     var total = data.reduce(function (s, d) { return s + d.count; }, 0);
-    var byIso3 = {};
-    data.forEach(function (d) { if (ISO3[d.country]) byIso3[ISO3[d.country]] = d.count; });
-
-    /* ---- map ---- */
-    var svg = d3.select("#geo-map");
-    var projection = d3.geoNaturalEarth1().fitSize([1000, 520], { type: "Sphere" });
-    var path = d3.geoPath(projection);
     var max = d3.max(data, function (d) { return d.count; });
-    var color = d3.scaleSequential(d3.interpolateBlues).domain([0, Math.log(max + 1)]);
 
-    svg.append("path")
-      .attr("d", path({ type: "Sphere" }))
-      .attr("fill", "#eaf3fb").attr("stroke", "none");
+    /* count + ISO2 keyed by the numeric id world-atlas uses */
+    var byNum = {}, iso2ByNum = {};
+    data.forEach(function (d) {
+      var n = ISO_N[d.country];
+      if (n) { byNum[n] = d.count; iso2ByNum[n] = d.country; }
+    });
 
-    svg.append("g").selectAll("path")
+    /* ---- geometry ---- */
+    var W = 1000, H = 540;
+    var svg = d3.select("#geo-map");
+    /* Robinson-ish equal-look projection, fitted to the *whole* sphere so
+       Antarctica and the far north are both inside the frame. */
+    var projection = d3.geoNaturalEarth1().fitExtent([[8, 8], [W - 8, H - 8]], { type: "Sphere" });
+    var path = d3.geoPath(projection);
+
+    /* Microsoft-blue ramp. Five stops rather than two: a straight light→dark
+       interpolation bunches everything together at the dark end, so the busiest
+       three countries end up the same colour. */
+    var ramp = d3.piecewise(d3.interpolateHcl, ["#cfe7f9", "#8dc0e6", "#3f8fca", "#1266a8", "#003d6b"]);
+    var scale = d3.scaleLinear().domain([0, Math.log(max + 1)]).range([0.12, 1]).clamp(true);
+    var color = function (c) { return ramp(scale(Math.log(c + 1))); };
+    var NO_DATA = "#dfe4e8";
+
+    /* ---- defs: ocean gradient + soft land shadow ---- */
+    var defs = svg.append("defs");
+    var og = defs.append("radialGradient").attr("id", "geo-ocean").attr("cx", "42%").attr("cy", "34%").attr("r", "78%");
+    og.append("stop").attr("offset", "0%").attr("stop-color", "#f4fafe");
+    og.append("stop").attr("offset", "100%").attr("stop-color", "#e2eefa");
+    var lg = defs.append("linearGradient").attr("id", "geo-ramp-grad");
+    d3.range(0, 1.0001, 0.1).forEach(function (t) {
+      lg.append("stop").attr("offset", (t * 100) + "%").attr("stop-color", ramp(0.12 + t * 0.88));
+    });
+    var f = defs.append("filter").attr("id", "geo-shadow").attr("x", "-4%").attr("y", "-4%")
+      .attr("width", "108%").attr("height", "108%");
+    f.append("feDropShadow").attr("dx", 0).attr("dy", 1.2).attr("stdDeviation", 1.6)
+      .attr("flood-color", "#0a2f4d").attr("flood-opacity", 0.16);
+
+    var root = svg.append("g");   /* everything zoomable lives here */
+
+    /* ocean */
+    root.append("path").attr("d", path({ type: "Sphere" })).attr("fill", "url(#geo-ocean)");
+    /* graticule — quiet, but it makes the projection read as a globe */
+    root.append("path").attr("d", path(d3.geoGraticule().step([20, 20])()))
+      .attr("fill", "none").attr("stroke", "#9fc4e2").attr("stroke-width", 0.4).attr("stroke-opacity", 0.5);
+    /* sphere outline */
+    root.append("path").attr("d", path({ type: "Sphere" }))
+      .attr("fill", "none").attr("stroke", "#b7d3e8").attr("stroke-width", 1);
+
+    /* ---- countries ----
+       The drop shadow goes on ONE merged silhouette underneath rather than on
+       the group of 177 paths, so zooming doesn't re-run the filter per country. */
+    root.append("path")
+      .attr("d", path(world))
+      .attr("fill", "#fff")
+      .attr("filter", "url(#geo-shadow)");
+
+    var land = root.append("g");
+    var countries = land.selectAll("path")
       .data(world.features)
       .join("path")
+      .attr("class", function (d) { return "geo-country" + (byNum[d.id] ? " hit" : ""); })
       .attr("d", path)
-      .attr("fill", function (f) {
-        var c = byIso3[f.id];
-        return c ? color(Math.log(c + 1)) : "#dcdcdc";
+      .attr("fill", function (d) { return byNum[d.id] ? color(byNum[d.id]) : NO_DATA; })
+      .attr("stroke", "#fff").attr("stroke-width", 0.45).attr("vector-effect", "non-scaling-stroke");
+
+    /* ---- dots for countries with no polygon at this resolution ---- */
+    var dotData = data.filter(function (d) { return DOTS[d.country]; });
+    var dots = root.append("g").selectAll("circle")
+      .data(dotData)
+      .join("circle")
+      .attr("class", "geo-country hit")
+      .attr("cx", function (d) { return projection(DOTS[d.country])[0]; })
+      .attr("cy", function (d) { return projection(DOTS[d.country])[1]; })
+      .attr("r", 4)
+      .attr("fill", function (d) { return color(d.count); })
+      .attr("stroke", "#fff").attr("stroke-width", 1.2).attr("vector-effect", "non-scaling-stroke");
+
+    /* ---- tooltip ---- */
+    var tip = document.getElementById("geo-tip");
+    var wrap = document.getElementById("geo-map-wrap");
+    function showTip(evt, name, count) {
+      tip.innerHTML = "";
+      var s = document.createElement("strong"); s.textContent = name; tip.appendChild(s);
+      var e = document.createElement("em");
+      e.textContent = count ? count.toLocaleString() + " visitor" + (count === 1 ? "" : "s") +
+        " · " + (100 * count / total).toFixed(1) + "%" : "no visitors yet";
+      tip.appendChild(e);
+      var r = wrap.getBoundingClientRect();
+      tip.style.left = (evt.clientX - r.left) + "px";
+      tip.style.top = (evt.clientY - r.top) + "px";
+      tip.classList.add("show");
+    }
+    function hideTip() { tip.classList.remove("show"); }
+
+    countries
+      .on("mousemove", function (evt, d) {
+        showTip(evt, (d.properties && d.properties.name) || d.id, byNum[d.id] || 0);
+        d3.select(this).attr("stroke", "#171717").attr("stroke-width", 1.1).raise();
       })
-      .attr("stroke", "#fff").attr("stroke-width", 0.5)
-      .append("title")
-      .text(function (f) {
-        var c = byIso3[f.id];
-        return (f.properties && f.properties.name || f.id) + ": " + (c ? c + " visitor" + (c === 1 ? "" : "s") : "no visitors yet");
+      .on("mouseleave", function () {
+        hideTip();
+        d3.select(this).attr("stroke", "#fff").attr("stroke-width", 0.45);
       });
+
+    dots
+      .on("mousemove", function (evt, d) {
+        showTip(evt, countryName(d.country), d.count);
+        d3.select(this).attr("r", 6).raise();
+      })
+      .on("mouseleave", function () { hideTip(); d3.select(this).attr("r", 4); });
+
+    /* ---- zoom / pan ---- */
+    var zoom = d3.zoom().scaleExtent([1, 8])
+      .translateExtent([[0, 0], [W, H]]).extent([[0, 0], [W, H]])
+      .on("zoom", function (evt) { root.attr("transform", evt.transform); hideTip(); });
+    svg.call(zoom).on("dblclick.zoom", null)
+      .on("dblclick", function () { svg.transition().duration(400).call(zoom.transform, d3.zoomIdentity); });
+
+    /* ---- legend + headline stats ---- */
+    document.getElementById("geo-ramp").style.background =
+      "linear-gradient(90deg," + d3.range(0, 1.0001, 0.1).map(function (t) {
+        return ramp(0.12 + t * 0.88);
+      }).join(",") + ")";
+    document.getElementById("geo-total").textContent = total.toLocaleString();
+    document.getElementById("geo-countries").textContent = data.length;
+    document.getElementById("geo-top").textContent = flag(data[0].country) + " " + countryName(data[0].country);
 
     /* ---- table ---- */
     data.forEach(function (d, i) {
@@ -176,8 +353,12 @@ if (sessionStorage.getItem("msftu-geo-key") !== "granted") location.replace("ind
       tbody.appendChild(tr);
     });
 
-    status.textContent = total.toLocaleString() + " located visitors across " + data.length +
-      " countries. Countries are shaded by visitor count (log scale); grey = no visitors yet.";
+    var dotted = dotData.length;
+    status.textContent = "Shaded by visitor count on a log scale, so one big country does not flatten " +
+      "everything else. Grey means no visitors yet." +
+      (dotted ? " " + (dotted === 1
+        ? "One place is too small to draw at this scale, so it is marked with a dot."
+        : dotted + " places are too small to draw at this scale, so they are marked with dots.") : "");
   }).catch(function () {
     status.textContent = "Could not load visitor data — the geo API may not be deployed yet.";
   });
