@@ -111,6 +111,14 @@ const EVENTS = [
     soldout: true,
   },
   {
+    date: "2026-09-15",
+    title: "Copilot Week: Day 1 — Getting Started with Copilot",
+    type: "Webinar",
+    city: "Online",
+    venue: "DSD Europe",
+    url: "https://www.dsdeurope.nl/webinars/webinar-week-dag-1-slim-starten-met-copilot",
+  },
+  {
     date: "2026-09-22",
     title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
     type: "Workshop",
