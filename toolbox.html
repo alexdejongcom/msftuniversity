@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trainer Toolbox — Microsoft University</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* Hidden page — only reachable via the terminal's Get-Toolbox cmdlet.
+   Client-side gate: obscurity, not security. Nothing secret lives here,
+   just links, but it keeps it off the site for attendees. */
+if (sessionStorage.getItem("msftu-toolbox-key") !== "granted") location.replace("index.html");
+</script>
+<style>
+  .tb-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:26px; }
+  .tb-search {
+    flex:1; min-width:240px; padding:11px 14px; font:inherit; font-size:15px;
+    border:1px solid var(--border); border-radius:var(--radius); outline:none; background:#fff;
+  }
+  .tb-search:focus { border-color:var(--blue); box-shadow:0 0 0 2px var(--blue-light); }
+  .tb-btn {
+    padding:11px 16px; font:inherit; font-size:14.5px; font-weight:600; cursor:pointer;
+    border:1px solid var(--border); border-radius:var(--radius); background:#fff; color:var(--ink-soft);
+  }
+  .tb-btn:hover { background:var(--bg-alt); }
+  .tb-btn.primary { background:var(--blue); border-color:var(--blue); color:#fff; }
+  .tb-btn.primary:hover { background:var(--blue-dark); }
+
+  .tb-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr)); gap:20px; align-items:start; }
+  .tb-group { padding:22px 24px; }
+  .tb-group:hover { transform:none; }   /* the site card lifts on hover; too jumpy for a dense link list */
+  .tb-group h3 { display:flex; align-items:center; gap:9px; font-family:var(--font-display); font-size:17px; margin-bottom:14px; }
+  .tb-group h3 svg { width:20px; height:20px; fill:var(--blue); flex:none; }
+  .tb-group h3 .tb-count { margin-left:auto; font-size:12px; font-weight:400; color:var(--ink-faint); }
+
+  .tb-list { list-style:none; }
+  .tb-item { display:flex; align-items:center; gap:10px; padding:7px 0; border-top:1px solid var(--border); }
+  .tb-item:first-child { border-top:0; }
+  .tb-item img { width:18px; height:18px; border-radius:3px; flex:none; }
+  .tb-item .tb-link { flex:1; min-width:0; }
+  .tb-item .tb-link a { font-size:14.5px; font-weight:500; }
+  .tb-item .tb-note { display:block; font-size:12.5px; color:var(--ink-faint); line-height:1.4; }
+  .tb-item .tb-host { display:block; font-size:12px; color:var(--ink-faint); word-break:break-all; }
+  .tb-act {
+    flex:none; border:0; background:none; cursor:pointer; padding:4px; border-radius:4px;
+    color:var(--ink-faint); opacity:0; transition:opacity .12s;
+  }
+  .tb-item:hover .tb-act, .tb-act:focus { opacity:1; }
+  .tb-act:hover { background:var(--bg-alt); color:var(--blue); }
+  .tb-act svg { width:15px; height:15px; fill:currentColor; display:block; }
+  .tb-mine { border-left:3px solid var(--blue); padding-left:9px; margin-left:-12px; }
+
+  .tb-empty { color:var(--ink-faint); font-size:14.5px; padding:20px 0; }
+  .tb-toast {
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(80px);
+    background:var(--ink); color:#fff; padding:11px 20px; border-radius:var(--radius);
+    font-size:14px; box-shadow:var(--shadow-md); transition:transform .22s; z-index:99998; pointer-events:none;
+  }
+  .tb-toast.show { transform:translateX(-50%) translateY(0); }
+
+  .tb-modal { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:99999; display:none; align-items:center; justify-content:center; padding:20px; }
+  .tb-modal.show { display:flex; }
+  .tb-modal .tb-dialog { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow-lg); width:100%; max-width:440px; padding:26px 28px; }
+  .tb-modal h3 { font-family:var(--font-display); font-size:19px; margin-bottom:6px; }
+  .tb-modal p.hint { font-size:13.5px; color:var(--ink-faint); margin-bottom:18px; }
+  .tb-modal label { display:block; font-size:13px; font-weight:600; color:var(--ink-soft); margin:12px 0 5px; }
+  .tb-modal input, .tb-modal select {
+    width:100%; padding:9px 12px; font:inherit; font-size:14.5px;
+    border:1px solid var(--border); border-radius:6px; outline:none; background:#fff;
+  }
+  .tb-modal input:focus, .tb-modal select:focus { border-color:var(--blue); }
+  .tb-modal .tb-row { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
+  @media print { .tb-bar, .tb-act, .page-hero p { display:none; } .tb-grid { grid-template-columns:repeat(2,1fr); } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">Private — not linked from anywhere</div>
+    <h1>Trainer toolbox</h1>
+    <p>Every portal, tenant and doc we reach for mid-training, one click away. Not in the menu, not in the sitemap, not indexed.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="tb-bar">
+      <input id="tb-search" class="tb-search" type="search" placeholder="Filter links…  (just start typing)" autocomplete="off" spellcheck="false">
+      <button id="tb-add" class="tb-btn primary" type="button">+ Add link</button>
+      <button id="tb-export" class="tb-btn" type="button" title="Copy your browser-only links as ready-to-paste toolbox.js entries">Export mine</button>
+    </div>
+
+    <div id="tb-grid" class="tb-grid"></div>
+    <p id="tb-empty" class="tb-empty" style="display:none">Nothing matches that.</p>
+
+    <p style="color:var(--ink-faint);font-size:13.5px;margin-top:30px;max-width:760px">
+      Permanent links live in <code>js/toolbox.js</code> and follow us to every machine.
+      Links added with <strong>+ Add link</strong> are stored in this browser only — use
+      <strong>Export mine</strong> to turn them into <code>toolbox.js</code> lines worth keeping.
+      Hover a link for copy and, for your own links, delete.
+    </p>
+
+  </div>
+</section>
+
+<div id="tb-toast" class="tb-toast"></div>
+
+<div id="tb-modal" class="tb-modal">
+  <div class="tb-dialog">
+    <h3>Add a link</h3>
+    <p class="hint">Saved in this browser only.</p>
+    <label for="tb-f-name">Name</label>
+    <input id="tb-f-name" type="text" placeholder="Contoso demo tenant">
+    <label for="tb-f-url">URL</label>
+    <input id="tb-f-url" type="url" placeholder="https://…">
+    <label for="tb-f-note">Note <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></label>
+    <input id="tb-f-note" type="text" placeholder="Admin creds in 1Password">
+    <label for="tb-f-group">Group</label>
+    <select id="tb-f-group"></select>
+    <div class="tb-row">
+      <button id="tb-cancel" class="tb-btn" type="button">Cancel</button>
+      <button id="tb-save" class="tb-btn primary" type="button">Add link</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/toolbox.js"></script>
+<script>
+(function () {
+  "use strict";
+
+  var ICONS = {
+    cloud: "M12 4a6 6 0 0 1 5.96 5.3A4.5 4.5 0 0 1 17.5 18h-11a4.5 4.5 0 0 1-.46-8.98A6 6 0 0 1 12 4",
+    board: "M11.25 3V4.5H5.75a.25.25 0 0 0-.25.25v9.5c0 .14.11.25.25.25h12.5c.14 0 .25-.11.25-.25v-9.5a.25.25 0 0 0-.25-.25h-5.5V3h5.5c.97 0 1.75.78 1.75 1.75v9.5c0 .97-.78 1.75-1.75 1.75h-5.5v2.19l2.78 2.78-1.06 1.06L12 19.31l-2.72 2.72-1.06-1.06 2.78-2.78V16h-5.5A1.75 1.75 0 0 1 4 14.25v-9.5C4 3.78 4.78 3 5.75 3z",
+    book: "M12 5.5a5.5 5.5 0 0 0-4.5-1.46V16.6A7 7 0 0 1 12 17.9a7 7 0 0 1 4.5-1.3V4.04A5.5 5.5 0 0 0 12 5.5M6 4.06V16.6q-.53.08-1.03.22A1.25 1.25 0 0 1 3.5 15.6V4.4c0-.6.42-1.11 1-1.23A7 7 0 0 1 12 4.2a7 7 0 0 1 7.5-1.03c.58.12 1 .63 1 1.23v11.2c0 .8-.75 1.4-1.53 1.22Q18.5 16.68 18 16.6V4.06A5.5 5.5 0 0 0 12.75 5.7v13.1a.75.75 0 0 1-1.15.63A5.5 5.5 0 0 0 6 19V4.06",
+    doc: "M6 2h7.17c.46 0 .9.18 1.24.51l4.08 4.08c.33.33.51.78.51 1.24V20a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2m7 1.5H6a.5.5 0 0 0-.5.5v16c0 .28.22.5.5.5h11a.5.5 0 0 0 .5-.5V9h-3.25A1.75 1.75 0 0 1 12.5 7.25V3.6zM14 4.31v2.94c0 .14.11.25.25.25h2.94z",
+    briefcase: "M9.25 2h5.5c1.2 0 2.19.93 2.24 2.13V5h2.76A2.25 2.25 0 0 1 22 7.25v11.5A2.25 2.25 0 0 1 19.75 21H4.25A2.25 2.25 0 0 1 2 18.75V7.25A2.25 2.25 0 0 1 4.25 5h2.76v-.75A2.25 2.25 0 0 1 9.25 2m6.25 3v-.75a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75V5zM3.5 10.5v8.25c0 .41.34.75.75.75h15.5c.41 0 .75-.34.75-.75V10.5z",
+    star: "m12 2.5 2.93 5.93 6.55.95-4.74 4.62 1.12 6.52L12 17.44 6.14 20.5l1.12-6.52-4.74-4.62 6.55-.95z",
+  };
+  var LS_KEY = "msftu-toolbox-mine";
+
+  var grid = document.getElementById("tb-grid");
+  var search = document.getElementById("tb-search");
+  var empty = document.getElementById("tb-empty");
+  var toastEl = document.getElementById("tb-toast");
+  var modal = document.getElementById("tb-modal");
+  var toastTimer;
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove("show"); }, 1800);
+  }
+
+  function mine() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); }
+    catch (e) { return []; }
+  }
+  function saveMine(list) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(list)); }
+    catch (e) { toast("Could not save — storage blocked."); }
+  }
+
+  function host(url) {
+    try { return new URL(url, location.href).hostname.replace(/^www\./, ""); }
+    catch (e) { return ""; }
+  }
+  function favicon(url) {
+    var h = host(url);
+    if (!h || h === location.hostname) return null;
+    return "https://www.google.com/s2/favicons?domain=" + encodeURIComponent(h) + "&sz=64";
+  }
+
+  /* Merge the file's groups with anything the browser has added. */
+  function model() {
+    var groups = (typeof TOOLBOX !== "undefined" ? TOOLBOX : []).map(function (g) {
+      return { group: g.group, icon: g.icon, links: g.links.slice() };
+    });
+    var byName = {};
+    groups.forEach(function (g) { byName[g.group] = g; });
+
+    mine().forEach(function (l) {
+      var g = byName[l.group];
+      if (!g) {
+        g = { group: l.group || "My links", icon: "star", links: [] };
+        byName[g.group] = g;
+        groups.push(g);
+      }
+      var copy = { name: l.name, url: l.url, note: l.note, mine: true, id: l.id };
+      g.links.push(copy);
+    });
+    return groups;
+  }
+
+  function icon(path) {
+    return '<svg aria-hidden="true" viewBox="0 0 24 24"><path d="' + path + '"/></svg>';
+  }
+
+  function render() {
+    var q = search.value.trim().toLowerCase();
+    grid.innerHTML = "";
+    var shown = 0;
+
+    model().forEach(function (g) {
+      var links = g.links.filter(function (l) {
+        if (!q) return true;
+        return (l.name + " " + (l.note || "") + " " + l.url + " " + g.group).toLowerCase().indexOf(q) > -1;
+      });
+      if (!links.length) return;
+      shown += links.length;
+
+      var card = document.createElement("div");
+      card.className = "card tb-group";
+
+      var h3 = document.createElement("h3");
+      h3.innerHTML = icon(ICONS[g.icon] || ICONS.star) +
+        '<span></span><span class="tb-count">' + links.length + "</span>";
+      h3.children[1].textContent = g.group;
+      card.appendChild(h3);
+
+      var ul = document.createElement("ul");
+      ul.className = "tb-list";
+
+      links.forEach(function (l) {
+        var li = document.createElement("li");
+        li.className = "tb-item" + (l.mine ? " tb-mine" : "");
+
+        var fav = favicon(l.url);
+        if (fav) {
+          var img = document.createElement("img");
+          img.src = fav; img.alt = ""; img.loading = "lazy";
+          img.onerror = function () { this.remove(); };
+          li.appendChild(img);
+        }
+
+        var wrap = document.createElement("div");
+        wrap.className = "tb-link";
+        var a = document.createElement("a");
+        a.href = l.url;
+        a.textContent = l.name;
+        if (/^https?:/i.test(l.url)) { a.target = "_blank"; a.rel = "noopener"; }
+        wrap.appendChild(a);
+        var sub = document.createElement("span");
+        sub.className = l.note ? "tb-note" : "tb-host";
+        sub.textContent = l.note || host(l.url);
+        wrap.appendChild(sub);
+        li.appendChild(wrap);
+
+        var copy = document.createElement("button");
+        copy.className = "tb-act";
+        copy.type = "button";
+        copy.title = "Copy URL";
+        copy.innerHTML = icon("M5.5 4.25A2.25 2.25 0 0 1 7.75 2h8A2.25 2.25 0 0 1 18 4.25v11.5A2.25 2.25 0 0 1 15.75 18h-8a2.25 2.25 0 0 1-2.25-2.25zM7.75 3.5a.75.75 0 0 0-.75.75v11.5c0 .41.34.75.75.75h8c.41 0 .75-.34.75-.75V4.25a.75.75 0 0 0-.75-.75zM3 7.25c0-.78.4-1.47 1-1.87v10.37A3.25 3.25 0 0 0 7.25 19h6.87c-.4.6-1.09 1-1.87 1H7.25A4.25 4.25 0 0 1 3 15.75z");
+        copy.addEventListener("click", function () {
+          var abs = /^https?:/i.test(l.url) ? l.url : location.origin + location.pathname.replace(/[^/]*$/, "") + l.url;
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(abs).then(function () { toast("Copied " + host(abs)); },
+              function () { toast("Clipboard blocked."); });
+          } else { toast("Clipboard not available."); }
+        });
+        li.appendChild(copy);
+
+        if (l.mine) {
+          var del = document.createElement("button");
+          del.className = "tb-act";
+          del.type = "button";
+          del.title = "Remove (yours only)";
+          del.style.opacity = "";
+          del.innerHTML = icon("M10 5h4a2 2 0 0 0-4 0M8.5 5a3.5 3.5 0 1 1 7 0h5.75a.75.75 0 0 1 0 1.5h-1.32l-1.23 12.13A3.75 3.75 0 0 1 14.97 22H9.03a3.75 3.75 0 0 1-3.73-3.37L4.07 6.5H2.75a.75.75 0 0 1 0-1.5zm2 4.75a.75.75 0 0 0-1.5 0v7.5a.75.75 0 0 0 1.5 0zm4.25-.75a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-1.5 0v-7.5a.75.75 0 0 1 .75-.75");
+          del.addEventListener("click", function () {
+            saveMine(mine().filter(function (x) { return x.id !== l.id; }));
+            render();
+            toast("Removed.");
+          });
+          li.appendChild(del);
+        }
+
+        ul.appendChild(li);
+      });
+
+      card.appendChild(ul);
+      grid.appendChild(card);
+    });
+
+    empty.style.display = shown ? "none" : "block";
+  }
+
+  /* ---- filter ---- */
+  search.addEventListener("input", render);
+  search.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { search.value = ""; render(); }
+    e.stopPropagation();
+  });
+
+  /* ---- add link ---- */
+  var fName = document.getElementById("tb-f-name");
+  var fUrl = document.getElementById("tb-f-url");
+  var fNote = document.getElementById("tb-f-note");
+  var fGroup = document.getElementById("tb-f-group");
+
+  function openModal() {
+    fGroup.innerHTML = "";
+    var names = model().map(function (g) { return g.group; });
+    if (names.indexOf("My links") < 0) names.push("My links");
+    names.forEach(function (n) {
+      var o = document.createElement("option");
+      o.value = n; o.textContent = n;
+      fGroup.appendChild(o);
+    });
+    fName.value = ""; fUrl.value = ""; fNote.value = "";
+    modal.classList.add("show");
+    fName.focus();
+  }
+  function closeModal() { modal.classList.remove("show"); }
+
+  document.getElementById("tb-add").addEventListener("click", openModal);
+  document.getElementById("tb-cancel").addEventListener("click", closeModal);
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+
+  document.getElementById("tb-save").addEventListener("click", function () {
+    var name = fName.value.trim(), url = fUrl.value.trim();
+    if (!name || !url) { toast("Name and URL are both needed."); return; }
+    if (!/^https?:\/\//i.test(url) && !/^[\w.-]+\.html/.test(url)) url = "https://" + url;
+    var list = mine();
+    list.push({
+      id: "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+      name: name, url: url, note: fNote.value.trim() || "", group: fGroup.value,
+    });
+    saveMine(list);
+    closeModal();
+    render();
+    toast("Added to " + fGroup.value + ".");
+  });
+
+  [fName, fUrl, fNote].forEach(function (el) {
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") document.getElementById("tb-save").click();
+      e.stopPropagation();
+    });
+  });
+
+  /* ---- export my links as toolbox.js lines ---- */
+  document.getElementById("tb-export").addEventListener("click", function () {
+    var list = mine();
+    if (!list.length) { toast("You have no browser-only links yet."); return; }
+    var byGroup = {};
+    list.forEach(function (l) { (byGroup[l.group] = byGroup[l.group] || []).push(l); });
+    var text = "";
+    Object.keys(byGroup).forEach(function (g) {
+      text += "// group: " + g + "\n";
+      byGroup[g].forEach(function (l) {
+        text += '      { name: ' + JSON.stringify(l.name) + ', url: ' + JSON.stringify(l.url) +
+          (l.note ? ', note: ' + JSON.stringify(l.note) : "") + " },\n";
+      });
+      text += "\n";
+    });
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(
+        function () { toast(list.length + " link(s) copied — paste into js/toolbox.js"); },
+        function () { toast("Clipboard blocked."); });
+    } else { toast("Clipboard not available."); }
+  });
+
+  /* ---- keyboard: / focuses the filter, like every good tool ---- */
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); search.focus(); }
+    if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+  });
+
+  render();
+})();
+</script>
+<script src="js/achievements.js"></script>
+<script src="js/events.js"></script>
+<script src="js/terminal.js"></script>
+</body>
+</html>
