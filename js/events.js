@@ -14,6 +14,9 @@
      venue    training partner or event name (optional)
      url      booking link (omit or "" = no button)
      soldout  true = show SOLD OUT instead of the button
+
+   See also DELIVERED at the bottom of this file: the archive of
+   courses already given, kept at month precision.
    ============================================================ */
 
 const EVENTS = [
@@ -214,4 +217,61 @@ const EVENTS = [
     venue: "Royal Pacific Resort — Universal Orlando",
     url: "https://na.eventscloud.com/ereg/newreg.php?eventid=838133",
   },
+];
+
+/* ============================================================
+   DELIVERED — the archive
+   ============================================================
+   Courses already given, kept at MONTH precision because that is
+   how they were recorded. There is deliberately no `date` field:
+   these must never surface as "upcoming" anywhere.
+
+   Only the About page reads this list, for the "In the classroom"
+   counters. The events page, the globe, the terminal and the
+   certificate generator all ignore it.
+
+   Fields:
+     month  "YYYY-MM"  the month it ran (required)
+     title  course name
+     type   "Training" | "Event" | "Webinar" | "Workshop" | "Conference"
+     city   "City, Country" or "Online"
+     venue  organiser (optional)
+
+   If exact dates ever turn up, move an entry into EVENTS above
+   with a real `date` (and `end`) and delete it from here.
+   ============================================================ */
+
+const DELIVERED = [
+  { month: "2026-01", title: "Getting Started with Copilot Studio (PL-7008)", type: "Training", city: "Bergen, NO" },
+
+  { month: "2026-02", title: "Microsoft Device Management Masterclass", type: "Training", city: "Oslo, NO" },
+  { month: "2026-02", title: "Microsoft 365 Fundamentals (MS-900)", type: "Training", city: "Bergen, NO" },
+  { month: "2026-02", title: "Microsoft Cybersecurity Architect (SC-100)", type: "Training", city: "Lillehammer, NO" },
+  { month: "2026-02", title: "Microsoft Device Management Masterclass", type: "Training", city: "Bergen, NO" },
+
+  { month: "2026-03", title: "Microsoft CSP — Copilot", type: "Event", city: "Brussels, BE", venue: "Microsoft" },
+  { month: "2026-03", title: "Agentic AI Roadshow", type: "Event", city: "Johannesburg, ZA", venue: "Microsoft" },
+  { month: "2026-03", title: "Microsoft CSP — Agentic AI", type: "Event", city: "Brussels, BE", venue: "Microsoft" },
+  { month: "2026-03", title: "Azure AI Fundamentals (AI-900)", type: "Training", city: "Oslo, NO" },
+  { month: "2026-03", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Lillehammer, NO" },
+  { month: "2026-03", title: "Microsoft Sentinel", type: "Training", city: "Zurich, CH" },
+
+  { month: "2026-04", title: "Microsoft Copilot", type: "Training", city: "Zurich, CH" },
+  { month: "2026-04", title: "Microsoft Device Management Masterclass", type: "Training", city: "Oslo, NO" },
+  { month: "2026-04", title: "Security Operations Analyst (SC-200)", type: "Training", city: "Oslo, NO" },
+
+  { month: "2026-05", title: "Copilot Studio", type: "Training", city: "Ålesund, NO" },
+  { month: "2026-05", title: "Agentic AI", type: "Training", city: "Ålesund, NO" },
+
+  { month: "2026-06", title: "Security, Compliance and Identity Fundamentals (SC-900)", type: "Training", city: "Trondheim, NO" },
+  { month: "2026-06", title: "Security", type: "Training", city: "Dilbeek, BE", venue: "Copaco" },
+  { month: "2026-06", title: "Azure Administrator (AZ-104)", type: "Training", city: "Oslo, NO" },
+  { month: "2026-06", title: "Microsoft Copilot", type: "Training", city: "London, UK" },
+  { month: "2026-06", title: "Designing Microsoft Azure Infrastructure Solutions (AZ-305)", type: "Training", city: "Oslo, NO" },
+  { month: "2026-06", title: "Azure AI Fundamentals (AI-900)", type: "Training", city: "Almere, NL" },
+  { month: "2026-06", title: "Security, Compliance and Identity Fundamentals (SC-900)", type: "Training", city: "Almere, NL" },
+  { month: "2026-06", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Almere, NL" },
+  { month: "2026-06", title: "Microsoft 365 E7 Event", type: "Event", city: "London, UK", venue: "Ingram Micro" },
+
+  { month: "2026-07", title: "Microsoft Purview", type: "Training", city: "London, UK", venue: "Ingram Micro" },
 ];
