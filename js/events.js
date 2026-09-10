@@ -241,6 +241,34 @@ const EVENTS = [
    with a real `date` (and `end`) and delete it from here.
    ============================================================ */
 
+/* How long each course runs, for archive entries that have no dates.
+   Anything not listed here counts as a single day.
+
+   Matching order: a course code in the title decides it outright — if the
+   code is not listed below, the course is one day and the name table is
+   never consulted. Only titles with no code fall through to `names`.
+   So "Getting Started with Copilot Studio (PL-7008)" is one day via its
+   code, while the uncoded "Copilot Studio" course is three.
+
+   Dated entries in EVENTS above ignore this entirely — they already know
+   their own start and end. */
+const COURSE_DAYS = {
+  codes: {
+    "SC-100": 4,
+    "SC-200": 4,
+    "SC-300": 4,
+    "SC-401": 4,
+    "AZ-104": 5,
+    "AZ-140": 4,
+    "AZ-305": 4,
+  },
+  names: {
+    "device management masterclass": 3,
+    "copilot studio": 3,
+  },
+  default: 1,
+};
+
 const DELIVERED = [
   { month: "2026-01", title: "Getting Started with Copilot Studio (PL-7008)", type: "Training", city: "Bergen, NO" },
 

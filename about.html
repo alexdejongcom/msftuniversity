@@ -116,6 +116,7 @@
     <h3 class="road-cap">In the classroom</h3>
     <div class="road-strip" id="taught-strip">
       <div class="road-stat"><strong id="taught-count">—</strong><span>courses delivered</span></div>
+      <div class="road-stat"><strong id="taught-days">—</strong><span>days in front of a room</span></div>
       <div class="road-stat"><strong id="taught-cities">—</strong><span>cities</span></div>
       <div class="road-stat"><strong id="taught-countries">—</strong><span>countries</span></div>
       <div class="road-stat"><strong id="taught-online">—</strong><span>delivered online</span></div>
@@ -291,16 +292,44 @@
   var today = new Date(); today.setHours(0, 0, 0, 0);
   var day = function (s) { return new Date(s + "T00:00:00"); };
 
+  /* Archive entries carry no dates, so their length comes from the
+     COURSE_DAYS table: course code first, then course name, else one day. */
+  var D = typeof COURSE_DAYS !== "undefined" ? COURSE_DAYS : { codes: {}, names: {}, default: 1 };
+  function archiveDays(title) {
+    /* A course code identifies the course outright, so an unlisted code means
+       one day — it must NOT fall through to a name match. Otherwise the
+       one-day "Getting Started with Copilot Studio (PL-7008)" would pick up
+       three days from the words "Copilot Studio" in its own title. */
+    var code = String(title).match(/\b([A-Z]{2}-\d{3,4})\b/);
+    if (code) return D.codes[code[1]] || D.default || 1;
+    var lower = String(title).toLowerCase();
+    for (var n in D.names) { if (lower.indexOf(n) > -1) return D.names[n]; }
+    return D.default || 1;
+  }
+
+  /* Dated courses know their own span. One running right now counts only
+     the days that have actually happened. */
+  function liveDays(e) {
+    var end = day(e.end || e.date);
+    if (end > today) end = today;
+    return Math.round((end - day(e.date)) / 86400000) + 1;
+  }
+
   var done = live
     .filter(function (e) { return e.date && day(e.date) <= today; })
-    .map(function (e) { return { key: e.date.slice(0, 7), type: e.type, city: e.city }; })
-    .concat(past.map(function (e) { return { key: e.month, type: e.type, city: e.city }; }))
+    .map(function (e) {
+      return { key: e.date.slice(0, 7), type: e.type, city: e.city, days: liveDays(e) };
+    })
+    .concat(past.map(function (e) {
+      return { key: e.month, type: e.type, city: e.city, days: archiveDays(e.title) };
+    }))
     .sort(function (a, b) { return a.key < b.key ? -1 : 1; });
 
   if (!done.length) { strip.remove(); note.remove(); return; }
 
-  var online = 0, cities = {}, countries = {}, byType = {};
+  var online = 0, days = 0, cities = {}, countries = {}, byType = {};
   done.forEach(function (e) {
+    days += e.days;
     if (/^online/i.test(e.city)) { online++; }
     else {
       cities[e.city] = 1;
@@ -315,6 +344,7 @@
 
   function set(id, v) { document.getElementById(id).textContent = v; }
   set("taught-count", done.length);
+  set("taught-days", days);
   set("taught-cities", Object.keys(cities).length);
   set("taught-countries", Object.keys(countries).length);
   set("taught-online", online);
