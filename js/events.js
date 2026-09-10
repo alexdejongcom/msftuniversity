@@ -261,6 +261,7 @@ const COURSE_DAYS = {
     "AZ-104": 5,
     "AZ-140": 4,
     "AZ-305": 4,
+    "MD-102": 5,
   },
   names: {
     "device management masterclass": 3,
