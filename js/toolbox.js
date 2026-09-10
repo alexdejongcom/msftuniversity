@@ -42,6 +42,7 @@ const TOOLBOX = [
       { name: "My Course Today", url: "course-today.html", note: "The page you put on the projector" },
       { name: "Exam Prep Hub", url: "exams.html", note: "All 46 exams" },
       { name: "Study Engine", url: "https://www.pdsmm.xyz/", note: "Practice questions" },
+      { name: "Learn Course Downloads", url: "https://mslearntopdf.xyz/", note: "Study packs as PDF, EPUB or text" },
       { name: "Certificate verification", url: "verify.html" },
       { name: "Service Health (parody)", url: "status.html", note: "Good for a laugh at 09:05" },
     ],
