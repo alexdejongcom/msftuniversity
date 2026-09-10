@@ -135,6 +135,14 @@ const EVENTS = [
     url: "https://www.dsdeurope.nl/webinars/copilot-week-dag-3-inzicht-en-besluitvorming-met-copilot-in-excel-onedrive",
   },
   {
+    date: "2026-09-18",
+    title: "Copilot Week: Day 4 — Making Copilot Part of Your Working Day",
+    type: "Webinar",
+    city: "Online",
+    venue: "DSD Europe",
+    url: "https://www.dsdeurope.nl/webinars/copilot-week-dag-4-dagelijks-waarde-halen-uit-copilot",
+  },
+  {
     date: "2026-09-22",
     title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
     type: "Workshop",
