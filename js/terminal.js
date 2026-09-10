@@ -76,7 +76,7 @@
     } else if (c === "get-alex") {
       print(
         "Name              : Alex de Jong\nRole              : Speaker / Microsoft Evangelist / Trainer\n" +
-        "BasedIn           : Netherlands\nYearsInEcosystem  : 20+\nCertifications    : Expert-level (Azure, Microsoft 365)\n" +
+        "BasedIn           : Netherlands\nYearsInEcosystem  : 25+\nCertifications    : Expert-level (Azure, Microsoft 365)\n" +
         "Specialties       : {AI, Security, Copilot, Storytelling}\nSlidesPerDemo     : 0.2\nCoffeeLevel       : Optimal");
     } else if (c === "get-events") {
       var evs = upcoming();

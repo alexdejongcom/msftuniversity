@@ -4,15 +4,40 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About Alex de Jong — Microsoft University</title>
-<meta name="description" content="Alex de Jong — 20+ years in the Microsoft ecosystem. One of the most sought-after Microsoft speakers and trainers worldwide, specializing in AI and security.">
+<meta name="description" content="Alex de Jong — Microsoft Certified Trainer with 25+ years in the Microsoft ecosystem. Speaker and trainer on Copilot, AI and security, from Oslo to Redmond.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
 <link rel="canonical" href="https://msftuniversity.com/about.html">
 <meta property="og:title" content="About Alex de Jong — Microsoft University">
-<meta property="og:description" content="Alex de Jong — 20+ years in the Microsoft ecosystem. One of the most sought-after Microsoft speakers and trainers worldwide, specializing in AI and security.">
+<meta property="og:description" content="Alex de Jong — Microsoft Certified Trainer with 25+ years in the Microsoft ecosystem. Speaker and trainer on Copilot, AI and security, from Oslo to Redmond.">
 <meta property="og:url" content="https://msftuniversity.com/about.html">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .road-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:16px; }
+  .road-stat {
+    background:#fff; border:1px solid var(--border); border-radius:var(--radius);
+    padding:20px 22px; box-shadow:var(--shadow-sm);
+  }
+  .road-stat strong {
+    display:block; font-family:var(--font-display); font-size:34px; font-weight:600;
+    line-height:1.1; color:var(--blue); font-variant-numeric:tabular-nums;
+  }
+  .road-stat span { font-size:12.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
+  .road-last strong { font-size:26px; }
+  .road-last { position:relative; }
+  .road-last::after {
+    content:""; position:absolute; top:18px; right:18px; width:9px; height:9px; border-radius:50%;
+    background:#7fba00; box-shadow:0 0 0 0 rgba(127,186,0,.55); animation:road-pulse 2.2s infinite;
+  }
+  @keyframes road-pulse {
+    0%   { box-shadow:0 0 0 0 rgba(127,186,0,.55); }
+    70%  { box-shadow:0 0 0 11px rgba(127,186,0,0); }
+    100% { box-shadow:0 0 0 0 rgba(127,186,0,0); }
+  }
+  @media (prefers-reduced-motion:reduce) { .road-last::after { animation:none; } }
+  @media (max-width:640px) { .road-stat strong { font-size:27px; } .road-last strong { font-size:21px; } }
+</style>
 </head>
 <body>
 
@@ -41,7 +66,7 @@
 <section class="page-hero">
   <div class="container">
     <h1>About Alex de Jong</h1>
-    <p>Speaker · Trainer · Storyteller — 20+ years in the Microsoft ecosystem</p>
+    <p>Speaker · Trainer · Storyteller — 25+ years in the Microsoft ecosystem</p>
   </div>
 </section>
 
@@ -49,15 +74,17 @@
   <div class="container">
     <div class="about-grid">
       <div class="prose">
-        <p>With over <strong>20 years of deep expertise in the Microsoft ecosystem</strong>, Alex de Jong is one of the most sought-after Microsoft speakers and trainers in the world. Based in the Netherlands, Alex travels the globe delivering high-impact sessions for some of the biggest names in the industry — with Microsoft itself as his flagship client.</p>
-        <p>Alex holds <strong>multiple expert-level certifications across both Azure and Microsoft 365</strong>, backed by years of hands-on consulting experience running complex Microsoft projects for mid-market and enterprise organisations. He knows these platforms from the inside out — not just in theory, but from real deployments, real customers, and real challenges.</p>
-        <p>In recent years, Alex has become a leading voice on two of the hottest topics in enterprise technology: <strong>AI and security</strong>. Whether he's breaking down Microsoft 365 Copilot, Agents, or the latest in Microsoft Defender and Purview, Alex has a rare gift for turning complex technology into clear, compelling narratives that resonate with both technical and business audiences.</p>
-        <p>His <a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">YouTube channel</a> has built a loyal global following of Microsoft professionals who tune in for the same reason audiences love his live sessions: <strong>Alex doesn't just present — he tells a story.</strong> His on-stage energy, signature storytelling style, and talent for making demos feel genuinely exciting have made him a firm audience favourite at events worldwide.</p>
-        <p><em>Expect a day that is fast-paced, insightful, and anything but boring.</em></p>
+        <p><strong>Alex de Jong has spent more than 25 years inside the Microsoft ecosystem</strong> — long enough to have taught the platform through several complete reinventions of it. Based in the Netherlands, he is a Microsoft Certified Trainer who spends most of the year on the road, delivering sessions for Microsoft itself, for the training partners who serve it, and for the enterprises trying to keep up with it.</p>
+        <p>He holds <strong>multiple expert-level certifications across Azure and Microsoft 365</strong>, and teaches to more than <a href="exams.html">45 Microsoft certification tracks</a> — from AZ-900 to the Copilot, Purview and Defender specialisations. That range is not academic. It comes from years of hands-on consulting on complex Microsoft projects for mid-market and enterprise organisations, which is why his classrooms tend to fill up with the questions the documentation does not answer.</p>
+        <p>Today his work centres on the two subjects everyone is trying to get right at once: <strong>AI and security</strong>. Microsoft 365 Copilot, Copilot Studio, Agent 365, Security Copilot, Purview, Defender, Intune — Alex teaches all of it, and has a rare talent for making the hard parts land with technical and business audiences in the same room.</p>
+        <p>You will find him on stage at Microsoft's own events and at conferences including <strong>NIC in Oslo, TechMentor at Microsoft HQ in Redmond, and Live! 360 in Orlando</strong>, and in classrooms from Amsterdam and Eindhoven to Oslo, Bergen, Zurich, Athens, London and Johannesburg. His <a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">YouTube channel</a> reaches the people who cannot make it to the room.</p>
+        <p>The reason audiences keep asking him back is simple: <strong>Alex doesn't just present — he tells a story.</strong> Demos that actually work, delivered with the energy of someone who still finds this stuff genuinely interesting after 25 years.</p>
+        <p><em>Expect a day that is fast-paced, practical, and anything but boring.</em></p>
         <div class="badge-row">
-          <span class="badge">20+ Years Microsoft</span>
+          <span class="badge">25+ Years Microsoft</span>
+          <span class="badge">Microsoft Certified Trainer</span>
           <span class="badge">Expert-level Azure &amp; M365</span>
-          <span class="badge">Copilot &amp; Agents</span>
+          <span class="badge">Copilot, Agents &amp; Agent 365</span>
           <span class="badge">Defender &amp; Purview</span>
           <span class="badge">Keynote Speaker</span>
           <span class="badge">Storyteller</span>
@@ -74,6 +101,23 @@
 </section>
 
 <section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Life on the road</div>
+      <h2 class="section-title">This year so far</h2>
+      <p>Pulled live from Alex's Polarsteps trip log — the actual mileage behind "travels the globe".</p>
+    </div>
+    <div class="road-strip" id="road-strip">
+      <div class="road-stat"><strong id="road-km">—</strong><span>kilometres travelled</span></div>
+      <div class="road-stat"><strong id="road-countries">—</strong><span>countries</span></div>
+      <div class="road-stat"><strong id="road-continents">—</strong><span>continents</span></div>
+      <div class="road-stat road-last"><strong id="road-city">—</strong><span id="road-when">last seen</span></div>
+    </div>
+    <p id="road-note" style="font-size:13px;color:var(--ink-faint);margin-top:12px"></p>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <div class="section-head">
       <div class="eyebrow">Where you'll find us</div>
@@ -167,6 +211,49 @@
     </div>
   </div>
 </footer>
+
+<script>
+/* "This year so far" — real numbers from Alex's public Polarsteps trip,
+   via /api/travel (the same feed the events globe uses). If the feed is
+   unavailable the whole strip is removed rather than left showing dashes. */
+(function () {
+  "use strict";
+  var strip = document.getElementById("road-strip");
+  var note = document.getElementById("road-note");
+
+  function set(id, v) { document.getElementById(id).textContent = v; }
+  function drop() { strip.remove(); note.remove(); }
+
+  fetch("/api/travel")
+    .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    .then(function (d) {
+      var s = d.stats || {};
+      if (!s.km && !s.countries) { drop(); return; }
+
+      set("road-km", Number(s.km).toLocaleString("en-GB"));
+      set("road-countries", s.countries || "—");
+      set("road-continents", s.continents || "—");
+
+      var l = d.lastSeen;
+      if (l && l.locality) {
+        set("road-city", l.locality);
+        var days = Math.floor((Date.now() - new Date(l.time)) / 86400000);
+        set("road-when", "last seen · " +
+          (days <= 0 ? "today" : days === 1 ? "yesterday" : days + " days ago"));
+        document.getElementById("road-city").title = l.locality + ", " + (l.country || "");
+      } else {
+        document.querySelector(".road-last").remove();
+      }
+
+      if (d.trip && d.trip.start) {
+        var since = new Date(d.trip.start).toLocaleDateString("en-GB",
+          { day: "numeric", month: "long", year: "numeric" });
+        note.textContent = "Since " + since + ". Live from Polarsteps, updated every half hour.";
+      }
+    })
+    .catch(drop);
+})();
+</script>
 
 <script src="js/events.js"></script>
 <script src="js/achievements.js" defer></script>
