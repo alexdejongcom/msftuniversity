@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="css/style.css">
 <style>
   .road-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:16px; }
+  .road-cap {
+    font-family:var(--font-display); font-size:13px; font-weight:600; color:var(--ink-faint);
+    text-transform:uppercase; letter-spacing:.07em; margin:0 0 12px;
+  }
+  #road-cap-travel { margin-top:34px; }
   .road-stat {
     background:#fff; border:1px solid var(--border); border-radius:var(--radius);
     padding:20px 22px; box-shadow:var(--shadow-sm);
@@ -105,8 +110,19 @@
     <div class="section-head">
       <div class="eyebrow">Life on the road</div>
       <h2 class="section-title">This year so far</h2>
-      <p>Pulled live from Alex's Polarsteps trip log — the actual mileage behind "travels the globe".</p>
+      <p>The real numbers behind "travels the globe" — courses from our own schedule, kilometres from Alex's Polarsteps trip log.</p>
     </div>
+
+    <h3 class="road-cap">In the classroom</h3>
+    <div class="road-strip" id="taught-strip">
+      <div class="road-stat"><strong id="taught-count">—</strong><span>courses delivered</span></div>
+      <div class="road-stat"><strong id="taught-days">—</strong><span>days in front of a room</span></div>
+      <div class="road-stat"><strong id="taught-cities">—</strong><span>cities</span></div>
+      <div class="road-stat"><strong id="taught-online">—</strong><span>delivered online</span></div>
+    </div>
+    <p id="taught-note" style="font-size:13px;color:var(--ink-faint);margin-top:12px"></p>
+
+    <h3 class="road-cap" id="road-cap-travel">On the road</h3>
     <div class="road-strip" id="road-strip">
       <div class="road-stat"><strong id="road-km">—</strong><span>kilometres travelled</span></div>
       <div class="road-stat"><strong id="road-countries">—</strong><span>countries</span></div>
@@ -256,6 +272,58 @@
 </script>
 
 <script src="js/events.js"></script>
+<script>
+/* "In the classroom" — derived from js/events.js, the same list the events
+   page renders. Counts anything whose start date has passed, so a course
+   running right now is already included.
+
+   Note on the window: events.js is a forward-looking schedule, so it only
+   reaches as far back as its oldest surviving entry. The caption below says
+   which date that is rather than implying a full calendar year. Backfill
+   older events into events.js and this stretches to cover them by itself. */
+(function () {
+  "use strict";
+  var strip = document.getElementById("taught-strip");
+  var note = document.getElementById("taught-note");
+  if (typeof EVENTS === "undefined" || !EVENTS.length) { strip.remove(); note.remove(); return; }
+
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var day = function (s) { return new Date(s + "T00:00:00"); };
+
+  var done = EVENTS.filter(function (e) { return day(e.date) <= today; })
+                   .sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+  if (!done.length) { strip.remove(); note.remove(); return; }
+
+  /* days actually delivered — a multi-day course still running only counts
+     the days that have happened */
+  var days = done.reduce(function (n, e) {
+    var end = day(e.end || e.date);
+    if (end > today) end = today;
+    return n + Math.round((end - day(e.date)) / 86400000) + 1;
+  }, 0);
+
+  var online = done.filter(function (e) { return /^online/i.test(e.city); });
+  var cities = {};
+  done.forEach(function (e) { if (!/^online/i.test(e.city)) cities[e.city] = 1; });
+
+  var byType = {};
+  done.forEach(function (e) { byType[e.type || "Session"] = (byType[e.type || "Session"] || 0) + 1; });
+  var mix = Object.keys(byType).sort(function (a, b) { return byType[b] - byType[a]; })
+    .map(function (t) { return byType[t] + " " + t.toLowerCase() + (byType[t] === 1 ? "" : "s"); })
+    .join(" · ");
+
+  function set(id, v) { document.getElementById(id).textContent = v; }
+  set("taught-count", done.length);
+  set("taught-days", days);
+  set("taught-cities", Object.keys(cities).length);
+  set("taught-online", online.length);
+
+  var since = day(done[0].date).toLocaleDateString("en-GB",
+    { day: "numeric", month: "long", year: "numeric" });
+  note.textContent = "Since " + since + ". " + mix + ". Counted from our published schedule.";
+})();
+</script>
+
 <script src="js/achievements.js" defer></script>
 <script src="js/terminal.js" defer></script>
 <script src="js/counter.js" defer></script>
