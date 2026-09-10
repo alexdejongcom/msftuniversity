@@ -127,6 +127,14 @@ const EVENTS = [
     url: "https://www.dsdeurope.nl/webinars/copilot-week-dag-2-productiever-werken-met-copilot-in-outlook-teams-word",
   },
   {
+    date: "2026-09-17",
+    title: "Copilot Week: Day 3 — Insight and Decision-Making with Copilot in Excel & OneDrive",
+    type: "Webinar",
+    city: "Online",
+    venue: "DSD Europe",
+    url: "https://www.dsdeurope.nl/webinars/copilot-week-dag-3-inzicht-en-besluitvorming-met-copilot-in-excel-onedrive",
+  },
+  {
     date: "2026-09-22",
     title: "Implement Agent 365 to Secure AI Apps, Copilot & Agents — Project Ready",
     type: "Workshop",
