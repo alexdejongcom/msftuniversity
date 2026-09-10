@@ -233,7 +233,7 @@ const EVENTS = [
    Fields:
      month  "YYYY-MM"  the month it ran (required)
      title  course name
-     type   "Training" | "Event" | "Webinar" | "Workshop" | "Conference"
+     type   "Training" | "Event" | "Webinar" | "Workshop" | "Conference" | "Keynote"
      city   "City, Country" or "Online"
      venue  organiser (optional)
 
@@ -265,17 +265,26 @@ const COURSE_DAYS = {
   names: {
     "device management masterclass": 3,
     "copilot studio": 3,
+    "cloud university": 3,
+    "ai transformation": 3,
   },
   default: 1,
 };
 
 const DELIVERED = [
   { month: "2026-01", title: "Getting Started with Copilot Studio (PL-7008)", type: "Training", city: "Bergen, NO" },
+  { month: "2026-01", title: "Configuring and Operating Microsoft Azure Virtual Desktop (AZ-140)", type: "Training", city: "Online" },
+  { month: "2026-01", title: "Microsoft 365 Endpoint Administrator (MD-102)", type: "Training", city: "Den Bosch, NL", venue: "DSD Europe" },
 
   { month: "2026-02", title: "Microsoft Device Management Masterclass", type: "Training", city: "Oslo, NO" },
   { month: "2026-02", title: "Microsoft 365 Fundamentals (MS-900)", type: "Training", city: "Bergen, NO" },
   { month: "2026-02", title: "Microsoft Cybersecurity Architect (SC-100)", type: "Training", city: "Lillehammer, NO" },
   { month: "2026-02", title: "Microsoft Device Management Masterclass", type: "Training", city: "Bergen, NO" },
+  { month: "2026-02", title: "Microsoft Copilot", type: "Training", city: "Utrecht, NL", venue: "Ictivity" },
+  { month: "2026-02", title: "DSD Cloud Academy", type: "Webinar", city: "Online", venue: "DSD Europe" },
+  { month: "2026-02", title: "Microsoft Copilot", type: "Webinar", city: "Online", venue: "Microsoft" },
+  { month: "2026-02", title: "DSD Cloud University", type: "Training", city: "Den Bosch, NL", venue: "DSD Europe" },
+  { month: "2026-02", title: "MS-4007", type: "Training", city: "Nieuwegein, NL", venue: "Global Knowledge" },
 
   { month: "2026-03", title: "Microsoft CSP — Copilot", type: "Event", city: "Brussels, BE", venue: "Microsoft" },
   { month: "2026-03", title: "Agentic AI Roadshow", type: "Event", city: "Johannesburg, ZA", venue: "Microsoft" },
@@ -283,13 +292,25 @@ const DELIVERED = [
   { month: "2026-03", title: "Azure AI Fundamentals (AI-900)", type: "Training", city: "Oslo, NO" },
   { month: "2026-03", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Lillehammer, NO" },
   { month: "2026-03", title: "Microsoft Sentinel", type: "Training", city: "Zurich, CH" },
+  { month: "2026-03", title: "Copilot Studio", type: "Training", city: "Utrecht, NL", venue: "Ictivity" },
+  { month: "2026-03", title: "AI Transformation", type: "Training", city: "Online", venue: "Microsoft" },
+  { month: "2026-03", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Den Bosch, NL", venue: "Ictivity" },
+  { month: "2026-03", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Den Bosch, NL", venue: "Ictivity" },
+  { month: "2026-03", title: "DSD Cloud University — Copilot Studio", type: "Training", city: "Den Bosch, NL", venue: "DSD Europe" },
 
   { month: "2026-04", title: "Microsoft Copilot", type: "Training", city: "Zurich, CH" },
   { month: "2026-04", title: "Microsoft Device Management Masterclass", type: "Training", city: "Oslo, NO" },
   { month: "2026-04", title: "Security Operations Analyst (SC-200)", type: "Training", city: "Oslo, NO" },
+  { month: "2026-04", title: "Configuring and Operating Microsoft Azure Virtual Desktop (AZ-140)", type: "Training", city: "Online", venue: "Glasspaper" },
+  { month: "2026-04", title: "Microsoft Identity and Access Administrator (SC-300)", type: "Training", city: "Venlo, NL", venue: "Ictivity" },
+  { month: "2026-04", title: "SC-3025", type: "Training", city: "Online", venue: "Fast Lane" },
+  { month: "2026-04", title: "SC-3025", type: "Training", city: "Online", venue: "Fast Lane" },
+  { month: "2026-04", title: "AB-730", type: "Training", city: "Utrecht, NL", venue: "Ictivity" },
 
   { month: "2026-05", title: "Copilot Studio", type: "Training", city: "Ålesund, NO" },
   { month: "2026-05", title: "Agentic AI", type: "Training", city: "Ålesund, NO" },
+  { month: "2026-05", title: "Azure Fundamentals (AZ-900)", type: "Training", city: "Den Bosch, NL", venue: "Ictivity" },
+  { month: "2026-05", title: "Keynote", type: "Keynote", city: "Den Bosch, NL", venue: "DSD Europe" },
 
   { month: "2026-06", title: "Security, Compliance and Identity Fundamentals (SC-900)", type: "Training", city: "Trondheim, NO" },
   { month: "2026-06", title: "Security", type: "Training", city: "Dilbeek, BE", venue: "Copaco" },
