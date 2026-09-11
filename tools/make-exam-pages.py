@@ -102,8 +102,11 @@ def exam_page(code, e):
     slug = code.lower()
     canonical = "%s/exam/%s.html" % (SITE, slug)
     title = "%s exam prep — %s | Microsoft University" % (code, html.escape(e["title"], quote=False))
-    desc = "%s Free study guide, practice assessment and official learning paths for %s, plus instructor-led training with Alex de Jong." % (
-        e["blurb"].split(".")[0] + ".", code)
+    # Newly released exams have no practice assessment yet, so don't promise one.
+    offer = ("Free study guide, practice assessment and official learning paths"
+             if e.get("pa") else "Free study guide and official learning paths")
+    desc = "%s %s for %s, plus instructor-led training with Alex de Jong." % (
+        e["blurb"].split(".")[0] + ".", offer, code)
     desc = re.sub(r"\s+", " ", desc)[:300]
 
     related = [(c, x) for c, x in sorted(EXAMS.items()) if x["fam"] == e["fam"] and c != code]
@@ -219,8 +222,8 @@ def exam_page(code, e):
 
 def hub_page():
     canonical = SITE + "/exams.html"
-    title = "Microsoft exam prep — free study guides for 46 certifications | Microsoft University"
-    desc = ("Free prep for 46 Microsoft certifications: official study guides, practice assessments and "
+    title = "Microsoft exam prep — free study guides for 47 certifications | Microsoft University"
+    desc = ("Free prep for 47 Microsoft certifications: official study guides, practice assessments and "
             "learning paths for every AZ, SC, MS, MD, PL, DP, MB, GH and AB exam, in one place.")
 
     blocks = []
