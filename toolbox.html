@@ -74,6 +74,14 @@ if (sessionStorage.getItem("msftu-toolbox-key") !== "granted") location.replace(
   .tb-modal .tb-row { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
   @media print { .tb-bar, .tb-act, .page-hero p { display:none; } .tb-grid { grid-template-columns:repeat(2,1fr); } }
 </style>
+<!-- pwa -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0067b8">
+<link rel="apple-touch-icon" href="/assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSFTU">
+<meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
 
@@ -388,5 +396,6 @@ if (sessionStorage.getItem("msftu-toolbox-key") !== "granted") location.replace(
 <script src="js/achievements.js"></script>
 <script src="js/events.js"></script>
 <script src="js/terminal.js"></script>
+  <script src="/js/pwa.js" defer></script>
 </body>
 </html>

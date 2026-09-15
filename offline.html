@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline — Microsoft University</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0067b8">
+<link rel="icon" href="/assets/app/icon-192.png">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  .off-wrap { max-width:620px; margin:0 auto; padding:80px 24px; text-align:center; }
+  .off-mark { width:76px; height:76px; border-radius:18px; margin:0 auto 26px; display:block; }
+  .off-wrap h1 { font-family:var(--font-display); font-size:clamp(26px,4vw,34px); font-weight:700; margin-bottom:12px; }
+  .off-wrap p { color:var(--ink-soft); font-size:17px; margin-bottom:10px; }
+  .off-list { list-style:none; margin:30px 0 0; display:grid; gap:10px; }
+  .off-list a {
+    display:block; padding:14px 18px; border:1px solid var(--border); border-radius:var(--radius);
+    background:#fff; font-weight:600; text-align:left; box-shadow:var(--shadow-sm);
+  }
+  .off-list a:hover { text-decoration:none; border-color:var(--blue); }
+  .off-list span { display:block; font-weight:400; font-size:13.5px; color:var(--ink-faint); }
+  .off-status { margin-top:28px; font-size:14px; color:var(--ink-faint); }
+</style>
+<!-- pwa -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0067b8">
+<link rel="apple-touch-icon" href="/assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSFTU">
+<meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+<div class="off-wrap">
+  <img class="off-mark" src="/assets/app/icon-192.png" alt="">
+  <h1>You're offline</h1>
+  <p>No connection right now — but the pages you've already opened are still here, and the whole exam prep hub was saved when you installed the app.</p>
+
+  <ul class="off-list">
+    <li><a href="/exams.html">Exam Prep Hub <span>All 47 certifications, saved for offline use</span></a></li>
+    <li><a href="/training.html">Training catalog <span>Every course we deliver</span></a></li>
+    <li><a href="/resources.html">Learning resources <span>Links open when you're back online</span></a></li>
+    <li><a href="/index.html">Home</a></li>
+  </ul>
+
+  <p class="off-status" id="off-status">Waiting for a connection…</p>
+</div>
+
+<script>
+/* Reload the moment the network returns, so the user doesn't have to. */
+(function () {
+  var status = document.getElementById("off-status");
+  function online() {
+    status.textContent = "Back online — reloading…";
+    setTimeout(function () { location.reload(); }, 600);
+  }
+  if (navigator.onLine) online();
+  window.addEventListener("online", online);
+})();
+</script>
+
+  <script src="/js/pwa.js" defer></script>
+</body>
+</html>

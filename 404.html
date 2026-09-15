@@ -18,6 +18,14 @@
   code { font-family: Consolas, monospace; background: rgba(255,255,255,.15); padding: 2px 8px; border-radius: 4px; }
   a { color: #fff; font-weight: 600; }
 </style>
+<!-- pwa -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0067b8">
+<link rel="apple-touch-icon" href="/assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSFTU">
+<meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
   <div class="box">
@@ -35,5 +43,6 @@
       if (p >= 100) clearInterval(t);
     }, 350);
   </script>
+  <script src="/js/pwa.js" defer></script>
 </body>
 </html>

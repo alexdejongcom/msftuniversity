@@ -1,0 +1,44 @@
+{
+  "name": "Microsoft University — Alex de Jong",
+  "short_name": "MSFTU",
+  "description": "Microsoft certification training, exam prep and tour dates. The full exam prep hub works offline once installed.",
+  "id": "/",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#0067b8",
+  "background_color": "#ffffff",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "/assets/app/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/app/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/assets/app/icon-192-maskable.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/assets/app/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Exam Prep Hub",
+      "short_name": "Exam Prep",
+      "description": "All 47 certifications, available offline",
+      "url": "/exams.html",
+      "icons": [{ "src": "/assets/app/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "My Course Today",
+      "short_name": "My Course",
+      "description": "Today's course, resources and links",
+      "url": "/course-today.html",
+      "icons": [{ "src": "/assets/app/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Upcoming Events",
+      "short_name": "Events",
+      "description": "Tour dates and bookings",
+      "url": "/events.html",
+      "icons": [{ "src": "/assets/app/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
