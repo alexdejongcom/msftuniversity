@@ -217,6 +217,14 @@ const EVENTS = [
     venue: "Royal Pacific Resort — Universal Orlando",
     url: "https://na.eventscloud.com/ereg/newreg.php?eventid=838133",
   },
+  {
+    date: "2026-11-26",
+    title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
+    type: "Workshop",
+    city: "Amsterdam, NL",
+    venue: "NH Amsterdam Zuid Hotel",
+    url: "https://www.skilling-hub.com/en-US/listing/drive-agentic-ai-conversations-m365-copilot-studio::amsterdam::pr",
+  },
 ];
 
 /* ============================================================

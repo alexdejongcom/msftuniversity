@@ -7,7 +7,7 @@
      /api/*        network only — counters and live feeds must never be stale
      cross-origin  passed straight through, never cached
 */
-const VERSION = "fe67e077fe02";
+const VERSION = "b98ef6843723";
 const CACHE = "msftu-" + VERSION;
 const OFFLINE = "/offline.html";
 
