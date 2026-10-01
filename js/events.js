@@ -233,6 +233,14 @@ const EVENTS = [
     venue: "NH Amsterdam Zuid Hotel",
     url: "https://www.skilling-hub.com/en-US/listing/drive-agentic-ai-conversations-m365-copilot-studio::amsterdam::pr",
   },
+  {
+    date: "2026-12-02", end: "2026-12-04",
+    title: "DSD Cloud University — Microsoft Purview: Data Security & Governance for SMBs (SC-401)",
+    type: "Training",
+    city: "Rosmalen, NL",
+    venue: "DSD Europe",
+    url: "https://www.dsdeurope.nl/dsd-cloud-university-microsoft-purview-data-security-en-governance",
+  },
 ];
 
 /* ============================================================
