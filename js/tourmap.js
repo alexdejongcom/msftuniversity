@@ -11,6 +11,9 @@
   function fail() { if (wrap) wrap.style.display = "none"; }
   if (typeof d3 === "undefined") { fail(); return; }
 
+  /* Every city used by EVENTS or DELIVERED needs an entry here, or the stop
+     is silently dropped from the globe. Accented names get an unaccented
+     alias so either spelling resolves. [lon, lat] */
   var COORDS = {
     "london":  [-0.12, 51.51],
     "redmond": [-122.12, 47.67],
@@ -25,13 +28,34 @@
     "zurich": [8.54, 47.38],
     "anaheim": [-117.91, 33.84],
     "san diego": [-117.16, 32.72],
-    "las vegas": [-115.14, 36.17]
+    "las vegas": [-115.14, 36.17],
+    "copenhagen": [12.57, 55.68],
+    "bergen": [5.32, 60.39],
+    "trondheim": [10.40, 63.43],
+    "ålesund": [6.15, 62.47],
+    "alesund": [6.15, 62.47],
+    "lillehammer": [10.46, 61.12],
+    "den bosch": [5.30, 51.70],
+    "'s-hertogenbosch": [5.30, 51.70],
+    "utrecht": [5.12, 52.09],
+    "nieuwegein": [5.08, 52.03],
+    "almere": [5.22, 52.37],
+    "venlo": [6.17, 51.37],
+    "brussels": [4.35, 50.85],
+    "dilbeek": [4.26, 50.85],
+    "johannesburg": [28.04, -26.20]
   };
 
   function lookup(city) {
     if (!city) return null;
     var key = city.toLowerCase().split(",")[0].trim();
-    return COORDS[key] || null;
+    if (COORDS[key]) return COORDS[key];
+    /* "Online" has no place on a map; anything else is a missing entry,
+       which used to fail silently. Say so, so it gets noticed. */
+    if (key !== "online" && window.console) {
+      console.warn("tourmap: no coordinates for \"" + key + "\" — add it to COORDS in js/tourmap.js");
+    }
+    return null;
   }
 
   var t = new Date(); t.setHours(0, 0, 0, 0);
