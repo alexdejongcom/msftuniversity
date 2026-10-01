@@ -218,6 +218,14 @@ const EVENTS = [
     url: "https://na.eventscloud.com/ereg/newreg.php?eventid=838133",
   },
   {
+    date: "2026-11-12",
+    title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
+    type: "Workshop",
+    city: "Copenhagen, DK",
+    venue: "Microsoft Danmark — Kongens Lyngby",
+    url: "https://www.skilling-hub.com/en-US/listing/drive-agentic-ai-conversations-m365-copilot-studio::copenhagen::pr",
+  },
+  {
     date: "2026-11-26",
     title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
     type: "Workshop",
