@@ -14,6 +14,10 @@
      venue    training partner or event name (optional)
      url      booking link (omit or "" = no button)
      soldout  true = show SOLD OUT instead of the button
+     logo     domain to pull the row's logo from, e.g. "microsoft.com".
+              Optional. Normally the logo is worked out from the venue,
+              then the booking URL — set this only when neither gives the
+              right mark, such as a Microsoft series held at a hired hotel.
 
    See also DELIVERED at the bottom of this file: the archive of
    courses already given, kept at month precision.
@@ -231,6 +235,7 @@ const EVENTS = [
     type: "Workshop",
     city: "Amsterdam, NL",
     venue: "NH Amsterdam Zuid Hotel",
+    logo: "microsoft.com",   /* hired venue; match the sibling sessions */
     url: "https://www.skilling-hub.com/en-US/listing/drive-agentic-ai-conversations-m365-copilot-studio::amsterdam::pr",
   },
   {

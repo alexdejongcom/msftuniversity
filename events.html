@@ -187,6 +187,10 @@
     return null;
   }
   function logoUrl(e) {
+    /* An explicit `logo` on the event wins over everything. Use it when the
+       venue is incidental — a Microsoft series run at a hired hotel, say —
+       and the row should carry the organiser's mark instead. */
+    if (e.logo) return favicon(e.logo);
     var d = match(VENUE_DOMAINS, (e.venue || "").toLowerCase());
     if (d) return favicon(d);
     if (e.url) {
