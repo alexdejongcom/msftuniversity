@@ -165,10 +165,11 @@
     ["royal pacific", "live360events.com"],
     ["microsoft partner skilling", "microsoft.com"],
     ["microsoft office", "microsoft.com"],
-    /* catch-all, last: Microsoft's local entities are named per country
-       ("Microsoft Danmark ApS", "Microsoft Nederland B.V."), so match any
-       remaining venue that starts with Microsoft. Specific rules above win. */
-    ["microsoft", "microsoft.com"],
+    /* Microsoft's local entities are named per country, so each needs its own
+       line. Deliberately NOT a generic "microsoft" catch-all: that would also
+       swallow third-party events merely *hosted* at a Microsoft site, such as
+       TechMentor at "Microsoft Headquarters", which must keep its own logo. */
+    ["microsoft danmark", "microsoft.com"],
   ];
   var TITLE_DOMAINS = [
     ["techmentor", "techmentorevents.com"],
