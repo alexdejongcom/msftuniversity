@@ -198,6 +198,14 @@ const EVENTS = [
     url: "https://www.glasspaper.no/kurs/sc-401-information-security-administrator/",
   },
   {
+    date: "2026-10-23",
+    title: "DSD Cloud Academy — Microsoft 365 Business Premium: Security, Management & AI Readiness",
+    type: "Webinar",
+    city: "Online",
+    venue: "DSD Europe",
+    url: "https://dsdeurope.webinargeek.com/cloud-academy-microsoft-365-business-premium-security-beheer-ai-readiness",
+  },
+  {
     date: "2026-10-26", end: "2026-10-29",
     title: "Microsoft Identity and Access Administrator (SC-300)",
     type: "Training",
