@@ -2,3 +2,7 @@
 .fuse_hidden*
 Thumbs.db
 node_modules/
+
+# Python bytecode from the tools/ generators
+__pycache__/
+*.pyc
