@@ -26,6 +26,28 @@ R_RING = int(548 * SS)      # inner art circle
 MS_COLORS = ["#f25022", "#7fba00", "#00a4ef", "#ffb900"]
 
 
+def require_fonts():
+    """Stop before writing anything if Segoe UI is missing.
+
+    Pillow's default font ignores the size argument, so without the real
+    fonts every sticker still renders — with unreadable 11px type — and
+    silently overwrites the good ones. Fail loudly instead.
+
+        mkdir -p /tmp/f && cd /tmp/f && npm pack @fontpkg/segoe-ui
+        mkdir -p /tmp/segoe && tar -xzf *.tgz -C /tmp/segoe
+    """
+    missing = [f for f in ("segoeui.ttf", "segoeuib.ttf")
+               if not os.path.exists(FONT_DIR + f)]
+    if missing:
+        raise SystemExit(
+            "Segoe UI not found at %s (missing: %s).\n"
+            "Refusing to run: the fallback font would overwrite every sticker\n"
+            "with unreadable text. Install the fonts first:\n"
+            "  mkdir -p /tmp/f && cd /tmp/f && npm pack @fontpkg/segoe-ui\n"
+            "  mkdir -p /tmp/segoe && tar -xzf *.tgz -C /tmp/segoe"
+            % (FONT_DIR, ", ".join(missing)))
+
+
 def font(name, size):
     for f in (name, "segoeui.ttf"):
         p = FONT_DIR + f
@@ -828,6 +850,73 @@ def skyline_london(d, ground, u, dark, mid, light):
         yy = ground - 8 * u - k * 6 * u
         d.line([(gx + 0.6 * u, yy), (gx + 9.4 * u, yy - 3 * u)], fill=light, width=int(u * 0.35))
 
+
+def skyline_den_bosch(d, ground, u, dark, mid, light):
+    """The Gothic cathedral, gabled houses and the Binnendieze running through."""
+    _U[0] = u
+
+    # canal houses, left bank
+    for x, w, h, kind in [(2, 8, 26, "step"), (11, 7, 22, "bell"), (19, 8, 28, "neck")]:
+        gable(d, x * u, w * u, ground - 7 * u, h * u, dark, kind)
+        windows(d, x * u, w * u, h * u, ground - 7 * u, light, cols=2, rows=3)
+
+    # --- the cathedral -------------------------------------------------
+    # squat west tower: brick, flat-topped, small spire
+    tx = 30 * u
+    d.rectangle([tx, ground - 44 * u, tx + 11 * u, ground - 7 * u], fill=dark)
+    d.rectangle([tx - 0.8 * u, ground - 47 * u, tx + 11.8 * u, ground - 44 * u], fill=dark)
+    d.rectangle([tx + 3.6 * u, ground - 53 * u, tx + 7.4 * u, ground - 47 * u], fill=dark)
+    d.polygon([(tx + 2.6 * u, ground - 53 * u), (tx + 8.4 * u, ground - 53 * u),
+               (tx + 5.5 * u, ground - 59 * u)], fill=dark)
+    d.ellipse([tx + 3.1 * u, ground - 38 * u, tx + 7.9 * u, ground - 33 * u], fill=light)  # clock
+
+    # nave with its steep roof
+    nx, nw = 41 * u, 24 * u
+    d.rectangle([nx, ground - 26 * u, nx + nw, ground - 7 * u], fill=dark)
+    d.polygon([(nx - 1 * u, ground - 26 * u), (nx + nw + 1 * u, ground - 26 * u),
+               (nx + nw / 2, ground - 36 * u)], fill=dark)
+    # lancet windows along the nave
+    for k in range(4):
+        wx2 = nx + (3.4 + k * 5.8) * u
+        d.rectangle([wx2, ground - 20 * u, wx2 + 2.4 * u, ground - 11 * u], fill=light)
+        d.pieslice([wx2, ground - 22.4 * u, wx2 + 2.4 * u, ground - 18 * u], 180, 360, fill=light)
+
+    # flying buttresses — the cathedral's signature profile
+    for k in range(3):
+        bx2 = nx + (4 + k * 8) * u
+        d.arc([bx2, ground - 30 * u, bx2 + 9 * u, ground - 14 * u], 200, 340,
+              fill=dark, width=int(u * 1.1))
+        d.rectangle([bx2 + 8 * u, ground - 24 * u, bx2 + 10 * u, ground - 7 * u], fill=dark)
+        d.polygon([(bx2 + 7.4 * u, ground - 24 * u), (bx2 + 10.6 * u, ground - 24 * u),
+                   (bx2 + 9 * u, ground - 29 * u)], fill=dark)
+
+    # crossing tower with its lantern, the tallest thing on the sticker
+    cx2 = 54 * u
+    d.rectangle([cx2, ground - 54 * u, cx2 + 9 * u, ground - 26 * u], fill=dark)
+    d.polygon([(cx2 - 1 * u, ground - 54 * u), (cx2 + 10 * u, ground - 54 * u),
+               (cx2 + 4.5 * u, ground - 62 * u)], fill=dark)
+    d.rectangle([cx2 + 2.6 * u, ground - 69 * u, cx2 + 6.4 * u, ground - 62 * u], fill=dark)
+    d.polygon([(cx2 + 1.6 * u, ground - 69 * u), (cx2 + 7.4 * u, ground - 69 * u),
+               (cx2 + 4.5 * u, ground - 78 * u)], fill=dark)
+    d.line([(cx2 + 4.5 * u, ground - 78 * u), (cx2 + 4.5 * u, ground - 82 * u)],
+           fill=dark, width=int(u * 0.5))
+    d.ellipse([cx2 + 3.4 * u, ground - 84 * u, cx2 + 5.6 * u, ground - 81.8 * u], fill=light)
+
+    # rose window on the west front
+    rx, ry, rr = 46 * u, ground - 31 * u, 2.8 * u
+    d.ellipse([rx - rr, ry - rr, rx + rr, ry + rr], fill=light)
+
+    # canal houses, right bank
+    for x, w, h, kind in [(70, 8, 25, "point"), (79, 7, 21, "step"), (87, 8, 27, "bell")]:
+        gable(d, x * u, w * u, ground - 7 * u, h * u, dark, kind)
+        windows(d, x * u, w * u, h * u, ground - 7 * u, light, cols=2, rows=3)
+
+    # the Binnendieze and a low arched bridge over it
+    d.rectangle([0, ground - 9 * u, 104 * u, ground], fill=lerp(mid, dark, 0.55))
+    d.pieslice([24 * u, ground - 15 * u, 44 * u, ground - 3 * u], 180, 360, fill=dark)
+    d.rectangle([20 * u, ground - 16 * u, 48 * u, ground - 13 * u], fill=dark)
+
+
 CITIES = [
     dict(key="amsterdam", name="AMSTERDAM", sub="NETHERLANDS",
          top="#122845", bot="#e8a052", dark="#0d1b2e", mid="#2a4a70", light="#fff3df",
@@ -871,6 +960,9 @@ CITIES = [
     dict(key="redmond", name="REDMOND", sub="WASHINGTON",
          top="#12314a", bot="#9ec9d8", dark="#0e2233", mid="#2f6b86", light="#f4fbff",
          glow="#d9eef7", draw=skyline_redmond),
+    dict(key="s-hertogenbosch", name="'S-HERTOGENBOSCH", sub="NETHERLANDS",
+         top="#1a2342", bot="#d9736b", dark="#111627", mid="#39507e", light="#fff0ec",
+         glow="#ffb3a0", draw=skyline_den_bosch),
     dict(key="stockholm", name="STOCKHOLM", sub="SWEDEN",
          top="#0d2440", bot="#7aa8cd", dark="#0a1a2e", mid="#2c5479", light="#f2f9ff",
          glow="#cfe6f7", draw=skyline_stockholm),
@@ -968,12 +1060,26 @@ def make(city):
     wy = int(CY + R_RING * 0.36)
     ring.text((CX - tw / 2, wy), word, font=f_word, fill=(255, 255, 255, 255))
 
-    # city name, letterspaced under the wordmark
+    # city name, letterspaced under the wordmark.
+    # Long names ('S-HERTOGENBOSCH) would run past the rim, and the circle is
+    # already narrowing at this height — so shrink type and tracking to fit the
+    # chord rather than the diameter.
     name = city["name"]
-    track = int(10 * SS)
-    cw = sum(ring.textlength(c, font=f_city) for c in name) + track * (len(name) - 1)
-    x = CX - cw / 2
     cy_ = wy + int(96 * SS)
+    dy = (cy_ + 25 * SS) - CY                      # text mid-height from centre
+    chord = 2 * math.sqrt(max(1.0, R_RING ** 2 - dy ** 2))
+    avail = chord * 0.86
+
+    size, track = int(50 * SS), int(10 * SS)
+    while size > 22 * SS:
+        f_city = font("segoeui.ttf", size)
+        cw = sum(ring.textlength(c, font=f_city) for c in name) + track * (len(name) - 1)
+        if cw <= avail:
+            break
+        size = int(size * 0.94)
+        track = max(int(2 * SS), int(track * 0.90))
+
+    x = CX - cw / 2
     for c in name:
         ring.text((x, cy_), c, font=f_city, fill=rgb(city["glow"]) + (255,))
         x += ring.textlength(c, font=f_city) + track
@@ -991,5 +1097,6 @@ def make(city):
 
 
 if __name__ == "__main__":
+    require_fonts()
     for c in CITIES:
         print("wrote", make(c))
