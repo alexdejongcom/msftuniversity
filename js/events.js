@@ -230,6 +230,14 @@ const EVENTS = [
     url: "https://na.eventscloud.com/ereg/newreg.php?eventid=838133",
   },
   {
+    date: "2026-11-02", end: "2026-11-04",
+    title: "Microsoft 365 Copilot & Agents Masterclass",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    url: "https://www.glasspaper.no/kurs/microsoft-365-copilot--agents/",
+  },
+  {
     date: "2026-11-12",
     title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
     type: "Workshop",
