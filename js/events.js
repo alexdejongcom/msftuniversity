@@ -190,6 +190,14 @@ const EVENTS = [
     url: "https://nicconf.com/tickets",
   },
   {
+    date: "2026-10-16",
+    title: "Microsoft Azure Administrator (internal) — Day 1 of 4",
+    type: "Training",
+    city: "Steenbergen, NL",
+    venue: "Ictivity",
+    soldout: true,
+  },
+  {
     date: "2026-10-19", end: "2026-10-22",
     title: "Information Security Administrator (SC-401)",
     type: "Training",
@@ -222,6 +230,14 @@ const EVENTS = [
     url: "https://www.flane.nl/addbooking?eventid=2194718",
   },
   {
+    date: "2026-11-13",
+    title: "Microsoft Azure Administrator (internal) — Day 4 of 4",
+    type: "Training",
+    city: "Steenbergen, NL",
+    venue: "Ictivity",
+    soldout: true,
+  },
+  {
     date: "2026-11-15", end: "2026-11-20",
     title: "Live! 360 Tech Con 2026",
     type: "Conference",
@@ -236,6 +252,22 @@ const EVENTS = [
     city: "Oslo, NO",
     venue: "Glasspaper",
     url: "https://www.glasspaper.no/kurs/microsoft-365-copilot--agents/",
+  },
+  {
+    date: "2026-11-05",
+    title: "Microsoft Azure Administrator (internal) — Day 2 of 4",
+    type: "Training",
+    city: "Steenbergen, NL",
+    venue: "Ictivity",
+    soldout: true,
+  },
+  {
+    date: "2026-11-06",
+    title: "Microsoft Azure Administrator (internal) — Day 3 of 4",
+    type: "Training",
+    city: "Steenbergen, NL",
+    venue: "Ictivity",
+    soldout: true,
   },
   {
     date: "2026-11-12",
