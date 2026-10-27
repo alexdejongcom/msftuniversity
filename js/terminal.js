@@ -65,7 +65,6 @@
         "  Invoke-BSOD       You know what this does\n" +
         "  Get-Health        Service Health dashboard\n" +
         "  Get-Achievements  Your gamerscore & trophies\n" +
-        "  Start-StudyEngine Secret exam practice engine\n" +
         "  Export-LearnPdf   Learn study packs as PDF/EPUB/text\n" +
         "  Start-Break 15    Break screen for the projector (minutes...\n" +
         "  Start-Break 10:45 ...or an exact resume time)\n" +
