@@ -14,21 +14,13 @@
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .road-strip { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(190px,100%),1fr)); gap:16px; }
+  /* .road-strip / .road-stat now live in css/style.css — the exam pages
+     reuse them for their course fact strip. Page-specific bits stay here. */
   .road-cap {
     font-family:var(--font-display); font-size:13px; font-weight:600; color:var(--ink-faint);
     text-transform:uppercase; letter-spacing:.07em; margin:0 0 12px;
   }
   #road-cap-travel { margin-top:34px; }
-  .road-stat {
-    background:#fff; border:1px solid var(--border); border-radius:var(--radius);
-    padding:20px 22px; box-shadow:var(--shadow-sm);
-  }
-  .road-stat strong {
-    display:block; font-family:var(--font-display); font-size:34px; font-weight:600;
-    line-height:1.1; color:var(--blue); font-variant-numeric:tabular-nums;
-  }
-  .road-stat span { font-size:12.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em; }
   .road-last strong { font-size:26px; }
   .road-last { position:relative; }
   .road-last::after {

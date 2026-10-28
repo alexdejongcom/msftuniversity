@@ -9,6 +9,20 @@ not copy Microsoft's exam descriptions or their skills-measured lists;
 those live behind the official links on every page.
 
 `pa` = a free official practice assessment exists for this exam.
+
+Optional richer fields, added per exam as we work through the catalog.
+Every one is optional — pages render fine without them:
+
+    overview    2-3 sentence course description, our own words
+    duration    length of the instructor-led course, e.g. "3 days"
+    course      the Microsoft course code behind it, e.g. "AB-650T00"
+    exam_time   how long the exam itself runs, e.g. "120 minutes"
+    prereq      what you are assumed to already know, one line
+    challenges  list of 5 real problems the course answers. OUR framing of
+                why someone sits this exam — not Microsoft's objectives
+    labs        dict(count=, paths=[...], repo=, guide=, summary=)
+                `repo` is the official MicrosoftLearning lab repository
+                where one exists; omit the whole dict when there are no labs
 """
 
 FAMILIES = [
@@ -57,7 +71,38 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/exams/ab-650/",
     sg="https://learn.microsoft.com/credentials/certifications/resources/study-guides/ab-650", pa=False,
     blurb="Running Microsoft 365 once AI is part of it — provisioning and governing Copilot and agents alongside the tenant administration you already do.",
-    who="Microsoft 365 administrators whose job grew an AI half. Currently in beta, so expect the objectives to move."),
+    who="Microsoft 365 administrators whose job grew an AI half. Currently in beta, so expect the objectives to move.",
+    overview=(
+        "The administrator exam for a tenant that now has AI in it. The first quarter is the "
+        "familiar ground — tenants, domains, licensing, mailboxes, Teams and SharePoint. The rest "
+        "is what changes once Copilot, Cowork and agents are switched on: who can reach what, "
+        "which content surfaces in a Copilot answer, and how a non-human identity is governed "
+        "through its life. Roughly three quarters of the exam is about securing and governing "
+        "the estate rather than building it, which tells you where the job has moved."),
+    duration="3 days", course="AB-650T00", exam_time="120 minutes",
+    prereq=("Hands-on with Microsoft 365 workloads and Microsoft Entra ID, a working "
+            "understanding of Defender XDR, and some Microsoft Graph PowerShell."),
+    challenges=[
+        "Copilot surfacing content people could always technically open but never actually found — "
+        "oversharing that was invisible until search got good.",
+        "Agents arriving as a new class of identity: who owns one, what it may reach, and how it "
+        "is retired when the project ends.",
+        "Proving to an auditor what an AI service did — DLP, retention and activity evidence that "
+        "covers prompts and responses, not just files.",
+        "Licensing spread across Microsoft 365 Copilot, Agent 365 and Copilot Studio, with "
+        "self-service purchases quietly appearing alongside them.",
+        "Keeping conditional access, sign-in protection and privileged access coherent once "
+        "both people and agents are in scope.",
+    ],
+    labs=dict(
+        count=7, paths=3,
+        repo="https://github.com/MicrosoftLearning/AB-650T00_administer_microsoft_365_and_ai_services",
+        guide="https://microsoftlearning.github.io/AB-650T00_administer_microsoft_365_and_ai_services/",
+        summary=("Seven hands-on labs across three learning paths. The first pair covers operating "
+                 "the tenant and governing collaboration content. The middle three are the identity "
+                 "and protection block — delegated access, sign-in controls and information "
+                 "protection. The last two are the AI half: rolling out Copilot Cowork, then "
+                 "governing agents and running AI services day to day."))),
 "AB-730": dict(fam="ai", level="Beginner", title="AI Business Professional",
     url="https://learn.microsoft.com/credentials/certifications/ai-business-professional/",
     sg="https://aka.ms/ab730-StudyGuide", pa=True,

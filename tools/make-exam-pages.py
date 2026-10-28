@@ -98,6 +98,96 @@ def fam_name(key):
     return key
 
 
+def course_detail(code, e):
+    """The richer 'about the course' block.
+
+    Everything here is optional, so an exam we have not written up yet simply
+    renders without this section. All copy is ours: Microsoft's objectives and
+    descriptions stay behind the official links.
+    """
+    if not any(e.get(k) for k in ("overview", "challenges", "labs", "duration")):
+        return ""
+
+    esc = lambda s: html.escape(str(s), quote=False)
+
+    facts = []
+    if e.get("duration"):
+        facts.append(("Course length", esc(e["duration"]) +
+                      (" &middot; %s" % esc(e["course"]) if e.get("course") else "")))
+    if e.get("exam_time"):
+        facts.append(("Exam", esc(e["exam_time"])))
+    facts.append(("Technical level", esc(e["level"])))
+    labs = e.get("labs") or {}
+    facts.append(("Hands-on labs", ("%d labs" % labs["count"]) if labs.get("count")
+                  else ("Yes" if labs else "None published")))
+
+    fact_html = "\n".join(
+        '      <div class="road-stat is-text"><strong>%s</strong><span>%s</span></div>' % (v, k)
+        for k, v in facts)
+
+    overview = ('    <p style="font-size:17px;color:var(--ink-soft);max-width:820px">%s</p>\n'
+                % esc(e["overview"]) if e.get("overview") else "")
+
+    prereq = ('    <p style="font-size:14.5px;color:var(--ink-faint);max-width:820px;margin-top:14px">'
+              '<strong>Assumed knowledge:</strong> %s</p>\n' % esc(e["prereq"])) if e.get("prereq") else ""
+
+    challenges = ""
+    if e.get("challenges"):
+        items = "\n".join("          <li style=\"margin-bottom:10px\">%s</li>" % esc(c)
+                          for c in e["challenges"])
+        challenges = """      <div>
+        <h3 style="font-family:var(--font-display);font-size:19px;margin-bottom:12px">The problems it answers</h3>
+        <p class="sub" style="margin-bottom:14px">Why people in this role end up sitting %s</p>
+        <ol style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">
+%s
+        </ol>
+      </div>
+""" % (esc(code), items)
+
+    labs_html = ""
+    if labs:
+        links = []
+        if labs.get("repo"):
+            links.append('<li><a href="%s" target="_blank" rel="noopener">Lab instructions on GitHub '
+                         '<span class="desc">Official MicrosoftLearning repository</span></a></li>'
+                         % labs["repo"])
+        if labs.get("guide"):
+            links.append('<li><a href="%s" target="_blank" rel="noopener">Hosted lab guide '
+                         '<span class="desc">The same labs, rendered for reading</span></a></li>'
+                         % labs["guide"])
+        labs_html = """      <div class="card resource-group">
+        <h3>Hands-on labs</h3>
+        <p class="sub">%s</p>
+        <p style="font-size:14.5px;color:var(--ink-soft)">%s</p>
+        <ul class="resource-list" style="margin-top:14px">
+%s
+        </ul>
+      </div>
+""" % ("%d labs across %d learning paths" % (labs["count"], labs["paths"])
+       if labs.get("count") and labs.get("paths") else "What you actually build",
+       esc(labs.get("summary", "")), "\n".join("          " + l for l in links))
+
+    two_col = ""
+    if challenges or labs_html:
+        two_col = '    <div class="grid grid-2" style="margin-top:34px">\n%s%s    </div>\n' % (
+            challenges, labs_html)
+
+    return """
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">About the course</div>
+      <h2 class="section-title">What %s actually covers</h2>
+    </div>
+%s%s
+    <div class="road-strip" style="margin-top:26px">
+%s
+    </div>
+%s  </div>
+</section>
+""" % (esc(code), overview, prereq, fact_html, two_col)
+
+
 def exam_page(code, e):
     slug = code.lower()
     canonical = "%s/exam/%s.html" % (SITE, slug)
@@ -154,6 +244,8 @@ def exam_page(code, e):
             '<p>%s</p><a class="card-link" href="%s.html">Exam prep &rsaquo;</a></div>'
             % (c.lower(), c, html.escape(x["title"], quote=False), c.lower()) for c, x in related)
 
+    detail = course_detail(code, e)
+
     body = """
 <section class="page-hero">
   <div class="container">
@@ -186,8 +278,8 @@ def exam_page(code, e):
     </div>
   </div>
 </section>
-
-<section class="section alt">
+{detail}
+<section class="{cta_class}">
   <div class="container">
     <div class="cta-band">
       <div>
@@ -215,7 +307,10 @@ def exam_page(code, e):
   </div>
 </section>
 """.format(code=code, t=html.escape(e["title"], quote=False), blurb=e["blurb"], who=e["who"],
-           level=e["level"], res=res_html, fam=fam_name(e["fam"]), rel=rel_html)
+           level=e["level"], res=res_html, fam=fam_name(e["fam"]), rel=rel_html, detail=detail,
+           # keep the light/grey rhythm: the detail block is grey, so the CTA
+           # that follows it goes white. Without a detail block the CTA is grey.
+           cta_class="section" if detail else "section alt")
 
     return page(title, html.escape(desc, quote=True), canonical, body, depth=1, extra=jsonld)
 
