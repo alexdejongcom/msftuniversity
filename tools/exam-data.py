@@ -1069,26 +1069,242 @@ EXAMS = {
     blurb="Building extensions for Business Central in AL — data and interface objects, integrations, testing and deployment.",
     who="Developers extending Business Central. MB-800 knowledge helps a great deal."),
 
-"MD-102": dict(fam="m365", level="Intermediate", title="Endpoint Administrator",
+"MD-102": dict(fam="m365", level="Intermediate", title="Managing and Securing Microsoft 365 Endpoints by using Intune",
     url="https://learn.microsoft.com/credentials/certifications/modern-desktop/",
     sg="https://aka.ms/md102-StudyGuide", pa=True,
     blurb="Managing and securing endpoints with Intune — deployment, identity and compliance, applications, and protecting the device fleet.",
-    who="Endpoint and desktop administrators. The Intune exam, in practice."),
+    who="Endpoint and desktop administrators. The Intune exam, in practice.",
+    overview=(
+        "The Intune exam, and the one that has changed name to match what it actually is — "
+        "Microsoft renamed it to 'Managing and Securing Microsoft 365 Endpoints by using "
+        "Intune'. Preparing the infrastructure first, then the bulk of it: enrolling, managing "
+        "and maintaining devices, protecting them, and managing the applications on them. The "
+        "last tenth is automation, monitoring and reporting, which is what separates an estate "
+        "that runs itself from one that needs a person."),
+    duration="5 days", course="MD-102T00", exam_time="100 minutes",
+    prereq="Microsoft 365 administration experience and real-world device management background.",
+    challenges=[
+        "A device estate half in Configuration Manager and half in Intune, with no agreed "
+        "finishing line for the migration.",
+        "Enrolment that works for corporate laptops and falls apart for anything personal.",
+        "Compliance policies written once, never reviewed, and now blocking people silently.",
+        "Application packaging and deployment that still depends on one person's knowledge.",
+        "No reporting anyone trusts, so nobody can say how many devices are actually healthy.",
+    ],
+    labs=dict(
+        count=7,
+        repo="https://github.com/MicrosoftLearning/MD-102T00-Microsoft-365-Endpoint-Administrator",
+        summary=("Seven labs including the environment setup, working through enrolment, "
+                 "configuration and compliance policies, protection and application "
+                 "management on a tenant that is not production.")),
+    selling=dict(
+        pitch=("Everyone has Intune in the licence. This is the course that gets them off "
+               "Configuration Manager and onto it properly."),
+        triggers=[
+            "A Configuration Manager to Intune migration that has stalled halfway.",
+            "Windows Autopilot being considered, or attempted and abandoned.",
+            "A move to hybrid or remote working that has exposed device management gaps.",
+            "BYOD or contractor devices needing access without full management.",
+            "An endpoint security review that found inconsistent compliance policies.",
+        ],
+        buyer="Head of end-user computing or IT operations manager. Device management budgets are usually easy to locate.",
+        attendees="Endpoint and desktop administrators, and infrastructure people inheriting Intune.",
+        objections=[
+            ("We already use Intune.",
+             "Most organisations use about a third of it. Autopilot, application protection "
+             "and the reporting side are where the gaps usually are."),
+            ("Five days is long for a device course.",
+             "It is the broadest exam in the M365 track. If the estate is small, the first "
+             "three days carry most of the value — worth discussing."),
+            ("Our Configuration Manager works fine.",
+             "Then co-management is the conversation, and it is covered. Nobody is asking "
+             "them to switch everything off on a Friday."),
+            ("Is this not the same as MS-102?",
+             "No overlap worth worrying about. MS-102 is the tenant; MD-102 is the devices on it."),
+        ],
+        next=[
+            "MS-102 for the tenant layer above the devices",
+            "SC-300 when conditional access becomes the sticking point",
+            "AB-650 once Copilot reaches those managed endpoints",
+            "An Autopilot pilot run as a workshop on their own hardware",
+        ]),
+    ),
 "MS-102": dict(fam="m365", level="Intermediate", title="Microsoft 365 Administrator",
     url="https://learn.microsoft.com/credentials/certifications/exams/ms-102/",
     sg="https://aka.ms/MS102-StudyGuide", pa=True,
     blurb="Running a Microsoft 365 tenant: deployment, identity and access with Microsoft Entra, threat protection and compliance.",
-    who="Microsoft 365 administrators. The backbone certification for the M365 platform."),
+    who="Microsoft 365 administrators. The backbone certification for the M365 platform.",
+    overview=(
+        "The backbone certification for anyone running Microsoft 365. It splits almost evenly "
+        "across four areas: deploying and managing the tenant, Entra identity and access, "
+        "security and threat management with Defender XDR — which carries the biggest single "
+        "share — and compliance with Purview. It is the exam that proves somebody can be "
+        "handed a tenant and keep it running safely."),
+    duration="5 days", course="MS-102T00",
+    prereq="Working knowledge of Microsoft 365 workloads, DNS, and general networking and identity concepts.",
+    challenges=[
+        "A tenant configured during a migration years ago and never reviewed since.",
+        "Security defaults left wherever they landed, because nobody owns them.",
+        "Defender XDR licensed and largely unused, so alerts go to an inbox nobody reads.",
+        "Compliance obligations acknowledged in a policy document and nowhere in the tenant.",
+        "One person who understands the tenant, and a succession problem nobody has named.",
+    ],
+    labs=dict(
+        count=25,
+        repo="https://github.com/MicrosoftLearning/MS-102T00-Microsoft-365-Administrator-Essentials",
+        summary=("Twenty-five lab exercises starting from initialising a tenant and building "
+                 "out through identity, Defender XDR and Purview — the most thorough lab set "
+                 "in the Microsoft 365 track.")),
+    selling=dict(
+        pitch=("If one person in their organisation understands the tenant, this is the "
+               "course that fixes the bus-factor problem."),
+        triggers=[
+            "A tenant inherited from a migration partner with no handover.",
+            "One administrator who holds all the Microsoft 365 knowledge.",
+            "An E5 or Defender investment that is barely used.",
+            "A compliance or insurance questionnaire they struggled to answer.",
+            "New administrators joining who need a common grounding.",
+        ],
+        buyer="IT manager or head of IT operations. Straightforward to approve — the role is unambiguous.",
+        attendees="Microsoft 365 administrators, and infrastructure staff taking on tenant responsibility.",
+        objections=[
+            ("Our admins run Microsoft 365 every day.",
+             "They run the parts their tickets touch. The Defender XDR third and the Purview "
+             "tenth are usually where the unexamined risk sits."),
+            ("Five days is a long time.",
+             "Four areas, all weighted. It is genuinely a week's worth, and splitting it "
+             "across two blocks works well for small teams."),
+            ("We have a managed service provider for this.",
+             "Then someone internal still needs to review what the provider does. This is the "
+             "course that makes that review meaningful rather than ceremonial."),
+            ("Is MS-102 still current?",
+             "Yes, and the lab repository was updated this month. Worth saying, because people "
+             "remember the retired MS-100 and MS-101 pair."),
+        ],
+        next=[
+            "MD-102 for the device layer",
+            "SC-300 for identity in proper depth",
+            "SC-401 for the compliance half taken seriously",
+            "AB-650 once Copilot and agents land in that tenant",
+        ]),
+    ),
 "MS-700": dict(fam="m365", level="Intermediate", title="Managing Microsoft Teams",
     url="https://learn.microsoft.com/credentials/certifications/m365-teams-administrator-associate/",
     sg="https://aka.ms/ms700-StudyGuide", pa=True,
     blurb="Planning and configuring Teams — governance and lifecycle, chat and collaboration, meetings and the settings that keep it manageable.",
-    who="Teams administrators and M365 admins who own collaboration."),
+    who="Teams administrators and M365 admins who own collaboration.",
+    overview=(
+        "Running Teams as a platform rather than using it as an app. Configuring and managing "
+        "the Teams environment is nearly half the exam on its own, then governance of teams, "
+        "channels, chats and apps, then meetings and calling, and finally monitoring and "
+        "troubleshooting. Voice gets a look here; MS-721 is where it is covered properly."),
+    duration="4 days", course="MS-700T00", exam_time="100 minutes",
+    prereq="Microsoft 365 administration experience, and familiarity with how Teams sits on top of it.",
+    challenges=[
+        "Teams sprawl — thousands of teams, no naming standard, no lifecycle, nobody deleting.",
+        "Guest and external access configured by whoever needed it most urgently.",
+        "Meeting policies applied tenant-wide because per-group policy was never set up.",
+        "Call quality complaints that nobody can actually investigate.",
+        "Apps installed by users with no governance over what they can reach.",
+    ],
+    labs=dict(
+        count=4,
+        repo="https://github.com/MicrosoftLearning/MS-700-Managing-Microsoft-Teams",
+        summary=("Four substantial labs covering the Teams environment, governance of teams "
+                 "and channels, policy management, and the monitoring and troubleshooting "
+                 "tooling.")),
+    selling=dict(
+        pitch=("Teams got deployed in a hurry and nobody has governed it since. That is the "
+               "conversation."),
+        triggers=[
+            "Teams sprawl with no lifecycle policy and a growing storage bill.",
+            "Guest access questions from security that nobody can answer confidently.",
+            "Call or meeting quality complaints with no diagnostic process.",
+            "A Teams Premium or Copilot rollout that assumes the basics are in order.",
+            "Compliance asking about retention on chats and channels.",
+        ],
+        buyer="Collaboration lead, or the Microsoft 365 owner. Sometimes funded from a workplace experience programme.",
+        attendees="Teams administrators and Microsoft 365 admins who have inherited collaboration.",
+        objections=[
+            ("Teams manages itself.",
+             "Until the first legal hold, the first guest-access audit, or the first storage "
+             "bill nobody budgeted for."),
+            ("We only need the voice part.",
+             "Then MS-721 is the better fit and will save them a day. Worth asking before "
+             "quoting this one."),
+            ("Our users are happy with Teams.",
+             "Good — this is not a user course. It is for the person who has to answer "
+             "security and compliance about it."),
+            ("Four days for one application?",
+             "Teams is not one application. It is SharePoint, Exchange, Entra groups and a "
+             "voice platform wearing a single icon."),
+        ],
+        next=[
+            "MS-721 for the voice and meeting room depth",
+            "MS-102 for the tenant underneath it",
+            "SC-401 when retention and eDiscovery come up",
+            "A Teams governance review on their own tenant",
+        ]),
+    ),
 "MS-721": dict(fam="m365", level="Advanced", title="Collaboration Communications Systems Engineer",
     url="https://learn.microsoft.com/credentials/certifications/m365-collaboration-communications-systems-engineer/",
     sg="https://aka.ms/MS721-StudyGuide", pa=True,
     blurb="Teams Phone, meetings and meeting rooms — voice routing, certified devices, and troubleshooting call quality when it goes wrong.",
-    who="Engineers responsible for voice and meeting rooms. Telephony experience is a real advantage."),
+    who="Engineers responsible for voice and meeting rooms. Telephony experience is a real advantage.",
+    overview=(
+        "The voice and meeting rooms specialism, and the most niche exam we teach. Teams Phone "
+        "carries the largest share, then planning and designing the overall system, then "
+        "Teams Rooms and devices, and meetings, webinars and town halls. It assumes real "
+        "telephony background — this is not a Teams administration course with a phone chapter "
+        "bolted on."),
+    duration="5 days", course="MS-721T00", exam_time="100 minutes",
+    prereq="Telephony experience is close to essential, plus Teams administration (MS-700 level).",
+    challenges=[
+        "A PSTN migration where the old PBX contract ends before the new system is ready.",
+        "Direct Routing, Operator Connect or Calling Plans — a decision with long consequences "
+        "made on incomplete information.",
+        "Meeting rooms bought per office, each configured differently, none monitored.",
+        "Emergency calling and location requirements that nobody has properly read.",
+        "Call quality problems that turn out to be network problems, and vice versa.",
+    ],
+    labs=dict(
+        count=7,
+        repo="https://github.com/MicrosoftLearning/MS-721T00-Collaboration-Communications-Systems-Engineer",
+        summary=("Seven labs including setup, covering Teams Phone configuration, call "
+                 "routing, meeting and event management, and the Teams Rooms device estate.")),
+    selling=dict(
+        pitch=("Their PBX contract is ending and somebody has to make Teams Phone work. "
+               "Very few people can."),
+        triggers=[
+            "A PBX or telephony contract approaching renewal.",
+            "An office refit or move that includes meeting rooms.",
+            "Teams Phone bought and only partly rolled out.",
+            "Emergency calling or regulatory requirements raised by legal.",
+            "Persistent call quality complaints with no owner.",
+        ],
+        buyer="Head of unified communications or infrastructure. Often attached to a telephony project budget rather than training.",
+        attendees="Engineers responsible for voice and meeting rooms. Telephony background strongly assumed.",
+        objections=[
+            ("Our telephony is outsourced.",
+             "Then sell it to the provider, or to whoever has to specify and review their "
+             "work. Someone internal still signs off the design."),
+            ("MS-700 covers calling already.",
+             "It touches it. Teams Phone alone is a third of MS-721, and Direct Routing is "
+             "barely visible in MS-700."),
+            ("This is very specialised for five days.",
+             "It is, and that is the point — the specialists are rare and the projects are "
+             "expensive to get wrong."),
+            ("We are not ready to move off our PBX.",
+             "Then the planning and design content is exactly the right preparation. Better "
+             "trained before the decision than after."),
+        ],
+        next=[
+            "MS-700 first if the Teams administration grounding is missing",
+            "AZ-700 when the call quality problems turn out to be the network",
+            "MS-102 for the tenant underneath",
+            "A Teams Phone design workshop ahead of their migration",
+        ]),
+    ),
 
 "PL-200": dict(fam="power", level="Intermediate", title="Microsoft Power Platform Functional Consultant",
     url="https://learn.microsoft.com/credentials/certifications/exams/pl-200/",
