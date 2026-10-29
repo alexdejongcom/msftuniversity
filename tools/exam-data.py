@@ -46,7 +46,58 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/exams/ab-100/",
     sg="https://aka.ms/AB100-StudyGuide", pa=False,
     blurb="The architect-level exam for designing agentic AI solutions across Copilot Studio, Foundry and the Dynamics 365 and Power Platform stack.",
-    who="Solution architects who already hold an associate-level Dynamics 365, Power Platform or Azure AI certification — it has prerequisites, so check before you book."),
+    who="Solution architects who already hold an associate-level Dynamics 365, Power Platform or Azure AI certification — it has prerequisites, so check before you book.",
+    overview=(
+        "The architect exam of the AB track, and the only one that is mostly about deciding "
+        "rather than doing. Which process actually deserves an agent, what it may touch, how the "
+        "design spans Copilot Studio, Foundry, Dynamics 365 and Power Platform, and what happens "
+        "when it meets production. Planning and design carry about two thirds of the weighting — "
+        "the build is assumed to be somebody else's job."),
+    duration="3 days", course="AB-100T00",
+    prereq=("An associate-level certification is a formal prerequisite — Dynamics 365, Power "
+            "Platform or Azure AI. Check your candidates qualify before booking the exam."),
+    challenges=[
+        "Deciding which processes justify an agent and which are better served by a form and a flow.",
+        "Designing across products rather than inside one, when Copilot Studio, Foundry, Dynamics "
+        "365 and Power Platform each own part of the same workflow.",
+        "Agreeing what an agent may decide on its own and where a human stays in the loop.",
+        "Putting a defensible cost on an agentic solution before it is built, when usage rather "
+        "than seat count drives the bill.",
+        "Taking the prototype that impressed a steering group and making it survive production.",
+    ],
+    selling=dict(
+        pitch=("Their agent pilot worked. This is the course that tells them whether it should "
+               "become a platform."),
+        triggers=[
+            "Several agent pilots have succeeded separately and nobody owns the overall design.",
+            "A steering group has asked what agentic AI will cost them over three years.",
+            "They keep changing their mind between Copilot Studio, Foundry and custom code.",
+            "An agent is about to touch a system of record and risk has woken up.",
+            "They have plenty of associate-level people and no architect.",
+        ],
+        buyer="Enterprise architecture lead, CTO or transformation director — often funded from a programme budget rather than a training one.",
+        attendees="Solution architects and senior consultants who already hold an associate certification. Verify that first; the exam is gated on it.",
+        objections=[
+            ("Our architects already design on Power Platform.",
+             "Agentic design breaks some Power Platform habits: behaviour that is not "
+             "deterministic, identity for a non-human actor, and cost that moves with usage "
+             "instead of seats."),
+            ("It has prerequisites and our people are not certified yet.",
+             "True, and worth checking before you quote. The course still teaches them the job — "
+             "only the exam is gated, and the associate cert can follow."),
+            ("Can't the makers work the architecture out as they go?",
+             "That is how an organisation ends up with nine agents doing the same job against "
+             "four different copies of the data."),
+            ("Three days feels long for an architecture course.",
+             "Two of them are planning and design, which is where the weighting sits and where "
+             "the expensive mistakes get made."),
+        ],
+        next=[
+            "AB-620 for the people who will build what the architect designed",
+            "AB-650 for the admins who will have to govern the result",
+            "SC-401 once the design starts touching regulated data",
+            "A design workshop on one of their real processes instead of a second course",
+        ])),
 "AB-210": dict(fam="ai", level="Intermediate", title="Accelerating Sales Pipelines with AI in Dynamics 365",
     url="https://learn.microsoft.com/credentials/certifications/d365-sales-ai-consultant-associate/",
     sg="https://aka.ms/AB210-StudyGuide", pa=False,
@@ -71,7 +122,62 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/ai-agent-builder-associate/",
     sg="https://aka.ms/AB620-StudyGuide", pa=False,
     blurb="Agents that do real work in Copilot Studio: topics and triggers, connecting them to live systems, and testing them before anyone else does.",
-    who="Makers and consultants building agents for the business. The natural next step after the Copilot Studio courses."),
+    who="Makers and consultants building agents for the business. The natural next step after the Copilot Studio courses.",
+    overview=(
+        "The builder's exam for Copilot Studio. It starts with planning and configuring an agent, "
+        "then spends its largest share on the part that separates a demo from a tool — wiring an "
+        "agent into real systems with knowledge, tools and workflows, and getting several agents "
+        "to cooperate. The closing fifth is testing, publishing and managing them, which is "
+        "exactly where most first agents come apart."),
+    duration="3 days", course="AB-620T00",
+    prereq="Comfortable in Microsoft 365 and Power Platform. No Copilot Studio experience assumed.",
+    challenges=[
+        "Getting an agent past the demo — answering from live data instead of something typed in.",
+        "Choosing between knowledge, tools and workflows for a given job, rather than reaching "
+        "for whichever one was learned first.",
+        "Making several agents cooperate without quietly duplicating each other's work.",
+        "Testing something non-deterministic well enough to put it in front of a customer.",
+        "Owning it after launch: versions, changed source data, and the questions it has started "
+        "getting wrong.",
+    ],
+    labs=dict(
+        count=5,
+        repo="https://github.com/MicrosoftLearning/AB-620T00_build_integrated_ai_agents_in_copilot_studio",
+        guide="https://microsoftlearning.github.io/AB-620T00_build_integrated_ai_agents_in_copilot_studio/",
+        summary=("Five labs that build one agent up in stages, plus an environment setup. Design "
+                 "and configure it, add workflows, integrate knowledge and tools, extend it into "
+                 "a multi-agent solution, then evaluate, publish and manage it.")),
+    selling=dict(
+        pitch=("Copilot Studio is already in their licence. This is the course that turns it from "
+               "a chatbot into something that does the work."),
+        triggers=[
+            "Makers have built agents that answer questions but cannot actually do anything.",
+            "Every department wants its own agent and IT can see the sprawl coming.",
+            "Their first agent is live and already giving answers somebody had to correct.",
+            "They are carrying Power Virtual Agents habits into Copilot Studio.",
+            "An architect has produced an agent design and nobody can build it.",
+        ],
+        buyer="Head of Power Platform or the automation lead; sometimes the business unit that owns the process being automated.",
+        attendees="Power Platform makers, app makers, and developers extending Copilot. Low-code people, not necessarily developers.",
+        objections=[
+            ("Copilot Studio is low-code — our people will pick it up.",
+             "They will pick up topics in an afternoon. Tools, connectors, multi-agent design and "
+             "evaluation are where self-taught makers stall, and those are three fifths of this exam."),
+            ("We would rather wait until the product settles.",
+             "It is not going to settle. The skills that carry over regardless — grounding, tools, "
+             "evaluation — are the ones this course is built on."),
+            ("Can they not just watch the Learn modules?",
+             "The five labs are the course: build an agent, connect it, break it, publish it. "
+             "Watching somebody else do that does not transfer."),
+            ("Our agents only need to answer HR questions.",
+             "That is the first lab. The value is in the four that follow it."),
+        ],
+        next=[
+            "AB-650 for whoever governs the agents once there are twenty of them",
+            "AB-100 if they need the architecture layer above the build",
+            "PL-7008 as a fast Applied Skills win for the same people",
+            "A build day on one of their real processes",
+        ])),
 "AB-650": dict(fam="ai", level="Intermediate", title="Administering Microsoft 365 and AI Services",
     url="https://learn.microsoft.com/credentials/certifications/exams/ab-650/",
     sg="https://learn.microsoft.com/credentials/certifications/resources/study-guides/ab-650", pa=False,
@@ -148,17 +254,167 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/ai-business-professional/",
     sg="https://aka.ms/ab730-StudyGuide", pa=True,
     blurb="AI skills for people who work with the business rather than the platform: where AI creates value, and how to use it responsibly day to day.",
-    who="Business professionals, consultants and managers who need fluency without going deep into the technology."),
+    who="Business professionals, consultants and managers who need fluency without going deep into the technology.",
+    overview=(
+        "The non-technical end of the AB track, and the one most people in an organisation "
+        "should actually sit. A day on what generative AI is doing under the surface, how to "
+        "prompt it as a skill rather than a trick, how Copilot behaves across the documents, "
+        "spreadsheets and meetings they already live in, and where agents start to earn their "
+        "keep. No administration, no building."),
+    duration="1 day", course="AB-730T00",
+    prereq="None. Day-to-day familiarity with Microsoft 365 is enough.",
+    challenges=[
+        "Licences bought, Copilot opened twice, and nobody changed how they work.",
+        "Prompting treated as a magic phrase rather than a skill, so results vary and trust drops.",
+        "People not knowing which parts of their own week are worth handing over.",
+        "Output either taken at face value or rejected outright — neither of which is use.",
+        "The gap between the handful of enthusiasts and everyone else widening until adoption stalls.",
+    ],
+    labs=dict(
+        count=4,
+        repo="https://github.com/MicrosoftLearning/AB-730-AI-business-professional",
+        guide="https://microsoftlearning.github.io/AB-730-AI-business-professional/",
+        summary=("Four labs shaped like an ordinary working week rather than a product tour: "
+                 "planning a client summit with Copilot Chat, drafting and refining business "
+                 "content, analysing and visualising data, then running meetings and "
+                 "collaboration.")),
+    selling=dict(
+        pitch=("This is the course that makes the Copilot licences they already bought show up "
+               "in the usage report."),
+        triggers=[
+            "A Copilot rollout where active use is far below the licence count.",
+            "A department asking for AI training and nobody knowing what to put in front of them.",
+            "Leadership asking for an AI-literacy baseline across the whole business.",
+            "A cohort of new starters, or a team who have never used Copilot seriously.",
+            "An adoption programme that needs a formal, certifiable component attached to it.",
+        ],
+        buyer="HR or L&D, or the adoption lead on the Copilot programme. Rarely IT, which is worth knowing before you call.",
+        attendees="Anyone who uses Microsoft 365 daily. Non-technical by design, and it scales to large cohorts.",
+        objections=[
+            ("Our people can work Copilot out for themselves.",
+             "Some will. The usage reports from organisations that assumed everyone would are "
+             "the whole argument for this course."),
+            ("One day — is that really enough?",
+             "For this audience one day is the ceiling you will get signed off, and the course "
+             "is scoped to fit it rather than pretending otherwise."),
+            ("We want something tailored, not a Microsoft course.",
+             "The four labs are ordinary work: an event plan, a document, a spreadsheet, a "
+             "meeting. Tailoring it is mostly swapping the scenario for one of theirs."),
+            ("Is there a certification at the end?",
+             "Yes, and a free official practice assessment, which matters to the people who "
+             "want a finish line."),
+        ],
+        next=[
+            "AB-731 for the leaders who sponsored the programme",
+            "AB-900 for whoever ends up administering it",
+            "Sell this one per department rather than per person — it is the volume course",
+            "A prompting clinic six weeks later, once they have hit real friction",
+        ])),
 "AB-731": dict(fam="ai", level="Intermediate", title="AI Transformation Leader",
     url="https://learn.microsoft.com/credentials/certifications/ai-transformation-leader/",
     sg="https://aka.ms/ab731-StudyGuide", pa=True,
     blurb="Leading an organisation through AI adoption — strategy, governance, change and measuring whether any of it actually worked.",
-    who="Leaders and programme owners driving AI transformation, not the engineers implementing it."),
-"AB-900": dict(fam="ai", level="Beginner", title="Copilot and Agent Administration Fundamentals",
+    who="Leaders and programme owners driving AI transformation, not the engineers implementing it.",
+    overview=(
+        "The leadership day. Where generative AI creates value and, just as usefully, where it "
+        "does not; what is actually inside Microsoft's AI portfolio; and how an organisation "
+        "gets from a successful pilot to something it runs. About three quarters of it is value "
+        "and capability, with the last quarter on implementation and adoption. No building, no "
+        "administration, no labs."),
+    duration="1 day", course="AB-731T00",
+    prereq="None technical. It assumes you own or influence a budget and a change programme.",
+    challenges=[
+        "A board asking for an AI strategy when what exists is three enthusiastic pilots.",
+        "Separating genuine value from vendor narrative across a portfolio that changes quarterly.",
+        "Choosing where to start when every department is certain it should be first.",
+        "Measuring whether any of it worked, in terms the finance director will accept.",
+        "Carrying the whole organisation rather than the early adopters — a change problem "
+        "wearing a technology costume.",
+    ],
+    selling=dict(
+        pitch=("Their pilots worked and no strategy followed. This is the day that closes "
+               "that gap."),
+        triggers=[
+            "A board or exec team has asked for an AI plan with a date attached.",
+            "Pilots succeeded and nothing scaled, and nobody can say why.",
+            "Several vendors are selling them AI and they cannot compare the offers.",
+            "A transformation programme is running with no AI workstream in it.",
+            "They sent the technical people on Copilot training and leadership got left behind.",
+        ],
+        buyer="CIO, CDO or transformation director. Frequently sold alongside a strategy engagement rather than as training.",
+        attendees="Executives, programme owners and senior managers. Deliberately not the engineers.",
+        objections=[
+            ("Our leadership does not do training.",
+             "Then call it a briefing. One day, no labs, and they leave with an adoption plan "
+             "rather than a certificate they will never mention."),
+            ("We already have an AI strategy.",
+             "Good — this is the day it gets pressure-tested against what the platform can "
+             "actually do today, which is usually where strategies move."),
+            ("Is this not just marketing content?",
+             "A third of the exam is identifying business value, and that includes identifying "
+             "where there is none. It is a filter as much as a pitch."),
+            ("Our people need hands-on, not theory.",
+             "Different audience entirely. Sell AB-730 to them and this to the people funding them."),
+        ],
+        next=[
+            "AB-730 for the workforce the leader is about to mobilise",
+            "AB-650 for the administrators who inherit the rollout",
+            "AB-100 if the ambition turns out to be genuinely agentic",
+            "A strategy workshop on their own portfolio rather than a second course",
+        ])),
+"AB-900": dict(fam="ai", level="Beginner", title="Microsoft 365 Copilot and Agent Administration Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/copilot-and-agent-administration-fundamentals/",
     sg="https://aka.ms/ab900-StudyGuide", pa=True,
     blurb="The fundamentals of administering Microsoft 365 Copilot and agents: rollout, permissions, governance and the guardrails around them.",
-    who="Administrators taking their first structured look at running Copilot and agents in a tenant."),
+    who="Administrators taking their first structured look at running Copilot and agents in a tenant.",
+    overview=(
+        "The fundamentals day for running Microsoft 365 once Copilot is in it. A tour of the "
+        "services and objects an administrator touches, then the larger share: what data "
+        "protection and governance mean when Copilot can surface anything a user could already "
+        "reach, and the basic administrative tasks for Copilot and agents. Think of it as the "
+        "gentle version of AB-650 — same territory, none of the depth, and no labs."),
+    duration="1 day", course="AB-900T00",
+    prereq="None. General familiarity with Microsoft 365 as a user is plenty.",
+    challenges=[
+        "A service desk being handed Copilot questions that nobody prepared them for.",
+        "Not knowing which admin centre owns which setting now that AI is in the picture.",
+        "Governance arriving as a policy document rather than as things somebody actually clicks.",
+        "Nobody able to explain to a user, in one sentence, why Copilot can see a given file.",
+        "Needing a shared vocabulary across a mixed team before a serious AB-650 conversation "
+        "is even possible.",
+    ],
+    selling=dict(
+        pitch=("The one-day version, for the people who will be asked Copilot questions long "
+               "before anyone trains them."),
+        triggers=[
+            "A Copilot rollout where the service desk found out last.",
+            "A mixed team in which exactly one person really understands the tenant.",
+            "Junior admins or new starters who need a baseline quickly.",
+            "A customer who balked at three days for AB-650 and needs a step before it.",
+            "Pre-work ahead of a larger security or governance engagement.",
+        ],
+        buyer="IT manager, or whoever owns the service desk. Small enough to approve without a business case.",
+        attendees="Service desk staff, junior administrators, and non-specialists who have inherited a corner of the tenant.",
+        objections=[
+            ("Fundamentals courses are a wasted day.",
+             "For a specialist, yes. This is for the people who receive the ticket, not the "
+             "people who write the policy."),
+            ("Why not just send them on AB-650?",
+             "Three days, and it assumes experience they do not have yet. This is the step that "
+             "makes AB-650 land properly six months later."),
+            ("There are no labs?",
+             "Correct, and say so up front. It is a knowledge day. If they want hands-on from "
+             "the start, sell AB-650 instead and skip this."),
+            ("Is it worth certifying at this level?",
+             "The certificate matters less than the shared vocabulary. The free practice "
+             "assessment is a useful nudge to make people actually finish it."),
+        ],
+        next=[
+            "AB-650 as the natural follow-on for whoever shows aptitude",
+            "AB-730 for the end users those administrators support",
+            "SC-900 if their questions keep turning out to be security questions",
+            "A tenant review delivered alongside, so the training lands on their own estate",
+        ])),
 "AI-900": dict(fam="ai", level="Beginner", title="Microsoft Azure AI Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/exams/ai-900/",
     sg="https://aka.ms/AI900-StudyGuide", pa=True,

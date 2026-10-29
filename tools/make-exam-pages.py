@@ -164,7 +164,8 @@ def course_detail(code, e):
         </ul>
       </div>
 """ % ("%d labs across %d learning paths" % (labs["count"], labs["paths"])
-       if labs.get("count") and labs.get("paths") else "What you actually build",
+       if labs.get("count") and labs.get("paths")
+       else ("%d hands-on labs" % labs["count"] if labs.get("count") else "What you actually build"),
        esc(labs.get("summary", "")), "\n".join("          " + l for l in links))
 
     two_col = ""
