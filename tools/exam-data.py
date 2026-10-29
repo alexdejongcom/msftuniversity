@@ -611,30 +611,365 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/exams/sc-100/",
     sg="https://aka.ms/SC100-StudyGuide", pa=True,
     blurb="Designing a Zero Trust security strategy — architecture across identity, data, applications and infrastructure, and the governance around it.",
-    who="Security architects. Expect one of SC-200, SC-300, AZ-500 or MS-102 behind you; this exam assumes that ground is covered."),
+    who="Security architects. Expect one of SC-200, SC-300, AZ-500 or MS-102 behind you; this exam assumes that ground is covered.",
+    overview=(
+        "The architect exam of the SC track. It is not about configuring anything — it is about "
+        "deciding what an organisation should do, and defending that in front of the people who "
+        "have to fund it. Strategy and Zero Trust framing first, then designs for security "
+        "operations, identity and compliance, for infrastructure, and for applications and data. "
+        "The four areas are weighted almost evenly, so there is nowhere to hide."),
+    duration="4 days", course="SC-100T00",
+    prereq=("An associate-level security certification first — SC-200, SC-300, AZ-500 or "
+            "equivalent experience. This exam assumes you have already done the implementing."),
+    challenges=[
+        "A board that has bought Zero Trust as a phrase and needs it turned into a sequence of "
+        "funded projects.",
+        "Security tooling bought department by department, now overlapping in places and "
+        "leaving gaps nobody owns.",
+        "Designing for an estate that will still be hybrid in five years, rather than the "
+        "cloud-only diagram everyone draws.",
+        "Turning a regulatory obligation into technical controls somebody can actually build "
+        "and evidence.",
+        "Being the person who has to say out loud which risks the organisation is choosing "
+        "to accept.",
+    ],
+    labs=dict(
+        count=12,
+        repo="https://github.com/MicrosoftLearning/SC-100-Microsoft-Cybersecurity-Architect",
+        guide="https://microsoftlearning.github.io/SC-100-Microsoft-Cybersecurity-Architect/",
+        summary=("Twelve lab exercises — lighter on clicking than the associate courses, because "
+                 "this is a design exam. They cover compliance assessment, Entra ID policy and "
+                 "conditional access, B2B collaboration and the rest of the estate.")),
+    selling=dict(
+        pitch=("Their security team can build anything. This is for the person who has to "
+               "decide what gets built, and in what order."),
+        triggers=[
+            "A Zero Trust programme that exists on a slide and nowhere else.",
+            "Overlapping security products bought over three years, with no one able to say "
+            "which owns what.",
+            "A regulator, insurer or major customer has asked to see a security architecture.",
+            "Their best SC-200 and SC-300 people are ready for the next step and will leave if "
+            "they do not get it.",
+            "A breach or near miss has the board asking who is actually designing this.",
+        ],
+        buyer="CISO or head of security architecture. Budget usually sits with security rather than IT training.",
+        attendees="Security architects and senior engineers moving up. Check the prerequisite certification before booking the exam.",
+        objections=[
+            ("Our architects do not need a Microsoft course.",
+             "Fair if their estate is not Microsoft. If it is, this is the only place the "
+             "reference architectures and the licensing reality get taught together."),
+            ("Four days of theory is a lot.",
+             "It is four days of design decisions with twelve labs attached. The judgement is "
+             "the product here — architects are not paid for clicks."),
+            ("Could they not just repeat SC-200 or SC-300?",
+             "Those teach implementing. If the gap is that nobody owns the overall design, "
+             "another associate course will not close it."),
+            ("Can one person really architect all of this?",
+             "No, and the course says as much. What it gives them is a shared frame, so the "
+             "identity, SecOps and data people are designing the same system."),
+        ],
+        next=[
+            "SC-200 and SC-300 for the team who will implement the design",
+            "SC-500 once the design reaches Azure workloads and AI",
+            "SC-401 for the data protection half of it",
+            "A design review on their own architecture — usually an easier sell than a second course",
+        ])),
 "SC-200": dict(fam="security", level="Intermediate", title="Microsoft Security Operations Analyst",
     url="https://learn.microsoft.com/credentials/certifications/security-operations-analyst/",
     sg="https://aka.ms/SC200-StudyGuide", pa=True,
     blurb="Threat detection and response with Defender XDR and Microsoft Sentinel — mitigating threats and hunting for what the alerts missed.",
-    who="SOC analysts and security engineers. KQL is worth practising before you sit it."),
+    who="SOC analysts and security engineers. KQL is worth practising before you sit it.",
+    overview=(
+        "The day job of a security operations analyst, in exam form. Running the environment "
+        "carries the largest share — Defender XDR, Sentinel, the connectors and the rules that "
+        "decide what you ever get told about. Then responding to incidents across identity, "
+        "endpoint, email and cloud, and finally proactive hunting for the things no rule "
+        "caught. KQL runs underneath all three."),
+    duration="4 days", course="SC-200T00", exam_time="100 minutes",
+    prereq=("Comfortable with Microsoft 365 and Azure, and willing to write KQL. Do not send "
+            "somebody who has never queried anything."),
+    challenges=[
+        "An alert queue nobody can get to the bottom of, so the real incident waits behind "
+        "forty false positives.",
+        "Sentinel deployed, ingesting expensively, and tuned by nobody since go-live.",
+        "An incident that crosses identity, endpoint and email, handled by three people who "
+        "each see a third of it.",
+        "Analysts who can read a dashboard but cannot write the query that answers the actual "
+        "question.",
+        "No hunting at all — a SOC that is entirely reactive and only finds what the vendor "
+        "wrote a rule for.",
+    ],
+    labs=dict(
+        count=25,
+        repo="https://github.com/MicrosoftLearning/SC-200T00A-Microsoft-Security-Operations-Analyst",
+        summary=("Twenty-five lab exercises, the most hands-on course in the SC track. They "
+                 "run from exploring Defender XDR and Security Copilot, through deploying "
+                 "Defender for Endpoint and Purview Audit, into Sentinel and the hunting work.")),
+    selling=dict(
+        pitch=("They are paying for Sentinel and Defender already. This is the course that "
+               "makes the SOC actually use them."),
+        triggers=[
+            "Sentinel costs are rising and nobody can explain what the ingestion is buying.",
+            "An incident took days longer than it should have, and the review blamed tooling.",
+            "They are building a SOC in-house, or taking one back from an MSSP.",
+            "Analysts are reading dashboards because they cannot write KQL.",
+            "Security Copilot has arrived and the team do not know where it fits.",
+        ],
+        buyer="SOC manager or head of security operations; sometimes the MSSP running the service on their behalf.",
+        attendees="SOC analysts at tiers one and two, security engineers, and incident responders.",
+        objections=[
+            ("Our analysts learn on the job.",
+             "They learn the alerts they happen to see. The twenty-five labs cover the "
+             "incidents they have not had yet, which is the point of training."),
+            ("We use a different SIEM.",
+             "Then the Sentinel days are less relevant, but Defender XDR is where the signal "
+             "originates either way. Worth checking which half they actually need."),
+            ("Four days off the rota is impossible.",
+             "That is the real objection, and it is why this one sells as two blocks of two "
+             "days more often than as a solid week."),
+            ("KQL looks intimidating for our tier one.",
+             "It is taught from scratch here, and it is the single skill that most changes "
+             "what a tier one analyst can do unaided."),
+        ],
+        next=[
+            "SC-100 for the analyst ready to move into architecture",
+            "SC-300 when the incidents keep turning out to be identity incidents",
+            "SC-500 for the Azure workload side of the estate",
+            "A KQL day, which sells well on its own to the same team",
+        ])),
 "SC-300": dict(fam="security", level="Intermediate", title="Microsoft Identity and Access Administrator",
     url="https://learn.microsoft.com/credentials/certifications/identity-and-access-administrator/",
     sg="https://aka.ms/sc300-StudyGuide", pa=True,
     blurb="Microsoft Entra in depth — identity lifecycle, authentication and conditional access, application access and identity governance.",
-    who="Identity administrators. Identity is the control plane, which makes this one of the highest-leverage certifications here."),
+    who="Identity administrators. Identity is the control plane, which makes this one of the highest-leverage certifications here.",
+    overview=(
+        "Microsoft Entra, properly. The identity lifecycle and how accounts actually get "
+        "created and removed, then authentication and conditional access — the largest single "
+        "block. After that two areas people routinely underestimate: workload identities, now "
+        "that applications and agents need identities of their own, and identity governance, "
+        "which is where access reviews and entitlement management live. Four areas, evenly "
+        "weighted."),
+    duration="4 days", course="SC-300T00", exam_time="100 minutes",
+    prereq="Working knowledge of Microsoft 365 and Azure administration, and of directory concepts.",
+    challenges=[
+        "Leavers who still have access months later, because joining is automated and leaving "
+        "is an email.",
+        "Conditional access grown one exception at a time, until nobody dares change a policy.",
+        "Service principals and app registrations created years ago by people who have left, "
+        "holding permissions nobody has reviewed.",
+        "An auditor asking who approved a given person's access, and the answer taking a week "
+        "to assemble.",
+        "Privileged accounts standing permanently, because just-in-time access was always "
+        "next quarter's project.",
+    ],
+    labs=dict(
+        count=29,
+        repo="https://github.com/MicrosoftLearning/SC-300-Identity-and-Access-Administrator",
+        summary=("Twenty-nine lab exercises including environment setup — the most thorough "
+                 "lab set in the track. Roles and tenant properties, group-based licensing, "
+                 "authentication methods, conditional access, application access and the "
+                 "governance features on top.")),
+    selling=dict(
+        pitch=("Identity is the control plane. This is the course that stops it being the "
+               "weakest part of their security."),
+        triggers=[
+            "An audit or penetration test has flagged standing privileged access.",
+            "A joiner-mover-leaver process that works on the way in and not on the way out.",
+            "Conditional access policies nobody wants to touch in case something breaks.",
+            "They have bought Entra ID P2 and use almost none of it.",
+            "Agents and workload identities are arriving and the identity team has no plan.",
+        ],
+        buyer="Head of identity, IAM lead, or the IT manager who owns Entra. Security often co-funds it.",
+        attendees="Identity and access administrators, Microsoft 365 administrators who own Entra, and security engineers on the identity side.",
+        objections=[
+            ("We already do identity — our admins create accounts every day.",
+             "Creating accounts is the first fifth. Workload identities and governance are "
+             "where the audit findings come from, and those are half this exam."),
+            ("Entra changes constantly.",
+             "It does, which is why the structure matters more than the screenshots. The lab "
+             "repo is maintained and was updated this month."),
+            ("Our identity is still mostly on-premises.",
+             "Then hybrid identity is exactly the conversation, and it is covered. The course "
+             "does not assume they are cloud-only."),
+            ("Is this not just AZ-104 again?",
+             "AZ-104 touches Entra. This one spends four days inside it, including the "
+             "governance that AZ-104 never reaches."),
+        ],
+        next=[
+            "SC-100 for the architect-level view above it",
+            "SC-401 when the conversation turns to what those identities can reach",
+            "AB-650 once agents need identities and lifecycle of their own",
+            "An access review workshop on their own tenant",
+        ])),
 "SC-401": dict(fam="security", level="Intermediate", title="Information Security Administrator",
     url="https://learn.microsoft.com/credentials/certifications/information-security-administrator/",
     sg="https://aka.ms/SC401-StudyGuide", pa=True,
     blurb="Protecting data with Microsoft Purview — information protection, data loss prevention, insider risk and retention.",
-    who="Administrators who own data protection and compliance. The successor to the old SC-400."),
+    who="Administrators who own data protection and compliance. The successor to the old SC-400.",
+    overview=(
+        "Microsoft Purview, in the era where Copilot can read everything a user can. Three "
+        "evenly weighted blocks: classifying and labelling information, stopping it leaving "
+        "and deciding how long it is kept, and then the detection side — insider risk, alerts "
+        "and activity. The official course title now says 'in the AI era', which is an honest "
+        "description of why this exam has got busier."),
+    duration="4 days", course="SC-401T00", exam_time="100 minutes",
+    prereq="Microsoft 365 administration experience and a working grasp of compliance concepts.",
+    challenges=[
+        "Sensitive data nobody can locate, in a tenant that has been accumulating since 2016.",
+        "A labelling scheme designed by committee that users bypass within a week.",
+        "DLP policies in audit mode for two years because nobody dares turn enforcement on.",
+        "Retention obligations that conflict — legal wants it kept, privacy wants it gone.",
+        "Copilot turning a decade of quiet oversharing into answers somebody can read today.",
+    ],
+    labs=dict(
+        count=14,
+        repo="https://github.com/MicrosoftLearning/SC-401T00-Information-Security-Administrator",
+        summary=("Fourteen lab exercises including setup. Compliance roles first, then "
+                 "sensitive information types and sensitivity labels, and on into data loss "
+                 "prevention, retention and the risk and alerting work.")),
+    selling=dict(
+        pitch=("Copilot has made their oversharing visible. This is the course that gives "
+               "somebody the tools to fix it."),
+        triggers=[
+            "A Copilot rollout paused or slowed over what it might surface.",
+            "An audit, NIS2 or ISO review asking where sensitive data actually lives.",
+            "DLP sitting in audit mode indefinitely because the false positives were never tuned.",
+            "A near miss — data shared externally that should not have been.",
+            "They bought E5 or a compliance add-on and use a fraction of Purview.",
+        ],
+        buyer="Compliance lead, data protection officer, or the CISO. Legal sometimes has a view and occasionally the budget.",
+        attendees="Microsoft 365 and compliance administrators, and the security people who have inherited Purview.",
+        objections=[
+            ("We have DLP already.",
+             "Most organisations have DLP in audit mode. The gap is usually tuning and "
+             "enforcement, which is a third of this exam."),
+            ("Purview is enormous — can four days cover it?",
+             "It covers the three areas the exam weights evenly. eDiscovery and the deeper "
+             "records management are a separate conversation, and worth saying so."),
+            ("Our data is a mess, training will not fix that.",
+             "True. The course gives them the classification and labelling approach to work "
+             "through it — and the honest answer is that it is a programme, not a week."),
+            ("Can the security team not pick this up?",
+             "They can, but it is usually a different person. Purview rewards someone who "
+             "will own it continuously rather than visit it after an incident."),
+        ],
+        next=[
+            "SC-500 for the Azure and AI workload security around it",
+            "SC-300 when the findings turn out to be access problems",
+            "AB-650 for the Copilot administration side",
+            "A data discovery exercise on their own tenant, which often funds the training",
+        ])),
 "SC-500": dict(fam="security", level="Intermediate", title="Implementing End-to-End Security Controls for Cloud and AI Workloads",
     url="https://learn.microsoft.com/credentials/certifications/cloud-and-ai-security-engineer-associate/",
     sg="https://aka.ms/SC500-StudyGuide", pa=False,
     blurb="Security across the whole estate rather than one product: identity and governance, storage, databases and networking, compute, and the platforms AI workloads actually run on.",
-    who="Security engineers working across Azure and Microsoft 365 who now have AI workloads to protect as well. Earns the Cloud and AI Security Engineer Associate certification."),
+    who="Security engineers working across Azure and Microsoft 365 who now have AI workloads to protect as well. Earns the Cloud and AI Security Engineer Associate certification.",
+    overview=(
+        "The successor to AZ-500, widened to take in AI workloads. Four evenly weighted areas: "
+        "identity, access and governance; securing storage, databases and networking; securing "
+        "compute; and managing security posture across the lot. The AI part is not a bolt-on "
+        "module — it runs through the whole thing, because the platforms AI runs on are the "
+        "same platforms you were already securing."),
+    duration="4 days", course="SC-500T00", exam_time="120 minutes",
+    prereq=("Hands-on administration of Azure and hybrid environments — compute, network and "
+            "storage — plus strong Microsoft Entra ID and some Microsoft 365."),
+    challenges=[
+        "An Azure estate grown by project teams, where nobody can say what is exposed today.",
+        "AI workloads deployed by developers into subscriptions the security team does not watch.",
+        "Posture tools producing hundreds of recommendations and no agreed order to fix them.",
+        "Network and storage controls configured once at build time and never revisited.",
+        "AZ-500 holders whose certification is retiring, and who need the path forward.",
+    ],
+    selling=dict(
+        pitch=("AZ-500 is going away and their Azure estate now runs AI. This is the "
+               "replacement, and it covers both."),
+        triggers=[
+            "They hold AZ-500 certifications and have heard it is being retired.",
+            "AI or Foundry workloads have appeared in Azure and security was not consulted.",
+            "A cloud security posture review produced a backlog nobody has prioritised.",
+            "They are hiring Azure security engineers and need a common standard.",
+            "An SC-100 architecture has been signed off and now needs implementing in Azure.",
+        ],
+        buyer="Head of cloud or cloud security lead. Often funded from the cloud programme rather than training.",
+        attendees="Azure security engineers, cloud engineers taking on security, and AZ-500 holders moving across.",
+        objections=[
+            ("We will wait, it is still in beta.",
+             "Beta applies to the exam, not the controls. Train now and certify when it goes "
+             "generally available — the Azure work is live either way."),
+            ("Our people already hold AZ-500.",
+             "Then this is the natural transition, and the AI and posture material is new "
+             "ground rather than revision."),
+            ("There is no practice assessment yet.",
+             "Correct, and worth saying up front. Microsoft usually publishes one within a "
+             "couple of months of an exam leaving beta."),
+            ("We do not have AI workloads yet.",
+             "Three quarters of it is Azure security you need regardless. The AI content is "
+             "the part that stops this being out of date in a year."),
+        ],
+        next=[
+            "SC-100 for the architecture layer above it",
+            "SC-401 when the data inside those workloads needs protecting",
+            "SC-200 for the team who will respond to what the posture tooling finds",
+            "An Azure security posture review delivered alongside the course",
+        ])),
 "SC-900": dict(fam="security", level="Beginner", title="Microsoft Security, Compliance, and Identity Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/security-compliance-and-identity-fundamentals/",
     sg="https://aka.ms/sc900-StudyGuide", pa=True,
     blurb="The vocabulary and the map: security and compliance concepts, and what each Microsoft security, identity and compliance capability is for.",
-    who="Anyone before starting the SC track — and business stakeholders who need to follow the conversation."),
+    who="Anyone before starting the SC track — and business stakeholders who need to follow the conversation.",
+    overview=(
+        "The map of the territory, in a day. Core security, compliance and identity concepts, "
+        "then what each part of the Microsoft portfolio is actually for — Entra, the Defender "
+        "family, and the compliance side. The security capabilities carry the biggest share. "
+        "Nobody configures anything here; the point is that afterwards a mixed room can have "
+        "the same conversation using the same words."),
+    duration="1 day", course="SC-900T00", exam_time="45 minutes",
+    prereq="None. It is written for people with no security background at all.",
+    challenges=[
+        "A project where the security people and everyone else are plainly not describing the "
+        "same system.",
+        "Product names used interchangeably until nobody is sure which tool does what.",
+        "Decisions about security budget taken by people who cannot evaluate the options.",
+        "New joiners needing a baseline before any of the deeper SC courses will land.",
+        "Business stakeholders who nod through security reviews they do not actually follow.",
+    ],
+    labs=dict(
+        count=16,
+        repo="https://github.com/MicrosoftLearning/SC-900-Microsoft-Security-Compliance-and-Identity-Fundamentals",
+        guide="https://microsoftlearning.github.io/SC-900-Microsoft-Security-Compliance-and-Identity-Fundamentals/",
+        summary=("Sixteen short guided explorations including setup — Entra ID, self-service "
+                 "password reset, conditional access and onward through the Defender and "
+                 "Purview portals. Looking rather than building, which suits the audience.")),
+    selling=dict(
+        pitch=("One day that makes every later security conversation cheaper, because "
+               "everyone finally means the same thing by the same words."),
+        triggers=[
+            "A security programme about to start with a mixed technical and business audience.",
+            "New joiners or a team moving into security-adjacent work.",
+            "A customer who wants the SC track but has nobody ready for the associate level.",
+            "Sales or account teams who need to talk credibly about the security portfolio.",
+            "Pre-work bundled ahead of SC-200, SC-300 or SC-401.",
+        ],
+        buyer="L&D, or the programme manager running a security initiative. Low cost, easy to approve.",
+        attendees="Anyone — business stakeholders, new starters, project managers, salespeople, and technical people who want the map before the detail.",
+        objections=[
+            ("Fundamentals is too basic for our team.",
+             "For the security team, yes. This is for everyone they have to work with, which "
+             "is usually where the friction actually is."),
+            ("It is only 45 minutes of exam — is it worth anything?",
+             "As a credential, modestly. As a shared vocabulary before a four-day course, it "
+             "saves more time than it costs."),
+            ("Can they not read about this?",
+             "They can, and most do not. A scheduled day with sixteen guided explorations is "
+             "the difference between intending to and having done it."),
+            ("We would rather go straight to SC-200.",
+             "If they have the background, do. If half the room does not, SC-200 will lose "
+             "them on day one and they will not say so."),
+        ],
+        next=[
+            "SC-300 or SC-200 as the usual next step, depending on where they sit",
+            "SC-401 for the compliance-minded ones",
+            "Sell it per cohort rather than per person — it is a volume course",
+            "AB-730 for the same audience on the AI side",
+        ])),
 }
