@@ -105,10 +105,20 @@ def course_detail(code, e):
     renders without this section. All copy is ours: Microsoft's objectives and
     descriptions stay behind the official links.
     """
-    if not any(e.get(k) for k in ("overview", "challenges", "labs", "duration")):
+    if not any(e.get(k) for k in ("overview", "challenges", "labs", "duration", "retired")):
         return ""
 
     esc = lambda s: html.escape(str(s), quote=False)
+
+    # A retired exam says so first, before anything else on the page.
+    retired = ""
+    if e.get("retired"):
+        retired = (
+            '    <p style="background:#fff4ce;border:1px solid #f2c94c;border-radius:var(--radius);'
+            'padding:14px 18px;font-size:15px;color:var(--ink);max-width:820px;margin-bottom:22px">'
+            '<strong>Retired by Microsoft on %s.</strong> This exam can no longer be taken and its '
+            'renewal assessments have been withdrawn. It is kept here for people who hold it and '
+            'need the context.</p>\n' % esc(e["retired"]))
 
     facts = []
     if e.get("duration"):
@@ -180,13 +190,13 @@ def course_detail(code, e):
       <div class="eyebrow">About the course</div>
       <h2 class="section-title">What %s actually covers</h2>
     </div>
-%s%s
+%s%s%s
     <div class="road-strip" style="margin-top:26px">
 %s
     </div>
 %s  </div>
 </section>
-""" % (esc(code), overview, prereq, fact_html, two_col)
+""" % (esc(code), retired, overview, prereq, fact_html, two_col)
 
 
 def seller_block(code, e):

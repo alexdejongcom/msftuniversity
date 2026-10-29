@@ -83,6 +83,96 @@
 
 <section class="section alt">
   <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">About the course</div>
+      <h2 class="section-title">What AZ-204 actually covers</h2>
+    </div>
+    <p style="font-size:17px;color:var(--ink-soft);max-width:820px">The developer exam. Compute carries the biggest share — App Service, Functions, containers — then storage, then implementing security properly rather than putting secrets in config. The last part is about connecting things: consuming Azure and third-party services through messaging, events and API Management. It assumes you can already write code; it tests whether you can write code that runs well on Azure.</p>
+    <p style="font-size:14.5px;color:var(--ink-faint);max-width:820px;margin-top:14px"><strong>Assumed knowledge:</strong> A year or two of professional development, and real Azure experience. Fluency in at least one supported language.</p>
+
+    <div class="road-strip" style="margin-top:26px">
+      <div class="road-stat is-text"><strong>Intermediate</strong><span>Technical level</span></div>
+      <div class="road-stat is-text"><strong>11 labs</strong><span>Hands-on labs</span></div>
+    </div>
+    <div class="grid grid-2" style="margin-top:34px">
+      <div>
+        <h3 style="font-family:var(--font-display);font-size:19px;margin-bottom:12px">The problems it answers</h3>
+        <p class="sub" style="margin-bottom:14px">Why people in this role end up sitting AZ-204</p>
+        <ol style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">
+          <li style="margin-bottom:10px">Applications lifted into Azure unchanged, then surprising everyone with the bill.</li>
+          <li style="margin-bottom:10px">Secrets and connection strings living in configuration files and repositories.</li>
+          <li style="margin-bottom:10px">Services wired together synchronously, so one slow dependency takes everything down.</li>
+          <li style="margin-bottom:10px">No instrumentation, so production problems are diagnosed by guesswork.</li>
+          <li style="margin-bottom:10px">Developers choosing a compute option by familiarity rather than by fit.</li>
+        </ol>
+      </div>
+      <div class="card resource-group">
+        <h3>Hands-on labs</h3>
+        <p class="sub">11 hands-on labs</p>
+        <p style="font-size:14.5px;color:var(--ink-soft)">Eleven hands-on labs that build and deploy real Azure services rather than walking through the portal — App Service, Functions, storage, Key Vault, messaging and API Management.</p>
+        <ul class="resource-list" style="margin-top:14px">
+          <li><a href="https://github.com/MicrosoftLearning/AZ-204-DevelopingSolutionsforMicrosoftAzure" target="_blank" rel="noopener">Lab instructions on GitHub <span class="desc">Official MicrosoftLearning repository</span></a></li>
+          <li><a href="https://microsoftlearning.github.io/AZ-204-DevelopingSolutionsforMicrosoftAzure/" target="_blank" rel="noopener">Hosted lab guide <span class="desc">The same labs, rendered for reading</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">For training partners</div>
+      <h2 class="section-title">Selling AZ-204</h2>
+      <p>Everything a partner needs to put this course in front of the right customer.
+         Lift any of it straight into a proposal.</p>
+    </div>
+    <p style="font-size:19px;font-family:var(--font-display);color:var(--ink);max-width:760px;line-height:1.45">&ldquo;Their developers can write the application. This is what makes it run properly on Azure instead of just running.&rdquo;</p>
+    <div class="grid grid-2" style="margin-top:30px;align-items:start">
+      <div>
+        <h3 style="font-family:var(--font-display);font-size:18px;margin-bottom:10px">When to bring it up</h3>
+        <ul style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">
+          <li>A lift-and-shift migration where cloud costs did not fall as promised.</li>
+          <li>A development team told to go cloud-native with no one to show them how.</li>
+          <li>Secrets found in a repository during a security review.</li>
+          <li>Production incidents that take too long to diagnose because nothing is instrumented.</li>
+          <li>A platform team standing up Azure and needing the developers to meet them halfway.</li>
+        </ul>
+        <p style="margin-top:18px;font-size:14.5px;color:var(--ink-soft);line-height:1.6"><strong>Who signs:</strong> Development manager or head of engineering. A different budget from infrastructure training, and worth knowing that.<br><strong>Who attends:</strong> Professional developers with real Azure exposure. Not a beginner course.</p>
+        <h3 style="font-family:var(--font-display);font-size:18px;margin:22px 0 10px">What to sell next</h3>
+        <ul style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">
+          <li>AZ-400 for the pipeline and release side</li>
+          <li>AZ-305 for the developer becoming an architect</li>
+          <li>SC-500 when the application security questions get serious</li>
+          <li>A code-level architecture review on their own workload</li>
+        </ul>
+      </div>
+      <div class="card resource-group">
+        <h3>Pushbacks you will hear</h3>
+        <p class="sub">And a straight answer for each</p>
+          <details style="border-top:1px solid var(--border);padding:11px 0">
+            <summary style="cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink)">Our developers learn from documentation.</summary>
+            <p style="margin-top:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">They learn the service they are using today. The value here is knowing which of five compute options fits, before committing to one.</p>
+          </details>
+          <details style="border-top:1px solid var(--border);padding:11px 0">
+            <summary style="cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink)">We use GitHub Actions and not Azure DevOps.</summary>
+            <p style="margin-top:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">This exam is about building on Azure, not the pipeline. AZ-400 is the one with the pipeline question in it.</p>
+          </details>
+          <details style="border-top:1px solid var(--border);padding:11px 0">
+            <summary style="cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink)">Certification does not matter for developers.</summary>
+            <p style="margin-top:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">Often true. Sell the labs and the architecture judgement; treat the certificate as a bonus for the ones who want it.</p>
+          </details>
+          <details style="border-top:1px solid var(--border);padding:11px 0">
+            <summary style="cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink)">Our stack is mostly containers.</summary>
+            <p style="margin-top:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">Containers are in here, but if that is the whole story, look at the AKS-focused material instead and save them the rest.</p>
+          </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
     <div class="cta-band">
       <div>
         <div class="eyebrow" style="color:rgba(255,255,255,.8)">Instructor-led</div>

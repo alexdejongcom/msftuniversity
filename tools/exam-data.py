@@ -23,6 +23,9 @@ Every one is optional — pages render fine without them:
     labs        dict(count=, paths=[...], repo=, guide=, summary=)
                 `repo` is the official MicrosoftLearning lab repository
                 where one exists; omit the whole dict when there are no labs
+    retired     date Microsoft withdrew the exam, e.g. "31 August 2026".
+                Set this and the page leads with a retirement notice; leave
+                `selling` off entirely, since there is nothing left to sell.
     selling     dict(pitch=, triggers=[...], buyer=, attendees=,
                      objections=[(question, answer), ...], next=[...])
                 Enablement for the partners who resell our courses:
@@ -425,52 +428,553 @@ EXAMS = {
     url="https://learn.microsoft.com/credentials/certifications/azure-administrator/",
     sg="https://aka.ms/AZ104-StudyGuide", pa=True,
     blurb="The workhorse Azure exam: identity, governance, storage, compute, virtual networking and monitoring — the things you touch every day.",
-    who="Administrators with six months of hands-on Azure. The most common first role-based Azure certification."),
+    who="Administrators with six months of hands-on Azure. The most common first role-based Azure certification.",
+    overview=(
+        "The workhorse Azure exam, and the one most Azure careers are built on. Five areas, "
+        "none of them optional: identity and governance, storage, compute, virtual networking, "
+        "and the monitoring that tells you when any of it breaks. It is deliberately broad "
+        "rather than deep — the point is that an administrator can be handed any part of a "
+        "subscription and not be lost."),
+    duration="4 days", course="AZ-104T00", exam_time="100 minutes",
+    prereq="Around six months of hands-on Azure, plus comfort with networking, identity and PowerShell or CLI.",
+    challenges=[
+        "A subscription grown by project teams, where nobody can say who owns which resource group.",
+        "Cost that arrives as a surprise every month because nothing was tagged or budgeted.",
+        "Storage and backup configured once at build time and never reviewed since.",
+        "Virtual networks designed by whoever needed one first, now needing to talk to each other.",
+        "Admins who can click through the portal but cannot script the same job twice.",
+    ],
+    labs=dict(
+        count=14,
+        repo="https://github.com/MicrosoftLearning/AZ-104-MicrosoftAzureAdministrator",
+        guide="https://microsoftlearning.github.io/AZ-104-MicrosoftAzureAdministrator/",
+        summary=("Fourteen labs covering the whole administrator surface — Entra ID identities, "
+                 "governance, storage, virtual machines, networking and monitoring. The repo is "
+                 "actively maintained, which matters on a platform that changes monthly.")),
+    selling=dict(
+        pitch=("This is the baseline. If their people run anything in Azure and have not done "
+               "AZ-104, this is the gap you are selling into."),
+        triggers=[
+            "They are migrating to Azure and the team are learning it from blog posts.",
+            "An unexpected Azure bill has made someone ask who is managing this.",
+            "They are hiring Azure admins and need a common standard to interview against.",
+            "A managed service provider is handing the estate back to them.",
+            "Any Azure project where the operate phase has no named owner.",
+        ],
+        buyer="IT manager or head of infrastructure. The easiest Azure training to get approved, because the role is obvious.",
+        attendees="Infrastructure administrators moving to Azure, and cloud engineers who learned it piecemeal.",
+        objections=[
+            ("Our people already work in Azure every day.",
+             "Then they know the two or three services their projects used. AZ-104 is the other "
+             "two thirds, which is where the cost and governance problems live."),
+            ("Four days is a lot for an administrator course.",
+             "It is the broadest exam in the track — five weighted areas. Cutting it short just "
+             "moves the gap somewhere less visible."),
+            ("Can they not do AZ-900 first and see?",
+             "AZ-900 is a good primer for non-technical people. For working administrators it "
+             "is a day they will find slow."),
+            ("We are mostly on-premises still.",
+             "Then AZ-800 and AZ-801 may fit better. Worth asking before you quote this one."),
+        ],
+        next=[
+            "AZ-305 for the ones ready to design rather than operate",
+            "AZ-700 when the networking turns out to be the hard part",
+            "SC-300 because most Azure problems become identity problems",
+            "AZ-800 and AZ-801 if the estate is genuinely hybrid",
+        ]),
+    ),
 "AZ-140": dict(fam="azure", level="Intermediate", title="Configuring and Operating Microsoft Azure Virtual Desktop",
     url="https://learn.microsoft.com/credentials/certifications/azure-virtual-desktop-specialty/",
     sg="https://aka.ms/AZ140-StudyGuide", pa=True,
     blurb="Planning, deploying and operating Azure Virtual Desktop — host pools, images, FSLogix profiles, access and the performance tuning that follows.",
-    who="Desktop and infrastructure specialists running virtual desktops on Azure."),
+    who="Desktop and infrastructure specialists running virtual desktops on Azure.",
+    overview=(
+        "A specialist exam with an unusually clear job behind it. Nearly half of it is planning "
+        "and implementing the Azure Virtual Desktop infrastructure itself — host pools, images, "
+        "session hosts, storage for profiles. The rest covers identity and security for those "
+        "desktops, the user environment and application delivery, and keeping the whole thing "
+        "monitored once real people depend on it."),
+    duration="4 days", course="AZ-140T00", exam_time="100 minutes",
+    prereq="Solid Azure administration (AZ-104 level) plus Windows desktop and identity experience.",
+    challenges=[
+        "A virtual desktop pilot that was fast for ten people and crawls for two hundred.",
+        "Profile storage chosen without understanding FSLogix, and logon times paying for it.",
+        "Golden images maintained by hand, so every update is a day nobody wants.",
+        "Licensing and sizing guessed at, and the monthly bill reflecting that.",
+        "Remote or contract staff needing access from unmanaged devices, securely.",
+    ],
+    labs=dict(
+        repo="https://github.com/MicrosoftLearning/AZ-140-Configuring-and-Operating-Microsoft-Azure-Virtual-Desktop",
+        summary=("The official lab repository for the course, maintained by Microsoft Learning. "
+                 "The exercises build a working Azure Virtual Desktop environment rather than "
+                 "demonstrating features in isolation.")),
+    selling=dict(
+        pitch=("Virtual desktops are easy to pilot and hard to run. This is the course that "
+               "covers the second part."),
+        triggers=[
+            "A virtual desktop pilot that worked and is now struggling to scale.",
+            "An office move, acquisition or hybrid-working policy that needs desktops anywhere.",
+            "Logon times or application performance generating daily complaints.",
+            "Contractors or third parties needing access without managed laptops.",
+            "A Citrix or VMware renewal prompting a look at what Azure can do instead.",
+        ],
+        buyer="Head of end-user computing or infrastructure manager. Often funded from a workplace programme.",
+        attendees="Desktop and infrastructure specialists who already know Azure basics.",
+        objections=[
+            ("We only have a small virtual desktop estate.",
+             "Small estates are where the sizing and profile mistakes are cheapest to fix. "
+             "After two hundred users they are expensive."),
+            ("Our team already built it.",
+             "Building it is the pilot. This course is about operating it — images, profiles, "
+             "scaling and monitoring, which is where the complaints come from."),
+            ("Is this not just AZ-104 with desktops?",
+             "AZ-104 does not touch host pools, FSLogix or application delivery. There is "
+             "almost no overlap beyond the Azure fundamentals."),
+            ("We are considering Windows 365 instead.",
+             "Worth having that conversation first. The course is still relevant, but the "
+             "sizing and cost arguments change."),
+        ],
+        next=[
+            "AZ-104 first if they have not done it — this course assumes it",
+            "AZ-700 when the networking behind the desktops gets complicated",
+            "SC-300 for conditional access on unmanaged devices",
+            "An AVD design review on their own estate",
+        ]),
+    ),
 "AZ-204": dict(fam="azure", level="Intermediate", title="Developing Solutions for Microsoft Azure",
     url="https://learn.microsoft.com/credentials/certifications/azure-developer/",
     sg="https://aka.ms/AZ204-StudyGuide", pa=True,
     blurb="Building on Azure: compute options, storage, security, integration and the monitoring and troubleshooting that comes with shipping to production.",
-    who="Developers with a year or two of professional development and real Azure SDK experience."),
+    who="Developers with a year or two of professional development and real Azure SDK experience.",
+    overview=(
+        "The developer exam. Compute carries the biggest share — App Service, Functions, "
+        "containers — then storage, then implementing security properly rather than putting "
+        "secrets in config. The last part is about connecting things: consuming Azure and "
+        "third-party services through messaging, events and API Management. It assumes you "
+        "can already write code; it tests whether you can write code that runs well on Azure."),
+    course="AZ-204T00",
+    prereq="A year or two of professional development, and real Azure experience. Fluency in at least one supported language.",
+    challenges=[
+        "Applications lifted into Azure unchanged, then surprising everyone with the bill.",
+        "Secrets and connection strings living in configuration files and repositories.",
+        "Services wired together synchronously, so one slow dependency takes everything down.",
+        "No instrumentation, so production problems are diagnosed by guesswork.",
+        "Developers choosing a compute option by familiarity rather than by fit.",
+    ],
+    labs=dict(
+        count=11,
+        repo="https://github.com/MicrosoftLearning/AZ-204-DevelopingSolutionsforMicrosoftAzure",
+        guide="https://microsoftlearning.github.io/AZ-204-DevelopingSolutionsforMicrosoftAzure/",
+        summary=("Eleven hands-on labs that build and deploy real Azure services rather than "
+                 "walking through the portal — App Service, Functions, storage, Key Vault, "
+                 "messaging and API Management.")),
+    selling=dict(
+        pitch=("Their developers can write the application. This is what makes it run properly "
+               "on Azure instead of just running."),
+        triggers=[
+            "A lift-and-shift migration where cloud costs did not fall as promised.",
+            "A development team told to go cloud-native with no one to show them how.",
+            "Secrets found in a repository during a security review.",
+            "Production incidents that take too long to diagnose because nothing is instrumented.",
+            "A platform team standing up Azure and needing the developers to meet them halfway.",
+        ],
+        buyer="Development manager or head of engineering. A different budget from infrastructure training, and worth knowing that.",
+        attendees="Professional developers with real Azure exposure. Not a beginner course.",
+        objections=[
+            ("Our developers learn from documentation.",
+             "They learn the service they are using today. The value here is knowing which of "
+             "five compute options fits, before committing to one."),
+            ("We use GitHub Actions and not Azure DevOps.",
+             "This exam is about building on Azure, not the pipeline. AZ-400 is the one with "
+             "the pipeline question in it."),
+            ("Certification does not matter for developers.",
+             "Often true. Sell the labs and the architecture judgement; treat the certificate "
+             "as a bonus for the ones who want it."),
+            ("Our stack is mostly containers.",
+             "Containers are in here, but if that is the whole story, look at the AKS-focused "
+             "material instead and save them the rest."),
+        ],
+        next=[
+            "AZ-400 for the pipeline and release side",
+            "AZ-305 for the developer becoming an architect",
+            "SC-500 when the application security questions get serious",
+            "A code-level architecture review on their own workload",
+        ]),
+    ),
 "AZ-305": dict(fam="azure", level="Advanced", title="Designing Microsoft Azure Infrastructure Solutions",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-305/",
     sg="https://aka.ms/AZ305-StudyGuide", pa=True,
     blurb="The architect exam. Designing identity, governance, data storage, business continuity and infrastructure — trade-offs rather than button-clicking.",
-    who="Architects who already know Azure operations well. Case-study heavy; experience matters more than memorisation."),
+    who="Architects who already know Azure operations well. Case-study heavy; experience matters more than memorisation.",
+    overview=(
+        "The Azure architect exam, and the step up from operating to designing. Infrastructure "
+        "design carries the largest share, followed by identity, governance and monitoring, "
+        "then data storage and business continuity. It is case-study heavy by design: the "
+        "questions give you requirements and constraints and ask what you would build, which "
+        "is a different skill from knowing what the services do."),
+    duration="4 days", course="AZ-305T00",
+    prereq="AZ-104 level Azure operations experience. This exam assumes you have run the platform before designing on it.",
+    challenges=[
+        "Designs that work technically and fail on cost, or the reverse.",
+        "Business continuity promised in a contract and never actually tested.",
+        "Identity and governance bolted on after the architecture was agreed.",
+        "Data storage chosen for familiarity rather than access pattern, then regretted at scale.",
+        "An architect who can describe services but cannot defend a design under questioning.",
+    ],
+    labs=dict(
+        repo="https://github.com/MicrosoftLearning/AZ-305-DesigningMicrosoftAzureInfrastructureSolutions",
+        summary=("The official course repository. This one is case-study driven rather than "
+                 "click-through — the work is design decisions against requirements, which is "
+                 "exactly how the exam is written.")),
+    selling=dict(
+        pitch=("They have people who can build anything in Azure and nobody who decides what "
+               "to build. That is the gap this fills."),
+        triggers=[
+            "Cloud spend rising without a corresponding design authority.",
+            "A migration programme about to start with no target architecture.",
+            "Their best AZ-104 people are ready for the next step.",
+            "A failed or painful disaster recovery test.",
+            "A customer or regulator asking for an architecture document they do not have.",
+        ],
+        buyer="Head of architecture, CTO, or the programme funding a migration.",
+        attendees="Azure administrators and engineers moving into architecture, and architects new to Azure.",
+        objections=[
+            ("Our architects already design on Azure.",
+             "Then this is validation and vocabulary, which matters if they are presenting "
+             "designs to customers or auditors. If not, spend the money elsewhere."),
+            ("It is the same material as AZ-104.",
+             "The services overlap, the skill does not. AZ-104 asks how to configure it; "
+             "AZ-305 asks whether you should."),
+            ("Case studies feel academic.",
+             "They are the closest thing to the actual job. Most architecture failures are "
+             "requirement failures, not technical ones."),
+            ("We use a lot of third-party tooling.",
+             "Fine — the design principles carry. Just set expectations that the reference "
+             "architectures are Microsoft's."),
+        ],
+        next=[
+            "AZ-104 first for anyone without the operations grounding",
+            "SC-100 for the security architecture counterpart",
+            "AZ-700 and AZ-400 to deepen specific parts of the design",
+            "An architecture review engagement, which often follows naturally",
+        ]),
+    ),
 "AZ-400": dict(fam="azure", level="Advanced", title="Designing and Implementing Microsoft DevOps Solutions",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-400/",
     sg="https://aka.ms/AZ400-StudyGuide", pa=True,
     blurb="DevOps end to end: source control, CI/CD pipelines, infrastructure as code, secrets, dependencies and feedback loops.",
-    who="Engineers who live in pipelines. Expect both Azure DevOps and GitHub across the exam."),
+    who="Engineers who live in pipelines. Expect both Azure DevOps and GitHub across the exam.",
+    overview=(
+        "The DevOps exam, and an unusually lopsided one: build and release pipelines carry more "
+        "than half the weighting on their own. Around that sit process and communication, "
+        "source control strategy, security and compliance in the pipeline, and instrumentation. "
+        "It covers both Azure DevOps and GitHub, which is realistic — most organisations are "
+        "running some of each."),
+    duration="4 days", course="AZ-400T00",
+    prereq="Experience with both Azure administration and development, plus day-to-day work in a pipeline.",
+    challenges=[
+        "Releases that need a person, a runbook and a quiet Friday evening.",
+        "Half the teams on Azure DevOps and half on GitHub, with no agreed direction.",
+        "Security scanning bolted on at the end, so findings arrive too late to act on.",
+        "Branching strategies inherited from a previous team and never revisited.",
+        "No usable telemetry, so nobody can say whether a release improved anything.",
+    ],
+    labs=dict(
+        count=16,
+        repo="https://github.com/MicrosoftLearning/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions",
+        guide="https://microsoftlearning.github.io/AZ400-DesigningandImplementingMicrosoftDevOpsSolutions/",
+        summary=("Sixteen labs, starting with validating the lab environment and then building "
+                 "up real pipelines across Azure DevOps and GitHub — source control, builds, "
+                 "releases, security scanning and monitoring.")),
+    selling=dict(
+        pitch=("Their deployments need a human and a weekend. This is the course that changes "
+               "that, and it covers GitHub as well as Azure DevOps."),
+        triggers=[
+            "Release nights. If they still have them, this is the conversation.",
+            "A GitHub migration, or a split estate with no agreed direction.",
+            "A security review that asked where scanning happens in the pipeline.",
+            "Teams delivering at very different speeds with no shared practice.",
+            "A platform engineering initiative that needs a common baseline.",
+        ],
+        buyer="Head of engineering, platform lead, or the DevOps capability owner.",
+        attendees="Engineers who already work in pipelines — developers and infrastructure people both.",
+        objections=[
+            ("We already do CI/CD.",
+             "Most do, in one team. This is about the other seven teams, and the security and "
+             "instrumentation that usually get skipped."),
+            ("We are moving to GitHub, so a Microsoft DevOps course seems wrong.",
+             "The exam covers both deliberately. That is precisely why it suits an organisation "
+             "mid-migration."),
+            ("DevOps is culture, not tooling.",
+             "Agreed, and the first tenth of the exam is process and communication. The other "
+             "ninety percent is the tooling that makes the culture possible."),
+            ("Four days away from delivery is hard to justify.",
+             "Count the hours currently spent on manual releases over a quarter and compare."),
+        ],
+        next=[
+            "AZ-204 for developers who need the Azure side strengthened",
+            "GH-200 and the GitHub track if they are standardising there",
+            "SC-500 for pipeline and workload security",
+            "A pipeline review on one of their real repositories",
+        ]),
+    ),
 "AZ-500": dict(fam="azure", level="Intermediate", title="Microsoft Azure Security Technologies",
     url="https://learn.microsoft.com/credentials/certifications/azure-security-engineer/",
     sg="https://aka.ms/AZ500-StudyGuide", pa=True,
     blurb="Securing Azure: identity and access, platform protection, data and application security, and security operations.",
-    who="Security engineers working in Azure. Pairs naturally with SC-300 on the identity side."),
+    who="Security engineers working in Azure. Pairs naturally with SC-300 on the identity side.",
+    retired="31 August 2026",
+    overview=(
+        "Retired by Microsoft on 31 August 2026, along with its renewal assessments. It is "
+        "listed here because a lot of people hold it and still need the context: the material "
+        "covered securing identity and access, networking, compute, storage and databases in "
+        "Azure, with a large final block on Defender for Cloud and Sentinel. Its replacement "
+        "is SC-500, which keeps that ground and adds AI workloads."),
+    prereq="Historical entry — the exam can no longer be taken.",
+    challenges=[
+        "Holders asking what happens to a certification that can no longer be renewed.",
+        "Job descriptions and procurement documents that still ask for AZ-500 by name.",
+        "Teams part-way through AZ-500 study when it was withdrawn.",
+        "Training plans and budgets written around a course that no longer leads anywhere.",
+        "Deciding whether existing holders go to SC-500 or elsewhere.",
+    ],
+    ),
 "AZ-700": dict(fam="azure", level="Intermediate", title="Designing and Implementing Microsoft Azure Networking Solutions",
     url="https://learn.microsoft.com/credentials/certifications/azure-network-engineer-associate/",
     sg="https://aka.ms/az700-StudyGuide", pa=True,
     blurb="Azure networking in depth — hybrid connectivity, routing, load balancing, private access to services and network security.",
-    who="Network engineers moving into Azure, and Azure admins who want the networking layer properly nailed down."),
+    who="Network engineers moving into Azure, and Azure admins who want the networking layer properly nailed down.",
+    overview=(
+        "The networking specialist exam, and the one that rescues most Azure projects that have "
+        "quietly gone wrong. Core network infrastructure carries the largest share, then "
+        "connectivity services — VPN, ExpressRoute, Virtual WAN — followed by application "
+        "delivery, private access to Azure services, and network security. It is the deepest "
+        "treatment of Azure networking Microsoft publishes."),
+    duration="3 days", course="AZ-700T00", exam_time="100 minutes",
+    prereq="AZ-104 level Azure experience plus real networking knowledge — routing, VPN and DNS.",
+    challenges=[
+        "Virtual networks created per project, now needing to reach each other and the data centre.",
+        "Hub-and-spoke drawn on a whiteboard and implemented three different ways.",
+        "Private endpoints and DNS resolution, which defeat more teams than anything else in Azure.",
+        "ExpressRoute bought and underused because nobody designed around it.",
+        "Traffic leaving Azure and coming back in because the routing was never thought through.",
+    ],
+    labs=dict(
+        count=17,
+        repo="https://github.com/MicrosoftLearning/AZ-700-Designing-and-Implementing-Microsoft-Azure-Networking-Solutions",
+        summary=("Seventeen exercises that build the network rather than describe it — virtual "
+                 "networks, peering and routing, VPN and ExpressRoute connectivity, load "
+                 "balancing and application delivery, private access and network security.")),
+    selling=dict(
+        pitch=("Most stalled Azure projects are networking problems wearing another costume. "
+               "This is the three days that unblocks them."),
+        triggers=[
+            "A hybrid connectivity project that is late.",
+            "Private endpoint or DNS resolution problems nobody can resolve.",
+            "An ExpressRoute circuit that is paid for and underused.",
+            "A landing zone design that needs implementing properly.",
+            "Network engineers being asked to own Azure without Azure training.",
+        ],
+        buyer="Head of network or infrastructure. Sometimes the cloud programme, when connectivity is on the critical path.",
+        attendees="Network engineers moving into Azure, and Azure administrators who have hit the networking ceiling.",
+        objections=[
+            ("Our network team knows networking.",
+             "They do. Azure routing, private endpoints and DNS behave differently enough that "
+             "traditional expertise can actively mislead."),
+            ("It is only three days.",
+             "It is the shortest specialist course here and the one with the highest hit rate "
+             "on real, current problems."),
+            ("AZ-104 covers networking already.",
+             "At an introductory level. Everything hard — Virtual WAN, ExpressRoute, private "
+             "DNS at scale — is in AZ-700."),
+            ("We outsource our network.",
+             "Then sell it to the partner, or to the person who has to review what the partner "
+             "designed."),
+        ],
+        next=[
+            "AZ-305 for the broader architecture around the network",
+            "AZ-104 first if they lack the Azure grounding",
+            "SC-500 for the network security side",
+            "A landing zone review, which this course tends to generate demand for",
+        ]),
+    ),
 "AZ-800": dict(fam="azure", level="Intermediate", title="Administering Windows Server Hybrid Core Infrastructure",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-800/",
     sg="https://aka.ms/AZ800-StudyGuide", pa=True,
     blurb="Windows Server where most of it actually lives: hybrid. Identity, compute, network infrastructure and storage across on-premises and Azure.",
-    who="Windows Server administrators. Half of a pair — AZ-801 completes the hybrid administrator certification."),
+    who="Windows Server administrators. Half of a pair — AZ-801 completes the hybrid administrator certification.",
+    overview=(
+        "Windows Server as it actually exists in most organisations: on-premises, connected to "
+        "Azure, and not going away. Active Directory Domain Services across both worlds carries "
+        "the biggest share, then managing servers and workloads in a hybrid setup, virtual "
+        "machines and containers, hybrid networking, and storage and file services. It is the "
+        "first half of a pair with AZ-801."),
+    course="AZ-800T00",
+    prereq="Real Windows Server administration experience, plus familiarity with Azure fundamentals.",
+    challenges=[
+        "A domain built in 2008 that everything depends on and nobody wants to touch.",
+        "Hybrid identity working by accident, with no one certain how.",
+        "File servers nobody has reviewed since the last migration.",
+        "Azure adopted alongside a data centre that is staying, with no plan to connect them properly.",
+        "Windows Server skills that stopped being refreshed around 2016.",
+    ],
+    labs=dict(
+        count=21,
+        repo="https://github.com/MicrosoftLearning/AZ-800-Administering-Windows-Server-Hybrid-Core-Infrastructure",
+        guide="https://microsoftlearning.github.io/AZ-800-Administering-Windows-Server-Hybrid-Core-Infrastructure/",
+        summary=("Twenty-one labs, the most in the AZ track. Identity services first, then "
+                 "hybrid management, virtual machines and containers, networking, and storage "
+                 "and file services.")),
+    selling=dict(
+        pitch=("Their data centre is not closing. This is the course for the half of the estate "
+               "everyone stopped training for."),
+        triggers=[
+            "A hybrid estate with no plan to be fully cloud any time soon.",
+            "An Active Directory nobody wants to modify.",
+            "A Windows Server end-of-support date approaching.",
+            "A team whose Windows Server training stopped several versions ago.",
+            "Azure adoption that needs the on-premises side connected properly.",
+        ],
+        buyer="Infrastructure manager. Usually an easy sell, because the pain is long-standing and visible.",
+        attendees="Windows Server administrators, including those who have been doing it for years without formal training.",
+        objections=[
+            ("We are moving to the cloud, Windows Server is legacy.",
+             "Almost nobody finishes that journey. The hybrid period lasts years, and this is "
+             "the course about managing it rather than wishing it away."),
+            ("Our admins have run Windows Server for a decade.",
+             "Then the gap is the hybrid half — Azure Arc, hybrid identity, cloud storage "
+             "integration — which did not exist when they learned it."),
+            ("Should we do AZ-800 or AZ-801?",
+             "AZ-800 first, always. AZ-801 assumes it."),
+            ("Is there still demand for Windows Server skills?",
+             "Look at their own server list before answering that. Usually it answers itself."),
+        ],
+        next=[
+            "AZ-801 as the second half — most customers buy both",
+            "AZ-104 for the Azure side of the hybrid estate",
+            "AZ-700 when the site-to-site connectivity is the problem",
+            "An Active Directory health check, which pairs naturally",
+        ]),
+    ),
 "AZ-801": dict(fam="azure", level="Advanced", title="Configuring Windows Server Hybrid Advanced Services",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-801/",
     sg="https://aka.ms/AZ801-StudyGuide", pa=True,
     blurb="The advanced half of the hybrid server track: security, high availability, disaster recovery, migration and troubleshooting.",
-    who="Experienced Windows Server administrators. Take AZ-800 first."),
+    who="Experienced Windows Server administrators. Take AZ-800 first.",
+    overview=(
+        "The second half of the Windows Server hybrid pair, and the more interesting one. "
+        "Securing Windows Server on-premises and in hybrid, high availability, disaster "
+        "recovery, migrating servers and workloads, and troubleshooting when it all goes wrong. "
+        "Where AZ-800 is about running the estate, this is about hardening it, moving it and "
+        "recovering it."),
+    course="AZ-801T00",
+    prereq="AZ-800 or equivalent. This one genuinely assumes the first half.",
+    challenges=[
+        "A disaster recovery plan that exists as a document and has never been tested.",
+        "Servers overdue for migration, with nobody confident enough to move them.",
+        "Windows Server hardening left at whatever the default was on install.",
+        "Clustering and high availability configured once by someone who has since left.",
+        "Troubleshooting by restart, because nobody has the diagnostic skills.",
+    ],
+    labs=dict(
+        count=14,
+        repo="https://github.com/MicrosoftLearning/AZ-801-Configuring-Windows-Server-Hybrid-Advanced-Services",
+        guide="https://microsoftlearning.github.io/AZ-801-Configuring-Windows-Server-Hybrid-Advanced-Services/",
+        summary=("Fourteen labs starting with securing Windows Server and moving through high "
+                 "availability, disaster recovery, migration and troubleshooting — the work you "
+                 "only want to do for the first time in a lab.")),
+    selling=dict(
+        pitch=("The disaster recovery plan they have never tested, and the migration they keep "
+               "postponing. Both are in here."),
+        triggers=[
+            "A disaster recovery test that failed, or one that has never happened.",
+            "A server migration that has slipped more than once.",
+            "A security review flagging unhardened Windows Server estate.",
+            "An end-of-support deadline forcing movement.",
+            "They have already done AZ-800 — this is the natural follow-on.",
+        ],
+        buyer="Infrastructure manager, often with security or risk co-signing because of the recovery angle.",
+        attendees="Experienced Windows Server administrators who have completed AZ-800 or equivalent.",
+        objections=[
+            ("We have backups, so disaster recovery is covered.",
+             "Backups are not recovery until somebody has restored from them under time "
+             "pressure. That distinction is most of this course."),
+            ("Can we skip AZ-800 and come straight here?",
+             "Not really. This one assumes the first half, and the room will split if half "
+             "have it and half do not."),
+            ("Migration is a one-off project, not a skill.",
+             "They said that about the last three. Most estates migrate something every year."),
+            ("Our hardening is handled by a managed service.",
+             "Then someone still has to review what the provider did. This is the course that "
+             "makes that review meaningful."),
+        ],
+        next=[
+            "AZ-800 first if they have not done it",
+            "SC-500 for the broader cloud security picture",
+            "AZ-104 for the Azure half of the hybrid estate",
+            "A disaster recovery test run as a workshop, which sells well after this",
+        ]),
+    ),
 "AZ-900": dict(fam="azure", level="Beginner", title="Microsoft Azure Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/azure-fundamentals/",
     sg="https://aka.ms/AZ900-StudyGuide", pa=True,
     blurb="Cloud concepts, Azure architecture and services, and how management and governance work — plus pricing and support.",
-    who="Anyone, technical or not, who needs a credible foundation in Azure. The most-taken Microsoft exam for a reason."),
+    who="Anyone, technical or not, who needs a credible foundation in Azure. The most-taken Microsoft exam for a reason.",
+    overview=(
+        "The entry point, and the one most people in an organisation should sit before anything "
+        "else. Cloud concepts first, then the largest block on Azure architecture and services, "
+        "and finally management and governance — cost, policy and compliance. Nothing is built "
+        "here. The purpose is that afterwards a mixed room can discuss an Azure project without "
+        "talking past each other."),
+    duration="1 day", course="AZ-900T00", exam_time="45 minutes",
+    prereq="None whatsoever. It is written for people with no technical background.",
+    challenges=[
+        "A cloud migration being approved by people who cannot evaluate what they are approving.",
+        "Procurement and finance teams facing consumption billing for the first time.",
+        "Project managers running Azure work without the vocabulary for it.",
+        "Technical staff from other platforms needing the map before the detail.",
+        "A business case argued on assumptions nobody in the room can check.",
+    ],
+    labs=dict(
+        count=5,
+        repo="https://github.com/MicrosoftLearning/AZ-900-Microsoft-Azure-Fundamentals",
+        guide="https://microsoftlearning.github.io/AZ-900-Microsoft-Azure-Fundamentals/",
+        summary=("Five short guided exercises — creating a resource, and working through the "
+                 "cost and governance tooling. Enough to make the portal real without turning "
+                 "the day into an administration course.")),
+    selling=dict(
+        pitch=("One day that makes every later Azure conversation cheaper, because the whole "
+               "room finally means the same thing by the same words."),
+        triggers=[
+            "A cloud programme about to start with a mixed audience.",
+            "Finance or procurement meeting consumption-based billing for the first time.",
+            "New joiners, or staff moving across from another platform.",
+            "Sales and account teams who need to talk credibly about Azure.",
+            "Pre-work bundled ahead of AZ-104 or AZ-305.",
+        ],
+        buyer="L&D, or the cloud programme manager. Cheap enough to approve without a business case.",
+        attendees="Anyone — business stakeholders, project managers, finance, sales, and technical people wanting the map first.",
+        objections=[
+            ("Fundamentals is beneath our technical team.",
+             "It is. Sell it for everyone around them, which is usually where the "
+             "misunderstandings actually originate."),
+            ("A 45-minute exam cannot be worth much.",
+             "As a credential, modestly. As a shared vocabulary before a four-day course, it "
+             "saves more time than it costs."),
+            ("They can watch the free Learn modules.",
+             "They can, and most will not. A booked day with five exercises is the difference "
+             "between intending to and having done it."),
+            ("We would rather go straight to AZ-104.",
+             "If everyone has the background, do. If half the room does not, they will be lost "
+             "by lunchtime on day one and will not say so."),
+        ],
+        next=[
+            "AZ-104 as the standard next step for technical staff",
+            "AZ-305 for the architecture-minded",
+            "SC-900 for the same audience on the security side",
+            "Sell per cohort rather than per person — this is the volume course",
+        ]),
+    ),
 
 "DP-300": dict(fam="data", level="Intermediate", title="Administering Microsoft Azure SQL Solutions",
     url="https://learn.microsoft.com/credentials/certifications/azure-database-administrator-associate/",
