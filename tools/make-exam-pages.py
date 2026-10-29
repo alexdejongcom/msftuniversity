@@ -188,6 +188,74 @@ def course_detail(code, e):
 """ % (esc(code), overview, prereq, fact_html, two_col)
 
 
+def seller_block(code, e):
+    """Enablement for the partners who resell our courses.
+
+    Written to be useful to a buyer reading over their shoulder too: the
+    'common pushbacks' are answers to fair questions, not rebuttal scripts.
+    """
+    s = e.get("selling") or {}
+    if not s:
+        return ""
+    esc = lambda x: html.escape(str(x), quote=False)
+
+    def ul(items, cls=""):
+        return "\n".join('          <li%s>%s</li>' % (cls, esc(i)) for i in items)
+
+    pitch = ('    <p style="font-size:19px;font-family:var(--font-display);color:var(--ink);'
+             'max-width:760px;line-height:1.45">&ldquo;%s&rdquo;</p>\n' % esc(s["pitch"])) if s.get("pitch") else ""
+
+    left = []
+    if s.get("triggers"):
+        left.append('        <h3 style="font-family:var(--font-display);font-size:18px;margin-bottom:10px">'
+                    'When to bring it up</h3>\n'
+                    '        <ul style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">\n%s\n        </ul>\n'
+                    % ul(s["triggers"]))
+    who = []
+    if s.get("buyer"):
+        who.append("<strong>Who signs:</strong> " + esc(s["buyer"]))
+    if s.get("attendees"):
+        who.append("<strong>Who attends:</strong> " + esc(s["attendees"]))
+    if who:
+        left.append('        <p style="margin-top:18px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">%s</p>\n'
+                    % "<br>".join(who))
+    if s.get("next"):
+        left.append('        <h3 style="font-family:var(--font-display);font-size:18px;margin:22px 0 10px">'
+                    'What to sell next</h3>\n'
+                    '        <ul style="padding-left:20px;color:var(--ink-soft);font-size:15px;line-height:1.55">\n%s\n        </ul>\n'
+                    % ul(s["next"]))
+
+    right = ""
+    if s.get("objections"):
+        rows = "\n".join(
+            '          <details style="border-top:1px solid var(--border);padding:11px 0">\n'
+            '            <summary style="cursor:pointer;font-weight:600;font-size:14.5px;color:var(--ink)">%s</summary>\n'
+            '            <p style="margin-top:8px;font-size:14.5px;color:var(--ink-soft);line-height:1.6">%s</p>\n'
+            '          </details>' % (esc(q), esc(a)) for q, a in s["objections"])
+        right = ('      <div class="card resource-group">\n'
+                 '        <h3>Pushbacks you will hear</h3>\n'
+                 '        <p class="sub">And a straight answer for each</p>\n'
+                 '%s\n      </div>\n' % rows)
+
+    cols = ""
+    if left or right:
+        cols = ('    <div class="grid grid-2" style="margin-top:30px;align-items:start">\n'
+                '      <div>\n%s      </div>\n%s    </div>\n' % ("".join(left), right))
+
+    return """
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">For training partners</div>
+      <h2 class="section-title">Selling %s</h2>
+      <p>Everything a partner needs to put this course in front of the right customer.
+         Lift any of it straight into a proposal.</p>
+    </div>
+%s%s  </div>
+</section>
+""" % (esc(code), pitch, cols)
+
+
 def exam_page(code, e):
     slug = code.lower()
     canonical = "%s/exam/%s.html" % (SITE, slug)
@@ -245,6 +313,7 @@ def exam_page(code, e):
             % (c.lower(), c, html.escape(x["title"], quote=False), c.lower()) for c, x in related)
 
     detail = course_detail(code, e)
+    seller = seller_block(code, e)
 
     body = """
 <section class="page-hero">
@@ -278,7 +347,7 @@ def exam_page(code, e):
     </div>
   </div>
 </section>
-{detail}
+{detail}{seller}
 <section class="{cta_class}">
   <div class="container">
     <div class="cta-band">
@@ -307,10 +376,11 @@ def exam_page(code, e):
   </div>
 </section>
 """.format(code=code, t=html.escape(e["title"], quote=False), blurb=e["blurb"], who=e["who"],
-           level=e["level"], res=res_html, fam=fam_name(e["fam"]), rel=rel_html, detail=detail,
-           # keep the light/grey rhythm: the detail block is grey, so the CTA
-           # that follows it goes white. Without a detail block the CTA is grey.
-           cta_class="section" if detail else "section alt")
+           level=e["level"], res=res_html, fam=fam_name(e["fam"]), rel=rel_html,
+           detail=detail, seller=seller,
+           # keep the light/grey rhythm. detail is grey, seller is white, so
+           # whichever ran last decides the shade the CTA band needs.
+           cta_class=("section alt" if seller else "section") if detail else "section alt")
 
     return page(title, html.escape(desc, quote=True), canonical, body, depth=1, extra=jsonld)
 

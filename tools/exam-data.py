@@ -23,6 +23,11 @@ Every one is optional — pages render fine without them:
     labs        dict(count=, paths=[...], repo=, guide=, summary=)
                 `repo` is the official MicrosoftLearning lab repository
                 where one exists; omit the whole dict when there are no labs
+    selling     dict(pitch=, triggers=[...], buyer=, attendees=,
+                     objections=[(question, answer), ...], next=[...])
+                Enablement for the partners who resell our courses:
+                the one-liner, when to raise it, who signs, the pushbacks
+                they will hear, and what to sell after it.
 """
 
 FAMILIES = [
@@ -102,7 +107,43 @@ EXAMS = {
                  "the tenant and governing collaboration content. The middle three are the identity "
                  "and protection block — delegated access, sign-in controls and information "
                  "protection. The last two are the AI half: rolling out Copilot Cowork, then "
-                 "governing agents and running AI services day to day."))),
+                 "governing agents and running AI services day to day.")),
+    selling=dict(
+        pitch=("The customer has already paid for Copilot. This is the course that keeps the "
+               "rollout from becoming a security incident."),
+        triggers=[
+            "They bought Microsoft 365 Copilot or Agent 365 licences and usage has flattened.",
+            "Security or legal has paused a Copilot rollout over what it might surface.",
+            "Agents are turning up in the tenant that nobody formally approved.",
+            "An audit, NIS2 or ISO review has asked who can see what, and nobody can answer quickly.",
+            "Their Microsoft 365 admins have not been retrained since Copilot arrived.",
+        ],
+        buyer="IT manager or head of infrastructure holds the budget; the CISO signs off the governance half.",
+        attendees="Microsoft 365 administrators, Entra and identity admins, and service desk leads moving up into tenant work.",
+        objections=[
+            ("Our admins already know Microsoft 365.",
+             "About a fifth of this is revision. The rest is new ground: agent identities, "
+             "Copilot-aware DLP, data security posture management, and the Copilot readiness work "
+             "that has no equivalent in the old MS-102 world."),
+            ("Let's wait until it is out of beta.",
+             "Beta applies to the exam, not the product. The tenant work is live now, and the "
+             "oversharing problem is live with it. Train now, certify when it goes GA."),
+            ("Can't they just use Microsoft Learn?",
+             "They can, and they should. The difference is seven labs on a tenant that is not "
+             "production, plus somebody in the room who has done the rollout before."),
+            ("We only have a few Copilot users so far.",
+             "Oversharing scales with how much content you have, not how many licences. A pilot "
+             "of twenty people can surface a decade of badly permissioned SharePoint."),
+            ("Three days is a lot of time out.",
+             "It is one day of admin refresh and two days of the governance and AI work their "
+             "security team is already asking them about."),
+        ],
+        next=[
+            "SC-401 for the Purview depth behind the information-protection day",
+            "SC-300 for teams that need the identity side properly",
+            "AB-620 for the makers who will actually build the agents",
+            "A follow-up Agent 365 workshop once their estate has grown",
+        ])),
 "AB-730": dict(fam="ai", level="Beginner", title="AI Business Professional",
     url="https://learn.microsoft.com/credentials/certifications/ai-business-professional/",
     sg="https://aka.ms/ab730-StudyGuide", pa=True,
