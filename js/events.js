@@ -303,6 +303,14 @@ const EVENTS = [
     soldout: true,
   },
   {
+    date: "2026-12-10", end: "2026-12-11",
+    title: "Intune for Support Engineers (internal)",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    soldout: true,
+  },
+  {
     date: "2026-12-14", end: "2026-12-16",
     title: "Microsoft 365 Business Premium: Securing the Modern Workplace in the Age of AI",
     type: "Training",
