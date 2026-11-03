@@ -110,7 +110,7 @@ def course_detail(code, e):
 
     esc = lambda s: html.escape(str(s), quote=False)
 
-    # A retired exam says so first, before anything else on the page.
+    # A retired or soon-to-retire exam says so first, before anything else.
     retired = ""
     if e.get("retired"):
         retired = (
@@ -118,7 +118,20 @@ def course_detail(code, e):
             'padding:14px 18px;font-size:15px;color:var(--ink);max-width:820px;margin-bottom:22px">'
             '<strong>Retired by Microsoft on %s.</strong> This exam can no longer be taken and its '
             'renewal assessments have been withdrawn. It is kept here for people who hold it and '
-            'need the context.</p>\n' % esc(e["retired"]))
+            'need the context.%s</p>\n'
+            % (esc(e["retired"]),
+               (" Its replacement is <strong>%s</strong>." % esc(e["successor"]))
+               if e.get("successor") else ""))
+    elif e.get("retiring"):
+        retired = (
+            '    <p style="background:#fff4ce;border:1px solid #f2c94c;border-radius:var(--radius);'
+            'padding:14px 18px;font-size:15px;color:var(--ink);max-width:820px;margin-bottom:22px">'
+            '<strong>Retiring on %s.</strong> Microsoft has announced a retirement date for this '
+            'exam. It can still be taken until then, but check the official exam page before '
+            'booking a course around it.%s</p>\n'
+            % (esc(e["retiring"]),
+               (" Its replacement is <strong>%s</strong>." % esc(e["successor"]))
+               if e.get("successor") else ""))
 
     facts = []
     if e.get("duration"):

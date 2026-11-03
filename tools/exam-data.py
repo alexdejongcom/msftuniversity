@@ -856,7 +856,7 @@ EXAMS = {
             "A landing zone review, which this course tends to generate demand for",
         ]),
     ),
-"AZ-800": dict(fam="azure", level="Intermediate", title="Administering Windows Server Hybrid Core Infrastructure",
+"AZ-800": dict(retired="30 September 2026", successor="AZ-802", fam="azure", level="Intermediate", title="Administering Windows Server Hybrid Core Infrastructure",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-800/",
     sg="https://aka.ms/AZ800-StudyGuide", pa=True,
     blurb="Windows Server where most of it actually lives: hybrid. Identity, compute, network infrastructure and storage across on-premises and Azure.",
@@ -883,38 +883,8 @@ EXAMS = {
         summary=("Twenty-one labs, the most in the AZ track. Identity services first, then "
                  "hybrid management, virtual machines and containers, networking, and storage "
                  "and file services.")),
-    selling=dict(
-        pitch=("Their data centre is not closing. This is the course for the half of the estate "
-               "everyone stopped training for."),
-        triggers=[
-            "A hybrid estate with no plan to be fully cloud any time soon.",
-            "An Active Directory nobody wants to modify.",
-            "A Windows Server end-of-support date approaching.",
-            "A team whose Windows Server training stopped several versions ago.",
-            "Azure adoption that needs the on-premises side connected properly.",
-        ],
-        buyer="Infrastructure manager. Usually an easy sell, because the pain is long-standing and visible.",
-        attendees="Windows Server administrators, including those who have been doing it for years without formal training.",
-        objections=[
-            ("We are moving to the cloud, Windows Server is legacy.",
-             "Almost nobody finishes that journey. The hybrid period lasts years, and this is "
-             "the course about managing it rather than wishing it away."),
-            ("Our admins have run Windows Server for a decade.",
-             "Then the gap is the hybrid half — Azure Arc, hybrid identity, cloud storage "
-             "integration — which did not exist when they learned it."),
-            ("Should we do AZ-800 or AZ-801?",
-             "AZ-800 first, always. AZ-801 assumes it."),
-            ("Is there still demand for Windows Server skills?",
-             "Look at their own server list before answering that. Usually it answers itself."),
-        ],
-        next=[
-            "AZ-801 as the second half — most customers buy both",
-            "AZ-104 for the Azure side of the hybrid estate",
-            "AZ-700 when the site-to-site connectivity is the problem",
-            "An Active Directory health check, which pairs naturally",
-        ]),
     ),
-"AZ-801": dict(fam="azure", level="Advanced", title="Configuring Windows Server Hybrid Advanced Services",
+"AZ-801": dict(retired="30 September 2026", successor="AZ-802", fam="azure", level="Advanced", title="Configuring Windows Server Hybrid Advanced Services",
     url="https://learn.microsoft.com/credentials/certifications/exams/az-801/",
     sg="https://aka.ms/AZ801-StudyGuide", pa=True,
     blurb="The advanced half of the hybrid server track: security, high availability, disaster recovery, migration and troubleshooting.",
@@ -941,37 +911,6 @@ EXAMS = {
         summary=("Fourteen labs starting with securing Windows Server and moving through high "
                  "availability, disaster recovery, migration and troubleshooting — the work you "
                  "only want to do for the first time in a lab.")),
-    selling=dict(
-        pitch=("The disaster recovery plan they have never tested, and the migration they keep "
-               "postponing. Both are in here."),
-        triggers=[
-            "A disaster recovery test that failed, or one that has never happened.",
-            "A server migration that has slipped more than once.",
-            "A security review flagging unhardened Windows Server estate.",
-            "An end-of-support deadline forcing movement.",
-            "They have already done AZ-800 — this is the natural follow-on.",
-        ],
-        buyer="Infrastructure manager, often with security or risk co-signing because of the recovery angle.",
-        attendees="Experienced Windows Server administrators who have completed AZ-800 or equivalent.",
-        objections=[
-            ("We have backups, so disaster recovery is covered.",
-             "Backups are not recovery until somebody has restored from them under time "
-             "pressure. That distinction is most of this course."),
-            ("Can we skip AZ-800 and come straight here?",
-             "Not really. This one assumes the first half, and the room will split if half "
-             "have it and half do not."),
-            ("Migration is a one-off project, not a skill.",
-             "They said that about the last three. Most estates migrate something every year."),
-            ("Our hardening is handled by a managed service.",
-             "Then someone still has to review what the provider did. This is the course that "
-             "makes that review meaningful."),
-        ],
-        next=[
-            "AZ-800 first if they have not done it",
-            "SC-500 for the broader cloud security picture",
-            "AZ-104 for the Azure half of the hybrid estate",
-            "A disaster recovery test run as a workshop, which sells well after this",
-        ]),
     ),
 "AZ-900": dict(fam="azure", level="Beginner", title="Microsoft Azure Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/azure-fundamentals/",
@@ -1187,7 +1126,7 @@ EXAMS = {
             "An Autopilot pilot run as a workshop on their own hardware",
         ]),
     ),
-"MS-102": dict(fam="m365", level="Intermediate", title="Microsoft 365 Administrator",
+"MS-102": dict(retiring="30 November 2026", fam="m365", level="Intermediate", title="Microsoft 365 Administrator",
     url="https://learn.microsoft.com/credentials/certifications/exams/ms-102/",
     sg="https://aka.ms/MS102-StudyGuide", pa=True,
     blurb="Running a Microsoft 365 tenant: deployment, identity and access with Microsoft Entra, threat protection and compliance.",
@@ -1236,8 +1175,9 @@ EXAMS = {
              "Then someone internal still needs to review what the provider does. This is the "
              "course that makes that review meaningful rather than ceremonial."),
             ("Is MS-102 still current?",
-             "Yes, and the lab repository was updated this month. Worth saying, because people "
-             "remember the retired MS-100 and MS-101 pair."),
+             "It retires on 30 November 2026. Anyone who needs the certification itself "
+             "must sit it before then — say that plainly rather than selling a course into "
+             "a closing window without flagging it."),
         ],
         next=[
             "MD-102 for the device layer",
