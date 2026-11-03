@@ -23,7 +23,9 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 # Never precache these, never name them in a public file.
 # toolbox.js is the private link vault that toolbox.html reads — listing it
 # here would point straight at it.
-HIDDEN = {"toolbox.html", "visitors.html", "toolbox.js"}
+HIDDEN = {"toolbox.html", "visitors.html", "toolbox.js",
+          # the CloudLabs index and its data: partner material, hidden page
+          "labs.html", "cloudlabs.js"}
 
 # Not worth the bytes offline, or meaningless without the network.
 SKIP_ROOT = {"404.html"}

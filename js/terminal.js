@@ -151,6 +151,12 @@
     } else if (c === "get-health" || c === "get-servicehealth") {
       print("Opening Service Health dashboard...");
       setTimeout(function () { window.location.href = "status.html"; }, 600);
+    } else if (c === "get-cloudlabs" || c === "get-labs" || c === "open-cloudlabs") {
+      print("ACCESS GRANTED", "#7fba00");
+      print("Opening the CloudLabs index… 212 labs, searchable.");
+      try { sessionStorage.setItem("msftu-labs-key", "granted"); } catch (e) {}
+      setTimeout(function () { window.location.href = "labs.html"; }, 800);
+
     } else if (c === "get-toolbox" || c === "open-toolbox") {
       print("ACCESS GRANTED", "#7fba00");
       print("Mounting trainer toolbox…");

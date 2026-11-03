@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CloudLabs Index — Microsoft University</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<script>
+/* Hidden page — only reachable via the terminal's Get-CloudLabs cmdlet.
+   Obscurity, not security: it is a link index, but it is partner material
+   and has no business being indexed or linked from the public site. */
+if (sessionStorage.getItem("msftu-labs-key") !== "granted") location.replace("index.html");
+</script>
+<style>
+  .lb-bar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-bottom:22px; }
+  .lb-search {
+    flex:1; min-width:250px; padding:11px 14px; font:inherit; font-size:15px;
+    border:1px solid var(--border); border-radius:var(--radius); outline:none; background:#fff;
+  }
+  .lb-search:focus { border-color:var(--blue); box-shadow:0 0 0 2px var(--blue-light); }
+  .lb-chip {
+    padding:8px 14px; font:inherit; font-size:13.5px; font-weight:600; cursor:pointer;
+    border:1px solid var(--border); border-radius:999px; background:#fff; color:var(--ink-soft);
+  }
+  .lb-chip:hover { background:var(--bg-alt); }
+  .lb-chip.on { background:var(--blue); border-color:var(--blue); color:#fff; }
+
+  .lb-track { margin-top:34px; }
+  .lb-track h2 {
+    font-family:var(--font-display); font-size:19px; display:flex; align-items:baseline; gap:10px;
+    padding-bottom:9px; border-bottom:2px solid var(--blue); margin-bottom:4px;
+  }
+  .lb-track h2 span { font-size:12.5px; font-weight:400; color:var(--ink-faint); margin-left:auto; }
+
+  .lb-item { padding:13px 0; border-bottom:1px solid var(--border); }
+  .lb-item a { font-size:15.5px; font-weight:600; }
+  .lb-meta { display:inline-flex; gap:6px; margin-left:9px; vertical-align:middle; }
+  .lb-tag {
+    font-size:11px; font-weight:600; padding:2px 8px; border-radius:999px;
+    background:var(--blue-light); color:var(--blue-darker); text-transform:uppercase; letter-spacing:.04em;
+  }
+  .lb-tag.hrs { background:var(--bg-alt); color:var(--ink-faint); }
+  .lb-item p { margin-top:5px; font-size:13.5px; color:var(--ink-soft); line-height:1.5; max-width:880px; }
+
+  .lb-empty { color:var(--ink-faint); font-size:14.5px; padding:30px 0; }
+  @media (max-width:640px) { .lb-meta { display:flex; margin:6px 0 0; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">Private — partner material</div>
+    <h1>CloudLabs index</h1>
+    <p>Every hands-on lab in the CloudLabs catalogue, searchable. Not in the menu, not in the sitemap, not indexed.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="road-strip" style="margin-bottom:24px">
+      <div class="road-stat"><strong id="lb-count">—</strong><span>labs</span></div>
+      <div class="road-stat"><strong id="lb-tracks">—</strong><span>tracks</span></div>
+      <div class="road-stat"><strong id="lb-hours">—</strong><span>hours of content</span></div>
+      <div class="road-stat is-text"><strong>June 2026</strong><span>catalogue edition</span></div>
+    </div>
+
+    <div class="lb-bar">
+      <input id="lb-search" class="lb-search" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Search 212 labs — try &ldquo;Purview&rdquo;, &ldquo;Copilot Studio&rdquo;, &ldquo;Sentinel&rdquo;&hellip;  (or press /)">
+      <button class="lb-chip on" data-lv="" type="button">All levels</button>
+      <button class="lb-chip" data-lv="Beginner" type="button">Beginner</button>
+      <button class="lb-chip" data-lv="Intermediate" type="button">Intermediate</button>
+      <button class="lb-chip" data-lv="Advanced" type="button">Advanced</button>
+    </div>
+
+    <div id="lb-list"></div>
+    <p id="lb-empty" class="lb-empty" style="display:none">Nothing matches that.</p>
+
+    <p style="color:var(--ink-faint);font-size:13px;margin-top:36px;max-width:820px">
+      Summaries are trimmed from the CloudLabs catalogue (edition 20260604) and kept short
+      deliberately — this is an index for finding the right lab quickly, not a copy of their
+      brochure. The lab guide behind each link is always the authority. Lab data lives in
+      <code>js/cloudlabs.js</code>; re-run the extraction against a newer catalogue to refresh it.
+    </p>
+
+  </div>
+</section>
+
+<script src="js/cloudlabs.js"></script>
+<script>
+(function () {
+  "use strict";
+  var data = typeof CLOUDLABS !== "undefined" ? CLOUDLABS : [];
+  var list = document.getElementById("lb-list");
+  var empty = document.getElementById("lb-empty");
+  var search = document.getElementById("lb-search");
+  var level = "";
+
+  /* headline numbers */
+  var all = data.reduce(function (a, t) { return a.concat(t.labs); }, []);
+  var hours = all.reduce(function (a, l) { return a + (parseFloat(l.h) || 0); }, 0);
+  document.getElementById("lb-count").textContent = all.length;
+  document.getElementById("lb-tracks").textContent = data.length;
+  document.getElementById("lb-hours").textContent = Math.round(hours);
+
+  function render() {
+    var q = search.value.trim().toLowerCase();
+    list.innerHTML = "";
+    var shown = 0;
+
+    data.forEach(function (tr) {
+      var hits = tr.labs.filter(function (l) {
+        if (level && l.lv !== level) return false;
+        if (!q) return true;
+        return (l.t + " " + l.s + " " + tr.track).toLowerCase().indexOf(q) > -1;
+      });
+      if (!hits.length) return;
+      shown += hits.length;
+
+      var sec = document.createElement("div");
+      sec.className = "lb-track";
+      var h2 = document.createElement("h2");
+      h2.appendChild(document.createTextNode(tr.track));
+      var c = document.createElement("span");
+      c.textContent = hits.length + (hits.length === 1 ? " lab" : " labs");
+      h2.appendChild(c);
+      sec.appendChild(h2);
+
+      hits.forEach(function (l) {
+        var row = document.createElement("div");
+        row.className = "lb-item";
+
+        var a = document.createElement("a");
+        a.href = l.u; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = l.t;
+        row.appendChild(a);
+
+        var meta = document.createElement("span");
+        meta.className = "lb-meta";
+        if (l.lv) {
+          var t1 = document.createElement("span");
+          t1.className = "lb-tag"; t1.textContent = l.lv;
+          meta.appendChild(t1);
+        }
+        if (l.h) {
+          var t2 = document.createElement("span");
+          t2.className = "lb-tag hrs"; t2.textContent = l.h + " h";
+          meta.appendChild(t2);
+        }
+        row.appendChild(meta);
+
+        if (l.s) {
+          var p = document.createElement("p");
+          p.textContent = l.s;
+          row.appendChild(p);
+        }
+        sec.appendChild(row);
+      });
+      list.appendChild(sec);
+    });
+
+    empty.style.display = shown ? "none" : "block";
+  }
+
+  search.addEventListener("input", render);
+  search.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { search.value = ""; render(); }
+    e.stopPropagation();
+  });
+
+  [].forEach.call(document.querySelectorAll(".lb-chip"), function (b) {
+    b.addEventListener("click", function () {
+      [].forEach.call(document.querySelectorAll(".lb-chip"), function (x) { x.classList.remove("on"); });
+      b.classList.add("on");
+      level = b.getAttribute("data-lv");
+      render();
+    });
+  });
+
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); search.focus(); }
+  });
+
+  render();
+})();
+</script>
+<script src="js/achievements.js" defer></script>
+<script src="js/events.js"></script>
+<script src="js/terminal.js" defer></script>
+</body>
+</html>
