@@ -294,6 +294,14 @@ const EVENTS = [
     venue: "DSD Europe",
     url: "https://www.dsdeurope.nl/dsd-cloud-university-microsoft-purview-data-security-en-governance",
   },
+  {
+    date: "2026-12-14", end: "2026-12-16",
+    title: "Microsoft 365 Business Premium: Securing the Modern Workplace in the Age of AI",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    url: "https://www.glasspaper.no/kurs/microsoft-365-business-premium-securing-the-modern-workplace-in-the-age-of-ai/",
+  },
 ];
 
 /* ============================================================
