@@ -35,6 +35,7 @@
     "ålesund": [6.15, 62.47],
     "alesund": [6.15, 62.47],
     "lillehammer": [10.46, 61.12],
+    "drammen": [10.20, 59.74],
     "den bosch": [5.30, 51.70],
     "'s-hertogenbosch": [5.30, 51.70],
     "utrecht": [5.12, 52.09],

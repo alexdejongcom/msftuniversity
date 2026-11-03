@@ -295,6 +295,14 @@ const EVENTS = [
     url: "https://www.dsdeurope.nl/dsd-cloud-university-microsoft-purview-data-security-en-governance",
   },
   {
+    date: "2026-12-07", end: "2026-12-09",
+    title: "AI for Healthcare (internal)",
+    type: "Training",
+    city: "Drammen, NO",
+    venue: "Glasspaper",
+    soldout: true,
+  },
+  {
     date: "2026-12-14", end: "2026-12-16",
     title: "Microsoft 365 Business Premium: Securing the Modern Workplace in the Age of AI",
     type: "Training",
