@@ -418,6 +418,58 @@ EXAMS = {
             "SC-900 if their questions keep turning out to be security questions",
             "A tenant review delivered alongside, so the training lands on their own estate",
         ])),
+"AI-300": dict(fam="ai", level="Intermediate", title="Operationalizing Machine Learning and Generative AI Solutions",
+    url="https://learn.microsoft.com/credentials/certifications/operationalizing-machine-learning-and-generative-ai-solutions/",
+    sg="https://aka.ms/AI300-StudyGuide", pa=False,
+    blurb="MLOps and the newer GenAIOps — getting models and generative systems into production and keeping them answerable for.",
+    who="Machine learning and platform engineers who own what happens after the model works. Earns the Machine Learning Operations Engineer Associate certification.",
+    overview=(
+        "The operations exam for AI, and the one that exists because demos are easy and "
+        "production is not. Model lifecycle and operations carry the largest share, with "
+        "GenAIOps infrastructure close behind, then the MLOps platform itself. The last "
+        "quarter is quality assurance, observability and optimisation — proving a system "
+        "still works, and making it cheaper while it does."),
+    duration="4 days", course="AI-300T00", exam_time="120 minutes",
+    prereq="Azure experience plus real machine learning or data science background. This is not an entry point.",
+    challenges=[
+        "A model that performed well in a notebook and has never been deployed anywhere.",
+        "Retraining done by hand, by one person, whenever somebody notices drift.",
+        "Generative systems with no evaluation harness, so quality is judged by anecdote.",
+        "Inference costs that rise quietly until finance asks what changed.",
+        "No observability on an AI system, so the first sign of failure is a complaint.",
+    ],
+    selling=dict(
+        pitch=("They have data scientists who can build models and nobody who can run them. "
+               "That gap is what this course is."),
+        triggers=[
+            "Models built and never deployed, or deployed once and never updated.",
+            "A generative AI feature in production with no evaluation or monitoring.",
+            "Inference costs rising with no owner.",
+            "A data science team being asked for SLAs they cannot currently meet.",
+            "An AI governance or audit requirement landing on an unprepared team.",
+        ],
+        buyer="Head of data or platform engineering lead. Often funded from an AI programme rather than training.",
+        attendees="Machine learning engineers, MLOps and platform engineers, and data scientists moving towards production.",
+        objections=[
+            ("Our data scientists already deploy models.",
+             "Deploying once is not operating. Retraining, drift, evaluation and cost control "
+             "are where this course lives, and they are most of the exam."),
+            ("We only do generative AI, not classic ML.",
+             "Then roughly half the exam is directly yours — GenAIOps, evaluation and "
+             "optimisation. Worth checking the split against their work before quoting."),
+            ("Is this not the same as AI-103?",
+             "No. AI-103 builds the application. This one keeps it alive, measured and "
+             "affordable afterwards."),
+            ("Our models are not that critical.",
+             "Then start with the observability half. The argument gets easier the first time "
+             "one silently degrades."),
+        ],
+        next=[
+            "AI-103 for the developers building the applications",
+            "AI-500 when one agent becomes several",
+            "AZ-400 for the pipeline discipline underneath it",
+            "SC-500 once the AI workloads need securing",
+        ])),
 "AI-103": dict(fam="ai", level="Intermediate", title="Developing AI Apps and Agents on Azure",
     url="https://learn.microsoft.com/credentials/certifications/exams/ai-103/",
     sg="https://aka.ms/AI103-StudyGuide", pa=True,
@@ -475,6 +527,57 @@ EXAMS = {
             "AB-620 for the low-code agent builders alongside them",
             "AZ-204 if the general Azure development grounding is missing",
             "SC-500 once the AI workloads need securing",
+        ])),
+"AI-500": dict(fam="ai", level="Advanced", title="Designing and Implementing Multi-Agent AI Solutions",
+    url="https://learn.microsoft.com/credentials/certifications/exams/ai-500/",
+    sg="https://aka.ms/AI500-StudyGuide", pa=False,
+    blurb="The expert-level agent exam: architecting, building, evaluating and governing systems where several agents work together.",
+    who="Senior engineers and architects building multi-agent systems on Azure. Earns the Multi-Agent AI Solutions Expert certification.",
+    overview=(
+        "The expert tier of the agent track, and a genuinely hard exam. Developing multi-agent "
+        "solutions in Azure carries the largest share, framed by architecture at the start and "
+        "by evaluation, optimisation, security and governance at the end. The distinguishing "
+        "idea throughout is orchestration — what happens when agents delegate to each other and "
+        "no single one holds the whole task."),
+    duration="4 days", course="AI-500T00",
+    prereq="Strong Azure and AI development background. AI-103 or equivalent experience is the realistic entry point.",
+    challenges=[
+        "Several single-purpose agents that each work and together produce nonsense.",
+        "No way to trace which agent in a chain caused a bad answer.",
+        "Cost and latency multiplying as agents call other agents.",
+        "Deciding where a human must stay in a loop that was designed to be autonomous.",
+        "Governing a system whose behaviour is emergent rather than specified.",
+    ],
+    selling=dict(
+        pitch=("Single agents are a solved problem for them. This is the course for what "
+               "happens when those agents have to work together."),
+        triggers=[
+            "Multiple agents in production that do not coordinate.",
+            "An agent chain producing results nobody can trace or explain.",
+            "Latency or cost rising sharply as agent-to-agent calls multiply.",
+            "A governance review asking who is accountable for an autonomous decision.",
+            "An AB-100 or AI-103 cohort ready for the next level.",
+        ],
+        buyer="Head of engineering or AI lead. Expert-level training with a budget to match.",
+        attendees="Senior engineers and architects already building agents. Not a first agent course.",
+        objections=[
+            ("We are only just building our first agent.",
+             "Then this is too early. Send them to AB-620 or AI-103 and come back when they "
+             "have two agents that need to talk to each other."),
+            ("There is no practice assessment yet.",
+             "Correct, and it is a new exam. Say so up front — Microsoft usually publishes one "
+             "within a couple of months of general availability."),
+            ("Multi-agent sounds like a solution looking for a problem.",
+             "Often it is, and part of the architecture content is recognising that. The exam "
+             "rewards knowing when not to."),
+            ("Can our Copilot Studio makers attend?",
+             "No. This assumes code and Azure depth. AB-620 is the maker-level equivalent."),
+        ],
+        next=[
+            "AI-103 first for anyone without the single-agent grounding",
+            "AI-300 for the operations and evaluation side",
+            "AB-100 for the business architecture above it",
+            "SC-500 for securing the agent estate",
         ])),
 "AI-900": dict(fam="ai", level="Beginner", title="Microsoft Azure AI Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/exams/ai-900/",
@@ -776,27 +879,58 @@ EXAMS = {
             "A pipeline review on one of their real repositories",
         ]),
     ),
-"AZ-500": dict(fam="azure", level="Intermediate", title="Microsoft Azure Security Technologies",
-    url="https://learn.microsoft.com/credentials/certifications/azure-security-engineer/",
-    sg="https://aka.ms/AZ500-StudyGuide", pa=True,
-    blurb="Securing Azure: identity and access, platform protection, data and application security, and security operations.",
-    who="Security engineers working in Azure. Pairs naturally with SC-300 on the identity side.",
-    retired="31 August 2026",
+"AZ-401": dict(fam="azure", level="Advanced", beta=True, title="Designing and Implementing Microsoft Agentic DevOps Solutions",
+    url="https://learn.microsoft.com/credentials/certifications/exams/az-401/",
+    sg="https://aka.ms/AZ401-StudyGuide", pa=False,
+    blurb="The successor to AZ-400, rebuilt around agentic DevOps — pipelines, source control and instrumentation with AI in the loop.",
+    who="DevOps engineers moving on from AZ-400. Currently in beta, so expect the objectives to shift.",
     overview=(
-        "Retired by Microsoft on 31 August 2026, along with its renewal assessments. It is "
-        "listed here because a lot of people hold it and still need the context: the material "
-        "covered securing identity and access, networking, compute, storage and databases in "
-        "Azure, with a large final block on Defender for Cloud and Sentinel. Its replacement "
-        "is SC-500, which keeps that ground and adds AI workloads."),
-    prereq="Historical entry — the exam can no longer be taken.",
+        "AZ-400's replacement, reweighted for a world where agents participate in the pipeline. "
+        "Build and release pipelines still carry the largest share, but less dominantly than "
+        "before: process and communication, source control strategy, security and compliance, "
+        "and instrumentation have all grown. The shape of the exam is the argument — DevOps is "
+        "becoming less about running the pipeline and more about governing what runs in it."),
+    course="AZ-401T00",
+    prereq="Real DevOps practice, and ideally AZ-400 behind you. Beta status means the objectives can move.",
     challenges=[
-        "Holders asking what happens to a certification that can no longer be renewed.",
-        "Job descriptions and procurement documents that still ask for AZ-500 by name.",
-        "Teams part-way through AZ-500 study when it was withdrawn.",
-        "Training plans and budgets written around a course that no longer leads anywhere.",
-        "Deciding whether existing holders go to SC-500 or elsewhere.",
+        "AZ-400 holders asking what their certification is worth now.",
+        "Coding agents committing to repositories with no review policy written for them.",
+        "Pipelines that assume every change has a human author.",
+        "Security and compliance checks designed for human-paced delivery.",
+        "Instrumentation that cannot distinguish an agent's change from a person's.",
     ],
-    ),
+    selling=dict(
+        pitch=("Their DevOps practice was built for human committers. This is the exam for what "
+               "happens when agents start contributing."),
+        triggers=[
+            "AZ-400 holders asking about the retirement and what replaces it.",
+            "GitHub Copilot or coding agents already opening pull requests.",
+            "A platform team writing policy for AI-generated contributions.",
+            "An audit question about who approved a change an agent made.",
+            "Any DevOps modernisation programme starting now rather than last year.",
+        ],
+        buyer="Head of engineering or platform lead — the same buyer as AZ-400, with a newer problem.",
+        attendees="DevOps and platform engineers. AZ-400 experience assumed rather than required.",
+        objections=[
+            ("We will wait until it leaves beta.",
+             "Reasonable for the certificate, less so for the skills. Train now, certify when "
+             "it goes generally available."),
+            ("Our people already hold AZ-400.",
+             "Then this is the transition, and the agentic material is genuinely new rather "
+             "than a reshuffle."),
+            ("Agents are not writing our code.",
+             "Not yet. The policy and review work is easier to put in place before that than "
+             "after."),
+            ("No practice assessment and no labs yet?",
+             "Correct — it is a beta. Say so plainly and set expectations about the material "
+             "moving."),
+        ],
+        next=[
+            "AZ-400 while it is still available, if they need a certificate now",
+            "GH-200 and the GitHub track for the tooling underneath",
+            "SC-500 for pipeline and workload security",
+            "A pipeline review on one of their real repositories",
+        ])),
 "AZ-700": dict(fam="azure", level="Intermediate", title="Designing and Implementing Microsoft Azure Networking Solutions",
     url="https://learn.microsoft.com/credentials/certifications/azure-network-engineer-associate/",
     sg="https://aka.ms/az700-StudyGuide", pa=True,
@@ -856,62 +990,63 @@ EXAMS = {
             "A landing zone review, which this course tends to generate demand for",
         ]),
     ),
-"AZ-800": dict(retired="30 September 2026", successor="AZ-802", fam="azure", level="Intermediate", title="Administering Windows Server Hybrid Core Infrastructure",
-    url="https://learn.microsoft.com/credentials/certifications/exams/az-800/",
-    sg="https://aka.ms/AZ800-StudyGuide", pa=True,
-    blurb="Windows Server where most of it actually lives: hybrid. Identity, compute, network infrastructure and storage across on-premises and Azure.",
-    who="Windows Server administrators. Half of a pair — AZ-801 completes the hybrid administrator certification.",
+"AZ-802": dict(fam="azure", level="Intermediate", title="Administering Windows Server",
+    url="https://learn.microsoft.com/credentials/certifications/exams/az-802/",
+    sg="https://learn.microsoft.com/credentials/certifications/resources/study-guides/az-802", pa=False,
+    blurb="The single Windows Server exam that replaced the AZ-800 and AZ-801 pair — core administration, security, storage and troubleshooting.",
+    who="Windows Server administrators. One exam now, where the hybrid pair used to be two. Earns the Windows Server Administrator Associate certification.",
     overview=(
-        "Windows Server as it actually exists in most organisations: on-premises, connected to "
-        "Azure, and not going away. Active Directory Domain Services across both worlds carries "
-        "the biggest share, then managing servers and workloads in a hybrid setup, virtual "
-        "machines and containers, hybrid networking, and storage and file services. It is the "
-        "first half of a pair with AZ-801."),
-    course="AZ-800T00",
-    prereq="Real Windows Server administration experience, plus familiarity with Azure fundamentals.",
+        "AZ-800 and AZ-801 both retired on 30 September 2026 and this is what replaced them: "
+        "one exam, seven weighted areas. Active Directory carries the largest single share, "
+        "then storage and file services and troubleshooting, with hybrid management, virtual "
+        "machines, networking and security filling the rest. Broader than either of the old "
+        "pair, and shallower than both of them combined."),
+    duration="5 days", course="AZ-802T00",
+    prereq="Real Windows Server administration experience plus familiarity with Azure fundamentals.",
     challenges=[
-        "A domain built in 2008 that everything depends on and nobody wants to touch.",
-        "Hybrid identity working by accident, with no one certain how.",
-        "File servers nobody has reviewed since the last migration.",
-        "Azure adopted alongside a data centre that is staying, with no plan to connect them properly.",
-        "Windows Server skills that stopped being refreshed around 2016.",
+        "Holders of AZ-800 or AZ-801 asking what the retirement means for them.",
+        "A domain built years ago that everything depends on and nobody wants to touch.",
+        "Hybrid identity working by accident, with no one certain quite how.",
+        "Windows Server skills that stopped being refreshed several versions ago.",
+        "A data centre that is staying, in an organisation whose training budget assumes it is not.",
     ],
     labs=dict(
-        count=21,
-        repo="https://github.com/MicrosoftLearning/AZ-800-Administering-Windows-Server-Hybrid-Core-Infrastructure",
-        guide="https://microsoftlearning.github.io/AZ-800-Administering-Windows-Server-Hybrid-Core-Infrastructure/",
-        summary=("Twenty-one labs, the most in the AZ track. Identity services first, then "
-                 "hybrid management, virtual machines and containers, networking, and storage "
-                 "and file services.")),
-    ),
-"AZ-801": dict(retired="30 September 2026", successor="AZ-802", fam="azure", level="Advanced", title="Configuring Windows Server Hybrid Advanced Services",
-    url="https://learn.microsoft.com/credentials/certifications/exams/az-801/",
-    sg="https://aka.ms/AZ801-StudyGuide", pa=True,
-    blurb="The advanced half of the hybrid server track: security, high availability, disaster recovery, migration and troubleshooting.",
-    who="Experienced Windows Server administrators. Take AZ-800 first.",
-    overview=(
-        "The second half of the Windows Server hybrid pair, and the more interesting one. "
-        "Securing Windows Server on-premises and in hybrid, high availability, disaster "
-        "recovery, migrating servers and workloads, and troubleshooting when it all goes wrong. "
-        "Where AZ-800 is about running the estate, this is about hardening it, moving it and "
-        "recovering it."),
-    course="AZ-801T00",
-    prereq="AZ-800 or equivalent. This one genuinely assumes the first half.",
-    challenges=[
-        "A disaster recovery plan that exists as a document and has never been tested.",
-        "Servers overdue for migration, with nobody confident enough to move them.",
-        "Windows Server hardening left at whatever the default was on install.",
-        "Clustering and high availability configured once by someone who has since left.",
-        "Troubleshooting by restart, because nobody has the diagnostic skills.",
-    ],
-    labs=dict(
-        count=14,
-        repo="https://github.com/MicrosoftLearning/AZ-801-Configuring-Windows-Server-Hybrid-Advanced-Services",
-        guide="https://microsoftlearning.github.io/AZ-801-Configuring-Windows-Server-Hybrid-Advanced-Services/",
-        summary=("Fourteen labs starting with securing Windows Server and moving through high "
-                 "availability, disaster recovery, migration and troubleshooting — the work you "
-                 "only want to do for the first time in a lab.")),
-    ),
+        repo="https://github.com/MicrosoftLearning/AZ-802-Windows-Server-Administrator-Associate",
+        summary=("The official lab repository for the replacement course, covering identity, "
+                 "hybrid management, storage, security and troubleshooting across the "
+                 "consolidated syllabus.")),
+    selling=dict(
+        pitch=("The two Windows Server exams retired in September. This is the one course that "
+               "now covers both, and their certified people need to know."),
+        triggers=[
+            "Staff holding AZ-800 or AZ-801 and asking what happens next.",
+            "A hybrid estate with no plan to be fully cloud any time soon.",
+            "An Active Directory nobody wants to modify.",
+            "A Windows Server end-of-support date approaching.",
+            "Training plans still budgeting for the retired two-course path.",
+        ],
+        buyer="Infrastructure manager. The retirement itself is the reason to call.",
+        attendees="Windows Server administrators, including long-serving ones who never certified.",
+        objections=[
+            ("We already sent people on AZ-800 and AZ-801.",
+             "Then they have the knowledge and a retired certification. Worth checking whether "
+             "the credential matters to them commercially before selling the replacement."),
+            ("We are moving to the cloud, Windows Server is legacy.",
+             "Almost nobody finishes that journey. The hybrid period lasts years and this is "
+             "the course about managing it."),
+            ("Is five days not a lot for one exam?",
+             "It replaced two four-day courses, so it is a consolidation rather than an "
+             "expansion. Seven weighted areas is genuinely a week."),
+            ("Why should we trust this one will not retire too?",
+             "Fair question. It is brand new, which is exactly why it is the safe one to train "
+             "against right now."),
+        ],
+        next=[
+            "AZ-104 for the Azure half of the hybrid estate",
+            "AZ-700 when the site-to-site connectivity is the problem",
+            "SC-500 for the security layer around it",
+            "An Active Directory health check delivered alongside",
+        ])),
 "AZ-900": dict(fam="azure", level="Beginner", title="Microsoft Azure Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/azure-fundamentals/",
     sg="https://aka.ms/AZ900-StudyGuide", pa=True,

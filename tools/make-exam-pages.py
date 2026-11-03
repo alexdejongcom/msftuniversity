@@ -411,8 +411,8 @@ def exam_page(code, e):
 
 def hub_page():
     canonical = SITE + "/exams.html"
-    title = "Microsoft exam prep — free study guides for 54 certifications | Microsoft University"
-    desc = ("Free prep for 54 Microsoft certifications: official study guides, practice assessments and "
+    title = "Microsoft exam prep — free study guides for 55 certifications | Microsoft University"
+    desc = ("Free prep for 55 Microsoft certifications: official study guides, practice assessments and "
             "learning paths for every AZ, SC, MS, MD, PL, DP, MB, GH and AB exam, in one place.")
 
     blocks = []
