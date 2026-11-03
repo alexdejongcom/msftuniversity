@@ -13,6 +13,12 @@
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", function () {
       navigator.serviceWorker.register("/sw.js").then(function (reg) {
+        /* Ask the browser to re-check sw.js now rather than whenever it feels
+           like it. Without this, a deploy can sit behind a cached copy of the
+           scripts for a page load or more — which looked like a brand new
+           terminal cmdlet simply not existing. */
+        try { reg.update(); } catch (e) {}
+
         /* A new version is waiting: activate it so the next load is current. */
         reg.addEventListener("updatefound", function () {
           var sw = reg.installing;
