@@ -418,6 +418,64 @@ EXAMS = {
             "SC-900 if their questions keep turning out to be security questions",
             "A tenant review delivered alongside, so the training lands on their own estate",
         ])),
+"AI-103": dict(fam="ai", level="Intermediate", title="Developing AI Apps and Agents on Azure",
+    url="https://learn.microsoft.com/credentials/certifications/exams/ai-103/",
+    sg="https://aka.ms/AI103-StudyGuide", pa=True,
+    blurb="Building AI applications and agents on Azure — generative and agentic solutions first, then vision, language and document intelligence.",
+    who="Developers building AI into applications on Azure. Earns the Azure AI Apps and Agents Developer Associate certification.",
+    overview=(
+        "The developer exam for AI on Azure, and its weighting tells you where the industry "
+        "has moved: generative AI and agentic solutions carry the largest share, with planning "
+        "and managing the overall Azure AI solution close behind. Computer vision, text "
+        "analysis and information extraction share the remaining third between them — still "
+        "there, no longer the main event."),
+    duration="4 days", course="AI-103T00", exam_time="120 minutes",
+    prereq=("Professional development experience and familiarity with Azure. Comfort with "
+            "REST APIs and at least one SDK language is assumed."),
+    challenges=[
+        "A proof of concept that impressed everyone and cannot be put in front of customers.",
+        "Choosing between Foundry, the SDKs and direct API calls, then living with that choice.",
+        "Grounding a model on company data without leaking it or hallucinating around it.",
+        "Costs that scale with usage, discovered after the pilot rather than during it.",
+        "Evaluating whether an AI feature is actually working, when the output is different "
+        "every time.",
+    ],
+    labs=dict(
+        summary=("Microsoft has not published a single AI-103 lab repository. The exercises "
+                 "are maintained as separate per-topic repositories covering agents, Foundry, "
+                 "vision and language, so the hands-on material exists but is not bundled "
+                 "under one course name yet.")),
+    selling=dict(
+        pitch=("Their developers have built an AI demo. This is the course that turns it into "
+               "something they can support in production."),
+        triggers=[
+            "An AI proof of concept that has stalled before release.",
+            "Developers choosing between Foundry, SDKs and raw API calls with no guidance.",
+            "An AI feature shipped and now producing costs or answers nobody can explain.",
+            "A team moving from consuming Copilot to building their own agents.",
+            "An AB-100 architecture that needs developers who can implement it.",
+        ],
+        buyer="Development manager or head of engineering. A different budget from infrastructure training.",
+        attendees="Professional developers with Azure exposure. Not a course for makers or administrators.",
+        objections=[
+            ("Our developers are already using the OpenAI APIs.",
+             "Then they have the easy third. Grounding, evaluation and cost management are "
+             "where AI projects actually fail, and those are most of this exam."),
+            ("The AI landscape changes too fast to certify against.",
+             "The services change; the problems do not. Grounding, evaluation and deployment "
+             "are the durable parts, and they are what this covers."),
+            ("Is there a lab environment?",
+             "Microsoft has not bundled AI-103 labs into one repository yet — the exercises "
+             "are published per topic. Worth setting that expectation honestly up front."),
+            ("Can our makers attend instead of developers?",
+             "No. Send makers to AB-620 for Copilot Studio. This one assumes code."),
+        ],
+        next=[
+            "AB-100 for the architecture above the build",
+            "AB-620 for the low-code agent builders alongside them",
+            "AZ-204 if the general Azure development grounding is missing",
+            "SC-500 once the AI workloads need securing",
+        ])),
 "AI-900": dict(fam="ai", level="Beginner", title="Microsoft Azure AI Fundamentals",
     url="https://learn.microsoft.com/credentials/certifications/exams/ai-900/",
     sg="https://aka.ms/AI900-StudyGuide", pa=True,
