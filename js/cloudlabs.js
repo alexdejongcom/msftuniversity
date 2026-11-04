@@ -43,6 +43,13 @@ const CLOUDLABS = [
         u: "https://experience.cloudlabs.ai/#/labguidepreview/b07097da-be9a-4bf0-bfd6-1e0961a09cab",
         lv: "Intermediate", h: "",
         s: "This hands-on lab guides participants through building and automating a Retrieval-Augmented Generation (RAG) solution using Copilot Studio." },
+      /* Added by hand — newer than the 20260604 catalogue PDF, so a re-run of
+         the extraction will not produce it unless the newer PDF includes it.
+         This is the lab behind the Project Ready workshops. */
+      { t: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio",
+        u: "https://experience.cloudlabs.ai/#/labguidepreview/40d43207-63a0-4759-b0ad-3b4268f37d57/1",
+        lv: "", h: "8",
+        s: "A full-day lab series building and governing agents across Microsoft 365 Copilot, Copilot Cowork and Copilot Studio, set in a fictional retailer." },
       { t: "Fabric Copilot Hands-on Lab",
         u: "https://experience.cloudlabs.ai/#labguidepreview/7c474bfb-e066-46c1-a6c7-f09eba33faaa/1",
         lv: "Intermediate", h: "",
