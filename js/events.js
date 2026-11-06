@@ -270,6 +270,14 @@ const EVENTS = [
     soldout: true,
   },
   {
+    date: "2026-11-09", end: "2026-11-11",
+    title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio (internal)",
+    type: "Training",
+    city: "Oslo, NO",
+    venue: "Glasspaper",
+    soldout: true,
+  },
+  {
     date: "2026-11-12",
     title: "Drive Agentic AI Conversations with Copilot Cowork & Copilot Studio — Project Ready",
     type: "Workshop",
