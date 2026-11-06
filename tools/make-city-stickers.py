@@ -917,6 +917,79 @@ def skyline_den_bosch(d, ground, u, dark, mid, light):
     d.rectangle([20 * u, ground - 16 * u, 48 * u, ground - 13 * u], fill=dark)
 
 
+def skyline_steenbergen(d, ground, u, dark, mid, light):
+    """A Brabant polder town: gabled houses, the church tower and a windmill."""
+    _U[0] = u
+
+    # houses along the street, left
+    for x, w, h, kind in [(3, 8, 20, "step"), (12, 7, 17, "bell"), (20, 8, 22, "point")]:
+        gable(d, x * u, w * u, ground - 7 * u, h * u, dark, kind)
+        windows(d, x * u, w * u, h * u, ground - 7 * u, light, cols=2, rows=3)
+
+    # --- the church: one tall tower, modest nave ---
+    tx = 31 * u
+    d.rectangle([tx, ground - 52 * u, tx + 10 * u, ground - 7 * u], fill=dark)
+    d.rectangle([tx - 0.8 * u, ground - 55 * u, tx + 10.8 * u, ground - 52 * u], fill=dark)
+    # louvres and clock
+    for k in range(2):
+        lx = tx + (2.2 + k * 4.2) * u
+        d.rectangle([lx, ground - 48 * u, lx + 2.4 * u, ground - 41 * u], fill=light)
+        d.pieslice([lx, ground - 50.4 * u, lx + 2.4 * u, ground - 45.6 * u], 180, 360, fill=light)
+    d.ellipse([tx + 2.6 * u, ground - 37 * u, tx + 7.4 * u, ground - 32 * u], fill=light)
+    # spire
+    d.polygon([(tx - 1.6 * u, ground - 55 * u), (tx + 11.6 * u, ground - 55 * u),
+               (tx + 5 * u, ground - 72 * u)], fill=dark)
+    d.line([(tx + 5 * u, ground - 72 * u), (tx + 5 * u, ground - 77 * u)],
+           fill=dark, width=int(u * 0.5))
+    d.line([(tx + 2.6 * u, ground - 75 * u), (tx + 7.4 * u, ground - 75 * u)],
+           fill=dark, width=int(u * 0.45))                      # weather cross
+
+    # nave behind the tower
+    nx = 41 * u
+    d.rectangle([nx, ground - 24 * u, nx + 15 * u, ground - 7 * u], fill=dark)
+    d.polygon([(nx - 1 * u, ground - 24 * u), (nx + 16 * u, ground - 24 * u),
+               (nx + 7.5 * u, ground - 31 * u)], fill=dark)
+    for k in range(3):
+        wx = nx + (2.6 + k * 4.6) * u
+        d.rectangle([wx, ground - 19 * u, wx + 2 * u, ground - 11 * u], fill=light)
+        d.pieslice([wx, ground - 21 * u, wx + 2 * u, ground - 17 * u], 180, 360, fill=light)
+
+    # --- the windmill, standing clear on its mound ---
+    mx, base = 72 * u, ground - 7 * u
+    d.polygon([(mx - 11 * u, base), (mx + 11 * u, base),
+               (mx + 7 * u, base - 6 * u), (mx - 7 * u, base - 6 * u)], fill=dark)   # mound
+    body_top = base - 34 * u
+    d.polygon([(mx - 6 * u, base - 6 * u), (mx + 6 * u, base - 6 * u),
+               (mx + 3.6 * u, body_top), (mx - 3.6 * u, body_top)], fill=dark)       # tapered body
+    d.pieslice([mx - 4.4 * u, body_top - 4.4 * u, mx + 4.4 * u, body_top + 3 * u],
+               180, 360, fill=dark)                                                   # cap
+    windows(d, mx - 3 * u, 6 * u, 16 * u, base - 8 * u, light, cols=1, rows=2)
+
+    # four sails, as a lattice cross set at an angle
+    hub = (mx, body_top - 2 * u)
+    arm, wide = 19 * u, 2.6 * u
+    for a in (35, 125, 215, 305):
+        t = math.radians(a)
+        ex, ey = hub[0] + math.cos(t) * arm, hub[1] + math.sin(t) * arm
+        px, py = -math.sin(t) * wide / 2, math.cos(t) * wide / 2
+        d.polygon([(hub[0] + px, hub[1] + py), (ex + px, ey + py),
+                   (ex - px, ey - py), (hub[0] - px, hub[1] - py)], fill=dark)
+        for k in range(1, 5):                      # lattice bars
+            f = k / 5.0
+            bx, by = hub[0] + math.cos(t) * arm * f, hub[1] + math.sin(t) * arm * f
+            d.line([(bx + px, by + py), (bx - px, by - py)], fill=light, width=int(u * 0.3))
+    d.ellipse([hub[0] - 1.6 * u, hub[1] - 1.6 * u, hub[0] + 1.6 * u, hub[1] + 1.6 * u], fill=dark)
+
+    # a last house, right
+    gable(d, 90 * u, 8 * u, ground - 7 * u, 18 * u, dark, "step")
+    windows(d, 90 * u, 8 * u, 18 * u, ground - 7 * u, light, cols=2, rows=2)
+
+    # the Vliet running along the front
+    d.rectangle([0, ground - 9 * u, 104 * u, ground], fill=lerp(mid, dark, 0.55))
+    d.pieslice([12 * u, ground - 14 * u, 30 * u, ground - 3 * u], 180, 360, fill=dark)
+    d.rectangle([9 * u, ground - 15 * u, 33 * u, ground - 12 * u], fill=dark)
+
+
 CITIES = [
     dict(key="amsterdam", name="AMSTERDAM", sub="NETHERLANDS",
          top="#122845", bot="#e8a052", dark="#0d1b2e", mid="#2a4a70", light="#fff3df",
@@ -963,6 +1036,9 @@ CITIES = [
     dict(key="s-hertogenbosch", name="'S-HERTOGENBOSCH", sub="NETHERLANDS",
          top="#1a2342", bot="#d9736b", dark="#111627", mid="#39507e", light="#fff0ec",
          glow="#ffb3a0", draw=skyline_den_bosch),
+    dict(key="steenbergen", name="STEENBERGEN", sub="NETHERLANDS",
+         top="#11302f", bot="#e3b765", dark="#0b1c1e", mid="#27564f", light="#fff8e6",
+         glow="#ffe1a0", draw=skyline_steenbergen),
     dict(key="stockholm", name="STOCKHOLM", sub="SWEDEN",
          top="#0d2440", bot="#7aa8cd", dark="#0a1a2e", mid="#2c5479", light="#f2f9ff",
          glow="#cfe6f7", draw=skyline_stockholm),
