@@ -15,6 +15,36 @@
   },
   "routes": [
     {
+      "route": "/exam/az-500.html",
+      "redirect": "/exam/sc-500.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/exam/az-500",
+      "redirect": "/exam/sc-500.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/exam/az-800.html",
+      "redirect": "/exam/az-802.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/exam/az-800",
+      "redirect": "/exam/az-802.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/exam/az-801.html",
+      "redirect": "/exam/az-802.html",
+      "statusCode": 301
+    },
+    {
+      "route": "/exam/az-801",
+      "redirect": "/exam/az-802.html",
+      "statusCode": 301
+    },
+    {
       "route": "/sw.js",
       "headers": {
         "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -23,11 +53,15 @@
     },
     {
       "route": "/manifest.webmanifest",
-      "headers": { "Cache-Control": "public, max-age=3600" }
+      "headers": {
+        "Cache-Control": "public, max-age=3600"
+      }
     },
     {
       "route": "/assets/app/*",
-      "headers": { "Cache-Control": "public, max-age=604800" }
+      "headers": {
+        "Cache-Control": "public, max-age=604800"
+      }
     }
   ],
   "mimeTypes": {

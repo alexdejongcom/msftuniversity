@@ -68,6 +68,14 @@ HEAD_TPL = """<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="{css}">
+<!-- pwa -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0067b8">
+<link rel="apple-touch-icon" href="/assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSFTU">
+<meta name="mobile-web-app-capable" content="yes">
 {extra}</head>
 <body>
 """
@@ -87,6 +95,7 @@ def page(title, desc, canonical, body, depth=0, extra="", nav_label="Exam Prep")
                '<script src="{p}js/counter.js" defer></script>',
                '<script src="{p}js/site.js" defer></script>']
     doc += "\n".join(s.format(p="../" * depth) for s in scripts)
+    doc += '\n<script src="/js/pwa.js" defer></script>'
     doc += "\n</body>\n</html>\n"
     return doc
 
@@ -280,16 +289,44 @@ def seller_block(code, e):
 """ % (esc(code), pitch, cols)
 
 
+TITLE_MAX = 60     # what Google shows before it cuts a title off
+DESC_MAX = 158     # and a description
+
+
+def clip(text, limit):
+    """Shorten at a word boundary, never mid-word."""
+    text = re.sub(r"\s+", " ", text).strip()
+    if len(text) <= limit:
+        return text
+    return text[:limit - 1].rsplit(" ", 1)[0].rstrip(" ,;:—-") + "…"
+
+
+def fit_title(code, name):
+    """Longest form that fits: with the site name, without it, then clipped."""
+    for t in ("%s exam prep — %s | Microsoft University" % (code, name),
+              "%s exam prep — %s" % (code, name),
+              "%s — %s" % (code, name)):
+        if len(t) <= TITLE_MAX:
+            return t
+    return clip("%s — %s" % (code, name), TITLE_MAX)
+
+
+def fit_desc(blurb, code, has_pa):
+    """Our one-line blurb, then what is on the page, inside the limit.
+    Newly released exams have no practice assessment, so don't promise one."""
+    tail = (" Free study guide and practice assessment for %s." if has_pa
+            else " Free study guide and learning paths for %s.") % code
+    lead = re.sub(r"\s+", " ", blurb).strip()
+    if len(lead) + len(tail) <= DESC_MAX:
+        return lead + tail
+    return clip(lead, DESC_MAX - len(tail)) + tail
+
+
 def exam_page(code, e):
     slug = code.lower()
     canonical = "%s/exam/%s.html" % (SITE, slug)
-    title = "%s exam prep — %s | Microsoft University" % (code, html.escape(e["title"], quote=False))
-    # Newly released exams have no practice assessment yet, so don't promise one.
-    offer = ("Free study guide, practice assessment and official learning paths"
-             if e.get("pa") else "Free study guide and official learning paths")
-    desc = "%s %s for %s, plus instructor-led training with Alex de Jong." % (
-        e["blurb"].split(".")[0] + ".", offer, code)
-    desc = re.sub(r"\s+", " ", desc)[:300]
+    title = html.escape(fit_title(code, e["title"]), quote=False)
+    desc = fit_desc(e["blurb"], code, bool(e.get("pa")))
 
     related = [(c, x) for c, x in sorted(EXAMS.items()) if x["fam"] == e["fam"] and c != code]
 
@@ -411,9 +448,9 @@ def exam_page(code, e):
 
 def hub_page():
     canonical = SITE + "/exams.html"
-    title = "Microsoft exam prep — free study guides for 55 certifications | Microsoft University"
-    desc = ("Free prep for 55 Microsoft certifications: official study guides, practice assessments and "
-            "learning paths for every AZ, SC, MS, MD, PL, DP, MB, GH and AB exam, in one place.")
+    title = "Microsoft exam prep — %d certifications, free guides" % len(EXAMS)
+    desc = ("Free prep for %d Microsoft certifications: official study guides, practice "
+            "assessments and learning paths for every exam we teach, in one place." % len(EXAMS))
 
     blocks = []
     for key, label, note in FAMILIES:
