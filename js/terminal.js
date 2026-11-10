@@ -188,6 +188,31 @@
     if (open) { input.focus(); window.__achieve && window.__achieve("terminal"); }
   }
 
+  window.__openTerminal = function () { toggle(); };
+
+  /* Small PowerShell button next to "Book a Training" in the nav */
+  function addNavButton() {
+    var cta = document.querySelector(".nav-links a.nav-cta");
+    if (!cta || document.querySelector(".nav-ps")) return;
+    var li = document.createElement("li");
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "nav-ps";
+    b.title = "Open PowerShell (or press ~)";
+    b.setAttribute("aria-label", "Open the PowerShell terminal");
+    b.innerHTML =
+      '<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">' +
+      '<path d="M5 7l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<path d="M12.5 17.5h6.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>' +
+      '<span class="nav-ps-label">PowerShell</span>';
+    b.addEventListener("click", function (e) { e.preventDefault(); toggle(); });
+    li.appendChild(b);
+    var cli = cta.closest("li");
+    cli.parentNode.insertBefore(li, cli.nextSibling);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", addNavButton);
+  else addNavButton();
+
   document.addEventListener("keydown", function (e) {
     var tag = (document.activeElement && document.activeElement.tagName) || "";
     if ((e.key === "`" || e.key === "~") && tag !== "INPUT" && tag !== "TEXTAREA") {
