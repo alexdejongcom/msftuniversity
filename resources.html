@@ -275,18 +275,31 @@
 </section>
 
 <!-- ============================================================
-     LATEST MICROSOFT NEWS — live feed via /api/news (server-side
-     RSS proxy of official Microsoft blogs, 15-min cache).
-     Section hides itself if the feed is unreachable.
+     WHAT'S NEW AT MICROSOFT
+     1) Security & compliance release notes via /api/whatsnew (server-side
+        parse of the Microsoft Learn "What's new" pages, 6-hour cache)
+     2) Official Microsoft blogs via /api/news (RSS proxy, 15-min cache)
+     Each card hides itself if its feed is unreachable; the section hides
+     when both are.
      ============================================================ -->
 <section class="section" id="news-section">
   <div class="container">
     <div class="section-head">
       <div class="eyebrow">Live from Redmond</div>
-      <h2 class="section-title">Latest Microsoft news</h2>
-      <p>Fresh from the official Microsoft, Microsoft 365 and Azure blogs — updated automatically.</p>
+      <h2 class="section-title">What&rsquo;s new at Microsoft</h2>
+      <p>The latest release notes for Defender, Sentinel and Purview, plus fresh posts from the official Microsoft blogs &mdash; updated automatically.</p>
     </div>
-    <div class="card resource-group">
+    <div class="card resource-group" id="whatsnew-card">
+      <h3>Security &amp; compliance release notes</h3>
+      <p class="sub">Straight from the &ldquo;What&rsquo;s new&rdquo; pages on Microsoft Learn. Pick a product to see its latest changes.</p>
+      <div class="wn-chips" id="whatsnew-chips" role="group" aria-label="Filter by product"></div>
+      <ul class="resource-list" id="whatsnew-list">
+        <li><span class="desc">Loading the latest release notes…</span></li>
+      </ul>
+    </div>
+    <div class="card resource-group" id="news-card" style="margin-top:24px">
+      <h3>From the Microsoft blogs</h3>
+      <p class="sub">Official Microsoft, Microsoft 365 and Azure blogs.</p>
       <ul class="resource-list" id="news-list">
         <li><span class="desc">Loading the latest posts…</span></li>
       </ul>
@@ -400,6 +413,7 @@
 <script src="js/terminal.js" defer></script>
 <script src="js/counter.js" defer></script>
 <script src="js/news.js" defer></script>
+<script src="js/whatsnew.js" defer></script>
 <script src="js/site.js" defer></script>
   <script src="/js/pwa.js" defer></script>
 </body>

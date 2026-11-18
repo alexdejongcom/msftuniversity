@@ -7,6 +7,7 @@
   var list = document.getElementById("news-list");
   if (!list) return;
   var section = document.getElementById("news-section");
+  var card = document.getElementById("news-card");
 
   var BADGE = {
     "Official Microsoft Blog": "#0067b8",
@@ -55,7 +56,10 @@
       });
     })
     .catch(function () {
-      // No news is bad news — hide the section rather than show an error.
-      if (section) section.style.display = "none";
+      // No news is bad news — hide the card rather than show an error,
+      // and the whole section if the release notes are gone too.
+      if (card) card.style.display = "none";
+      var other = document.getElementById("whatsnew-card");
+      if (section && (!other || other.style.display === "none")) section.style.display = "none";
     });
 })();
