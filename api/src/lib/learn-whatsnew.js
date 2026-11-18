@@ -7,6 +7,8 @@
  *   li-strong bulleted <li><strong>Title</strong>  (Defender for Office 365)
  *   table     Type | Feature | Preview/GA | Desc   (Defender for Endpoint)
  *   category  <h3> per workload, <li> per change   (Purview)
+ *   category-title  <h3> per app, <li><p><strong>Title</strong> per change
+ *                   — dated sections, e.g. "November 17, 2026" (M365 Copilot)
  * Pure string functions, no DOM: runs the same in Node and in a browser.
  */
 const MONTHS = ["january","february","march","april","may","june","july","august","september","october","november","december"];
@@ -22,12 +24,17 @@ function decode(s) {
 }
 
 // "October 2026" / "Aug 2025" → { label: "October 2026", key: "2026-10" }
+// "November 17, 2026"          → { label: "November 17, 2026", key: "2026-11-17" }
 function month(text) {
-  const m = decode(text).match(/^([A-Za-z]+)\.?\s+(\d{4})$/);
+  const t = decode(text);
+  const m = t.match(/^([A-Za-z]+)\.?\s+(?:(\d{1,2}),?\s+)?(\d{4})$/);
   if (!m) return null;
   const i = MONTHS.findIndex((n) => n.startsWith(m[1].toLowerCase().slice(0, 3)));
   if (i < 0) return null;
-  return { label: MONTHS[i][0].toUpperCase() + MONTHS[i].slice(1) + " " + m[2], key: m[2] + "-" + String(i + 1).padStart(2, "0") };
+  const name = MONTHS[i][0].toUpperCase() + MONTHS[i].slice(1), mm = String(i + 1).padStart(2, "0");
+  return m[2]
+    ? { label: name + " " + (+m[2]) + ", " + m[3], key: m[3] + "-" + mm + "-" + m[2].padStart(2, "0") }
+    : { label: name + " " + m[3], key: m[3] + "-" + mm };
 }
 
 function stageOf(text) {
@@ -59,9 +66,11 @@ function sections(html) {
 }
 
 function parse(html, feed, perFeed) {
-  const items = [];
+  const items = [], seen = new Set();
   const push = (sec, title, anchor, stage) => {
     title = clip(title.replace(/\s*\((preview|ga)\)\s*$/i, ""), 110);
+    if (seen.has(title)) return; // some pages repeat an entry under several tabs
+    seen.add(title);
     if (title && items.length < perFeed)
       items.push({ title, link: feed.url + "#" + anchor, month: sec.month.label, key: sec.month.key, stage: stage || "", source: feed.source });
   };
@@ -93,6 +102,17 @@ function parse(html, feed, perFeed) {
           const text = decode(m[2]).replace(/^:\s*/, "");
           const first = (text.match(/^.*?[.!?](\s|$)/) || [text])[0].replace(/\s+$/, "");
           push(sec, cat + ": " + first.replace(/\.$/, ""), parts[i], stageOf(label));
+        }
+      }
+    } else if (feed.mode === "category-title") {
+      const parts = body.split(/<h3[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h3>/i);
+      for (let i = 1; i < parts.length; i += 3) {
+        const cat = decode(parts[i + 1]), chunk = parts[i + 2] || "";
+        const re = /<li>\s*<p>\s*<strong>([\s\S]*?)<\/strong>/gi; let m;
+        while ((m = re.exec(chunk))) {
+          const t = decode(m[1]);
+          if (/:$/.test(t)) continue; // "Details:", "Why:" labels, not features
+          push(sec, cat.replace(/^Microsoft 365 (?=Copilot)/, "") + ": " + t, parts[i], stageOf(t));
         }
       }
     }

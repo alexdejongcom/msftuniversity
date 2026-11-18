@@ -7,7 +7,7 @@
      /api/*        network only — counters and live feeds must never be stale
      cross-origin  passed straight through, never cached
 */
-const VERSION = "082d50680546";
+const VERSION = "d07aae1aedab";
 const CACHE = "msftu-" + VERSION;
 const OFFLINE = "/offline.html";
 
@@ -87,6 +87,7 @@ const PRECACHE = [
   "/js/events.js",
   "/js/news.js",
   "/js/pwa.js",
+  "/js/roadmap.js",
   "/js/site.js",
   "/js/terminal.js",
   "/js/tourmap.js",

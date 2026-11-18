@@ -1,6 +1,6 @@
-/* Security & compliance "what's new" — Learning Resources page.
+/* Release notes "what's new" — Learning Resources page.
  * Data: /api/whatsnew (server-side parse of the Microsoft Learn release-notes
- * pages for Defender, Sentinel and Purview). Product chips filter the list.
+ * pages for Microsoft 365 Copilot, Defender, Sentinel and Purview). Product chips filter the list.
  * Renders with textContent only — titles come from an external site. */
 (function () {
   "use strict";
@@ -12,13 +12,14 @@
 
   // source → [short chip label, colour]
   var PRODUCTS = {
+    "Microsoft 365 Copilot":   ["Copilot", "#8661c5"],
     "Defender for Office 365": ["Office 365", "#c43e1c"],
     "Defender for Endpoint":   ["Endpoint", "#0f6cbd"],
     "Defender for Identity":   ["Identity", "#5c2d91"],
     "Defender for Cloud Apps": ["Cloud Apps", "#008575"],
     "Defender for Cloud":      ["Cloud", "#0078d4"],
     "Microsoft Sentinel":      ["Sentinel", "#004e8c"],
-    "Microsoft Purview":       ["Purview", "#8661c5"],
+    "Microsoft Purview":       ["Purview", "#0b7a75"],
   };
   var ALL_LIMIT = 12;
   var items = [], current = "all";
@@ -82,14 +83,16 @@
       items = data;
       chip("all", "All products");
       Object.keys(PRODUCTS).forEach(function (src) {
-        var label = /^Defender/.test(src) ? src.replace(/^Defender for /, "Defender for ") : src.replace(/^Microsoft /, "");
+        var label = /^Defender/.test(src) ? src : src === "Microsoft 365 Copilot" ? "Microsoft 365 Copilot" : src.replace(/^Microsoft /, "");
         if (items.some(function (it) { return it.source === src; })) chip(src, label, PRODUCTS[src][1]);
       });
       render();
     })
     .catch(function () {
       if (card) card.style.display = "none";
-      var other = document.getElementById("news-card");
-      if (section && (!other || other.style.display === "none")) section.style.display = "none";
+      var alive = ["whatsnew-card", "roadmap-card", "news-card"].some(function (id) {
+        var c = document.getElementById(id); return c && c.style.display !== "none";
+      });
+      if (section && !alive) section.style.display = "none";
     });
 })();

@@ -59,7 +59,9 @@
       // No news is bad news — hide the card rather than show an error,
       // and the whole section if the release notes are gone too.
       if (card) card.style.display = "none";
-      var other = document.getElementById("whatsnew-card");
-      if (section && (!other || other.style.display === "none")) section.style.display = "none";
+      var alive = ["whatsnew-card", "roadmap-card", "news-card"].some(function (id) {
+        var c = document.getElementById(id); return c && c.style.display !== "none";
+      });
+      if (section && !alive) section.style.display = "none";
     });
 })();

@@ -1,7 +1,7 @@
-/* Security & compliance "what's new" — Azure Function (SWA managed).
+/* Release notes "what's new" — Azure Function (SWA managed).
  *
  * GET /api/whatsnew → latest changes from Microsoft Learn release-notes pages
- * for Defender, Sentinel and Purview, as JSON:
+ * for Microsoft 365 Copilot, Defender, Sentinel and Purview, as JSON:
  *   [{ title, link, month, key, stage, source }]
  * Learn has no RSS for these pages, so the function reads the HTML server-side
  * and parses the month sections (see ../lib/learn-whatsnew.js). Cached in
@@ -12,6 +12,7 @@ const { parse } = require("../lib/learn-whatsnew");
 
 const L = "https://learn.microsoft.com/en-us/";
 const FEEDS = [
+  { source: "Microsoft 365 Copilot",   mode: "category-title", url: L + "microsoft-365/copilot/release-notes?tabs=all" },
   { source: "Defender for Office 365", mode: "li-strong", url: L + "defender-office-365/defender-for-office-365-whats-new" },
   { source: "Defender for Endpoint",   mode: "table",     url: L + "defender-endpoint/whats-new-in-microsoft-defender-endpoint" },
   { source: "Defender for Identity",   mode: "h3",        url: L + "defender-for-identity/whats-new" },
