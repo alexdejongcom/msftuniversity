@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Briefing — Microsoft news every two weeks — Microsoft University</title>
+<meta name="description" content="The Microsoft news that matters, every two weeks: Copilot, Defender, Sentinel and Purview release notes, the Microsoft 365 roadmap and upcoming courses — picked and explained by Alex de Jong.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%272%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%23f25022%27/%3E%3Crect x=%2717%27 y=%272%27 width=%2713%27 height=%2713%27 fill=%27%237fba00%27/%3E%3Crect x=%272%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%2300a4ef%27/%3E%3Crect x=%2717%27 y=%2717%27 width=%2713%27 height=%2713%27 fill=%27%23ffb900%27/%3E%3C/svg%3E">
+<link rel="canonical" href="https://msftuniversity.com/newsletter.html">
+
+<link rel="stylesheet" href="css/style.css">
+<!-- pwa -->
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0067b8">
+<link rel="apple-touch-icon" href="/assets/app/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSFTU">
+<meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="index.html">
+      <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+      <span>Microsoft University<small>by Alex de Jong</small></span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="course-today.html">My Course</a></li>
+      <li><a href="events.html">Events</a></li>
+      <li><a href="training.html">Training</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="exams.html">Exam Prep</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="nav-cta">Book a Training</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="eyebrow" style="color:rgba(255,255,255,.8)">The Briefing · every two weeks</div>
+    <h1>The Microsoft news that actually matters</h1>
+    <p>Hundreds of Microsoft changes ship every month. Every other week we pick the ones worth your time &mdash; and tell you why they matter.</p>
+  </div>
+</section>
+
+<section class="section" id="nl-action" hidden>
+  <div class="container" style="max-width:640px">
+    <div class="card" style="text-align:center;padding:36px">
+      <h2 id="nl-action-title" style="font-size:24px"></h2>
+      <p id="nl-action-text" style="margin:10px 0 22px;color:var(--ink-soft)"></p>
+      <button id="nl-action-btn" class="btn btn-blue" type="button" style="cursor:pointer;border:0"></button>
+      <p id="nl-action-msg" class="nl-msg" role="status" style="margin-top:14px"></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:28px;align-items:start">
+      <div>
+        <div class="nl-card">
+          <h3>Get The Briefing</h3>
+          <p style="margin-bottom:18px">Free. Every two weeks. One click to leave.</p>
+          <form class="nl-form" novalidate>
+          <label class="nl-hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="email" name="email" required placeholder="you@company.com" autocomplete="email" aria-label="Email address">
+          <button class="btn btn-blue" type="submit">Subscribe</button>
+          <div class="nl-msg" role="status"></div>
+        </form>
+          <p class="nl-fine">We send a confirmation mail first. Your address is only used for this newsletter &mdash; see our <a href="privacy.html">privacy statement</a>.</p>
+        </div>
+        <div class="card" style="margin-top:24px">
+          <h3 style="font-size:19px">What you get</h3>
+          <ul class="nl-list">
+            <li><b>Release notes, picked for you</b> &mdash; Microsoft 365 Copilot, Defender, Sentinel and Purview, with a line on why each one matters</li>
+            <li><b>What just landed on the roadmap</b> &mdash; so you hear about it before your users do</li>
+            <li><b>Upcoming courses &amp; events</b> &mdash; where we&rsquo;re teaching next</li>
+          </ul>
+          <h3 style="font-size:19px;margin-top:22px">What you don&rsquo;t get</h3>
+          <ul class="nl-list no">
+            <li>Tracking pixels or rewritten links &mdash; we don&rsquo;t know if you opened it, and we like it that way</li>
+            <li>Your address shared, sold or used for anything else</li>
+            <li>Mail from us after you unsubscribe &mdash; we delete your address on the spot</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card resource-group">
+        <h3>Past issues</h3>
+        <p class="sub">Read any issue in your browser.</p>
+        <ul class="resource-list" id="nl-archive">
+          <li><span class="desc">Loading…</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>Microsoft University</h4>
+        <p>Microsoft training, keynotes and cloud advisory by Alex de Jong — Microsoft Certified Trainer and international speaker.</p>
+        <p style="margin-top:14px;font-size:12.5px;color:#767676">Microsoft, Azure, Microsoft 365, Copilot, Intune and related marks are trademarks of the Microsoft group of companies. This independent website is not affiliated with, sponsored by, or endorsed by Microsoft Corporation.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <ul>
+          <li><a href="course-today.html">My Course Today</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="training.html">Training &amp; Services</a></li>
+          <li><a href="resources.html">Learning Resources</a></li>
+          <li><a href="newsletter.html">Newsletter</a></li>
+          <li><a href="exams.html">Exam Prep</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/adjnl/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://x.com/alexdejongcom" target="_blank" rel="noopener">X / Twitter</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:alex@alexdejong.com">alex@alexdejong.com</a></li>
+          <li><a href="https://outlook.office.com/bookwithme/user/9224ea12136f4ce0a77667b581e17b88%40alexdejong.com?anonymous&amp;ismsaljsauthenabled" target="_blank" rel="noopener">Book a meeting</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span><svg aria-hidden="true" class="fi-sm" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20m2.94 14.5H9.06c.65 2.41 1.79 4 2.94 4s2.29-1.59 2.94-4m-7.43 0H4.79a8.5 8.5 0 0 0 4.09 3.41q-.79-1.25-1.27-3.02zm11.7 0H16.5c-.32 1.33-.79 2.5-1.37 3.41a8.5 8.5 0 0 0 3.9-3.13zM7.1 10H3.74v.02a8.5 8.5 0 0 0 .3 4.98h3.18a20 20 0 0 1-.13-5m8.3 0H8.6a19 19 0 0 0 .14 5h6.52a19 19 0 0 0 .14-5m4.87 0h-3.35a21 21 0 0 1-.13 5h3.18a8.5 8.5 0 0 0 .3-5M8.88 4.09h-.02a8.5 8.5 0 0 0-4.61 4.4l3.05.01c.31-1.75.86-3.28 1.58-4.41m3.12-.6-.12.01c-1.26.12-2.48 2.12-3.05 5h6.34c-.56-2.87-1.78-4.87-3.04-5zm3.12.6.1.17A13 13 0 0 1 16.7 8.5h3.05a8.5 8.5 0 0 0-4.34-4.29z"/></svg>English (United States)</span>
+      <span>© 2026 Alex de Jong · Microsoft University</span>
+      <span>Not affiliated with Microsoft Corporation</span>
+      <span><a href="status.html" style="color:inherit"><svg aria-hidden="true" class="fi-sm" viewBox="0 0 24 24"><path d="m8.46 6.8 3.29 13.63c.17.73 1.2.77 1.44.05l3.26-10.12.58 2.1c.1.32.39.54.72.54h3.5a.75.75 0 0 0 0-1.5h-2.93l-1.1-3.95a.75.75 0 0 0-1.44-.03l-3.2 9.96-3.35-13.9c-.19-.76-1.26-.77-1.46-.02l-2.1 7.94H2.75a.75.75 0 0 0 0 1.5h3.5c.34 0 .63-.23.72-.56z"/></svg>Service Health</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/nl-signup.js" defer></script>
+<script>
+(function () {
+  "use strict";
+  var q = new URLSearchParams(location.search);
+  var confirm = q.get("confirm"), unsub = q.get("unsubscribe");
+  // Confirm/unsubscribe need a click on purpose: mail link scanners open every
+  // link, and must not be able to (un)subscribe anyone.
+  if (confirm || unsub) {
+    var box = document.getElementById("nl-action"), btn = document.getElementById("nl-action-btn"), msg = document.getElementById("nl-action-msg");
+    box.hidden = false;
+    document.getElementById("nl-action-title").textContent = confirm ? "Confirm your subscription" : "Unsubscribe from The Briefing";
+    document.getElementById("nl-action-text").textContent = confirm
+      ? "One more click and The Briefing lands in your inbox every two weeks."
+      : "Sorry to see you go. Your address is deleted immediately — no more mail from us.";
+    btn.textContent = confirm ? "Yes, subscribe me" : "Unsubscribe me";
+    btn.addEventListener("click", function () {
+      btn.disabled = true; msg.className = "nl-msg"; msg.textContent = "";
+      fetch(confirm ? "/api/newsletter/confirm" : "/api/newsletter/unsubscribe", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: confirm || unsub }),
+      }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (b) { return { ok: r.ok, b: b }; }); })
+        .then(function (res) {
+          if (res.ok) {
+            msg.className = "nl-msg ok";
+            msg.textContent = confirm ? "You're in! The next issue is on its way." : "Done — you're unsubscribed and your address is deleted.";
+            btn.hidden = true;
+            if (confirm && window.__achieve) window.__achieve("newsletter");
+            history.replaceState(null, "", location.pathname);
+          } else { msg.className = "nl-msg err"; msg.textContent = (res.b && res.b.message) || "Something went wrong. Please try again."; btn.disabled = false; }
+        })
+        .catch(function () { msg.className = "nl-msg err"; msg.textContent = "You seem to be offline. Please try again."; btn.disabled = false; });
+    });
+  }
+  // archive
+  var list = document.getElementById("nl-archive");
+  fetch("/api/newsletter/archive").then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (items) {
+    list.innerHTML = "";
+    if (!items.length) { var li = document.createElement("li"); var s = document.createElement("span"); s.className = "desc"; s.textContent = "The first issue is on its way \u2014 subscribe so you don't miss it."; li.appendChild(s); list.appendChild(li); return; }
+    items.forEach(function (it) {
+      var li = document.createElement("li"), a = document.createElement("a"), d = document.createElement("span");
+      a.href = "/api/newsletter/issue?id=" + encodeURIComponent(it.id); a.target = "_blank"; a.rel = "noopener";
+      a.textContent = it.subject;
+      d.className = "desc"; d.textContent = " " + new Date(it.sentAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+      a.appendChild(d); li.appendChild(a); list.appendChild(li);
+    });
+  }).catch(function () { list.closest(".card").style.display = "none"; });
+})();
+</script>
+<script src="js/achievements.js" defer></script>
+<script src="js/terminal.js" defer></script>
+<script src="js/counter.js" defer></script>
+<script src="js/site.js" defer></script>
+  <script src="/js/pwa.js" defer></script>
+</body>
+</html>

@@ -16,6 +16,7 @@
     { id: "aero",     name: "Glass Half Full",         desc: "Enable Windows Vista mode",                        g: 100 },
     { id: "globe",    name: "Spin Doctor",             desc: "Give the tour globe a spin",                       g: 50  },
     { id: "cert",     name: "Certified Awesome",       desc: "Generate a certificate of attendance",             g: 100 },
+    { id: "newsletter", name: "Stay in the Loop",      desc: "Sign up for The Briefing",                         g: 50  },
     { id: "all",      name: "Completionist",           desc: "Unlock every other achievement",                   g: 200 }
   ];
   var PAGES = ["index.html", "course-today.html", "events.html", "training.html",

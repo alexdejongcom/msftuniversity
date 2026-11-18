@@ -25,7 +25,9 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 # here would point straight at it.
 HIDDEN = {"toolbox.html", "visitors.html", "toolbox.js",
           # the CloudLabs index and its data: partner material, hidden page
-          "labs.html", "cloudlabs.js"}
+          "labs.html", "cloudlabs.js",
+          # the newsletter editor (role-protected API, but no need to advertise it)
+          "newsletter-admin.html", "nl-admin.js"}
 
 # Not worth the bytes offline, or meaningless without the network.
 SKIP_ROOT = {"404.html"}

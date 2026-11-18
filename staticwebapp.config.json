@@ -15,6 +15,12 @@
   },
   "routes": [
     {
+      "route": "/api/newsletter/admin/*",
+      "allowedRoles": [
+        "newsletter-admin"
+      ]
+    },
+    {
       "route": "/exam/az-500.html",
       "redirect": "/exam/sc-500.html",
       "statusCode": 301
