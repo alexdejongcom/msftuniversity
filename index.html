@@ -105,13 +105,14 @@
 
 <section class="hero">
   <div class="container">
-    <span class="hero-kicker">Microsoft Certified Trainer · Speaker · Cloud Advisor</span>
+    <span class="hero-kicker">Microsoft Certified Trainer · Speaker · AI &amp; Security</span>
     <h1>Learn Microsoft technology from someone who lives it every day.</h1>
-    <p class="lede">Official Microsoft courses, keynotes and cloud advisory — delivered worldwide by Alex de Jong. From Azure to Microsoft 365 Copilot and Intune, with the resources your team needs to keep learning after the course ends.</p>
+    <p class="lede">Official Microsoft courses, keynotes and cloud advisory — delivered worldwide by Alex de Jong. AI, security and cloud — Copilot, agents, Defender, Purview, Intune and Azure — with the resources your team needs to keep learning after the course ends.</p>
     <div class="hero-actions">
       <a class="btn btn-primary" href="contact.html">Book a training</a>
-      <a class="btn btn-secondary" href="resources.html">Browse learning resources</a>
+      <a class="btn btn-secondary" href="exams.html">Free exam prep</a>
     </div>
+    <p class="hero-tease">Press <kbd>~</kbd> anywhere on this site. If you know, you know.</p>
   </div>
 </section>
 
@@ -144,13 +145,43 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="section-head center">
+      <div class="eyebrow">Keep learning</div>
+      <h2 class="section-title">Free, current and always on</h2>
+    </div>
+    <div class="home-grid">
+      <a class="card home-exam" href="exams.html">
+        <div class="eyebrow">Exam prep</div>
+        <h3>Free exam prep for <span id="home-exam-count">55</span> Microsoft certifications</h3>
+        <p>Every exam we teach on one page each: who it is for, what the course covers, the labs, the official study guide and free practice assessment.</p>
+        <div class="home-codes"><span>AB-900</span><span>AZ-104</span><span>SC-300</span><span>MD-102</span><span>AI-103</span><span>SC-500</span></div>
+        <span class="card-link">Pick your exam</span>
+      </a>
+      <div class="card home-news" id="home-news">
+        <div class="eyebrow">What&rsquo;s new at Microsoft</div>
+        <h3>Fresh from the release notes</h3>
+        <ul class="home-list" id="home-news-list"><li class="desc">Loading the latest changes…</li></ul>
+        <a class="card-link" href="resources.html#news-section">All release notes &amp; roadmap</a>
+      </div>
+      <div class="card home-events" id="home-events">
+        <div class="eyebrow">Coming up</div>
+        <h3>Next public courses &amp; events</h3>
+        <ul class="home-list" id="home-events-list"></ul>
+        <a class="card-link" href="events.html">All events</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section alt">
   <div class="container">
     <div class="stats">
-      <div class="stat"><div class="num">MCT</div><div class="label">Microsoft Certified Trainer</div></div>
-      <div class="stat"><div class="num">Global</div><div class="label">Trainings &amp; keynotes worldwide</div></div>
-      <div class="stat"><div class="num">3+</div><div class="label">Specializations: Azure · Copilot · Intune</div></div>
-      <div class="stat"><div class="num">YouTube</div><div class="label">Free lectures @microsoftuniversity</div></div>
+      <div class="stat"><div class="num">25+</div><div class="label">Years in the Microsoft ecosystem</div></div>
+      <div class="stat"><div class="num">50+</div><div class="label">Microsoft certification tracks taught</div></div>
+      <div class="stat"><div class="num" id="home-courses">40+</div><div class="label" id="home-courses-label">Courses delivered this year</div></div>
+      <div class="stat"><div class="num" id="home-countries">10+</div><div class="label" id="home-countries-label">Countries taught in this year</div></div>
     </div>
   </div>
 </section>
@@ -243,28 +274,36 @@
         <a class="card-link" href="https://learn.microsoft.com/en-us/certifications/practice-assessments-for-microsoft-certifications" target="_blank" rel="noopener">Start practicing</a>
       </div>
       <div class="card">
-        <div class="card-icon"><svg aria-hidden="true" class="fi" viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 5 11.9v7.35c0 .57-.6.92-1.1.67l-.08-.06L12 19.18l-3.82 2.68a.75.75 0 0 1-1.17-.5v-.11L7 13.9A7 7 0 0 1 12 2m3.5 17.8v-4.74a7 7 0 0 1-7 0v4.74l3.07-2.15a.8.8 0 0 1 .76-.06l.1.06zv-4.75zM12 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11"/></svg></div>
-        <h3>Applied Skills</h3>
-        <p>Scenario-based Microsoft Applied Skills credentials — prove hands-on skills, no full exam required.</p>
-        <a class="card-link" href="https://learn.microsoft.com/en-us/credentials/browse?credential_types=applied%20skills" target="_blank" rel="noopener">Browse credentials</a>
-      </div>
-      <div class="card">
         <div class="card-icon"><svg aria-hidden="true" class="fi" viewBox="0 0 24 24"><path d="M7 6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1zm1.5 1.5h7v-1h-7zM4 4.5A2.5 2.5 0 0 1 6.5 2H18a2.5 2.5 0 0 1 2.5 2.5v14.25c0 .41-.34.75-.75.75H5.5a1 1 0 0 0 1 1h13.25a.75.75 0 0 1 0 1.5H6.5A2.5 2.5 0 0 1 4 19.5zM5.5 18H19V4.5a1 1 0 0 0-1-1H6.5a1 1 0 0 0-1 1z"/></svg></div>
         <h3>Learning Resources</h3>
         <p>Curated links for Azure, KQL, Sentinel, Copilot and IoT — the same references we use during training.</p>
         <a class="card-link" href="resources.html">Open resources</a>
       </div>
-      <div class="card">
-        <div class="card-icon"><svg aria-hidden="true" class="fi" viewBox="0 0 24 24"><path d="M8 4.5h1v6.24q0 .57-.27 1.07l-3.59 6.6A1.75 1.75 0 0 0 6.68 21h10.64a1.75 1.75 0 0 0 1.54-2.59l-3.59-6.6q-.27-.5-.27-1.07V4.5h1A.75.75 0 0 0 16 3H8a.75.75 0 0 0 0 1.5m2.5 6.24V4.5h3v6.24q0 .95.45 1.79l.8 1.47h-5.5l.8-1.47q.45-.84.45-1.8M8.43 15.5h7.14l1.97 3.63a.25.25 0 0 1-.22.37H6.68a.25.25 0 0 1-.22-.37z"/></svg></div>
-        <h3>Microsoft Demos</h3>
-        <p>Hands-on demo environments from the Microsoft Customer Digital Experiences platform.</p>
-        <a class="card-link" href="https://cdx.transform.microsoft.com" target="_blank" rel="noopener">Launch demos</a>
+    </div>
+    <div class="home-attendee-foot">
+      <a class="btn btn-blue" href="course-today.html">Everything for your course &rarr;</a>
+      <span>Demo tenants, videos, stickers, wallpapers, your certificate of attendance and more.</span>
+    </div>
+    <p class="home-app">Tip: install this site as an app on your phone or laptop &mdash; exam prep keeps working offline. <a href="#" id="home-install">How?</a></p>
+  </div>
+</section>
+
+<section class="section" style="padding-bottom:0">
+  <div class="container">
+    <div class="nl-card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:center">
+      <div>
+        <div class="eyebrow" style="color:#00a4ef">The Redmond Report · every other Thursday</div>
+        <h3 style="font-size:24px;margin-top:6px">The Microsoft news that actually matters</h3>
+        <p>Copilot, Defender, Sentinel and Purview changes and the newest roadmap items &mdash; picked, summarised and explained by a trainer. Free, no tracking.</p>
       </div>
-      <div class="card">
-        <div class="card-icon"><svg aria-hidden="true" class="fi" viewBox="0 0 24 24"><path d="M10.86 8.15A1.25 1.25 0 0 0 9 9.25v5.5c0 .95 1.02 1.56 1.86 1.1l5.75-3.2a.75.75 0 0 0 0-1.3zM12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20M3.5 12a8.5 8.5 0 1 1 17 0 8.5 8.5 0 0 1-17 0"/></svg></div>
-        <h3>Video Lectures</h3>
-        <p>Recorded sessions and walkthroughs on our YouTube channel — free, anytime.</p>
-        <a class="card-link" href="https://www.youtube.com/@microsoftuniversity" target="_blank" rel="noopener">Watch on YouTube</a>
+      <div>
+        <form class="nl-form" novalidate>
+          <label class="nl-hp" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">Website <input name="website" tabindex="-1" autocomplete="off"></label>
+          <input type="email" name="email" required placeholder="you@company.com" autocomplete="email" aria-label="Email address">
+          <button class="btn btn-blue" type="submit">Subscribe</button>
+          <div class="nl-msg" role="status"></div>
+        </form>
+        <p class="nl-fine"><a href="newsletter.html">Past issues</a> · <a href="privacy.html">Privacy</a></p>
       </div>
     </div>
   </div>
@@ -334,6 +373,8 @@
 <script src="js/achievements.js" defer></script>
 <script src="js/terminal.js" defer></script>
 <script src="js/counter.js" defer></script>
+<script src="js/nl-signup.js" defer></script>
+<script src="js/home.js" defer></script>
 <script src="js/site.js" defer></script>
   <script src="/js/pwa.js" defer></script>
 </body>
