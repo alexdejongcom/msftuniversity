@@ -58,7 +58,7 @@ Every push to `main` auto-deploys via GitHub Actions.
 - Your old WordPress site currently serves msftuniversity.com — switch DNS only when you're happy with the new site.
 - The About page still hotlinks your photo from the old WordPress site. Before killing WordPress: save the photo as `assets/alex.jpg`, update the `<img src>` in `about.html`, commit, push.
 
-## Newsletter — The Briefing
+## Newsletter — The Redmond Report
 
 Self-hosted on Azure: subscribers in Table Storage (same `COUNTER_STORAGE` account), mail through
 Azure Communication Services (ACS), editor at `/newsletter-admin.html`, scheduler in GitHub Actions.
@@ -71,7 +71,7 @@ Do these once, in order. You paste every key/connection string yourself — neve
    the two **DKIM** CNAMEs. Click *Verify* for each until all show *Verified*.
    Also add a DMARC record to start monitoring: `_dmarc` TXT `v=DMARC1; p=none; rua=mailto:alex@alexdejong.com`.
 4. In the domain: **MailFrom addresses → Add** → username `newsletter`, display name
-   `The Briefing · Microsoft University`.
+   `The Redmond Report · Microsoft University`.
 5. Create a **Communication Services** resource (same region), then **Email → Domains → Connect domain**
    and connect `msftuniversity.com`.
 6. Communication Services → **Keys** → copy the *Connection string*.

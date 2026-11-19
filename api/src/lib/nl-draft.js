@@ -79,7 +79,7 @@ async function buildDraft({ lastSent, seen, now = Date.now() }) {
   const d = new Date(now);
   const nice = d.getUTCDate() + " " + ["January","February","March","April","May","June","July","August","September","October","November","December"][d.getUTCMonth()] + " " + d.getUTCFullYear();
   return {
-    subject: "The Briefing — " + nice,
+    subject: "The Redmond Report — " + nice,
     intro: "",
     outro: "",
     items,

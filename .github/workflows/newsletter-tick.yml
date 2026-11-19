@@ -1,4 +1,4 @@
-# The Briefing — scheduler.
+# The Redmond Report — scheduler.
 # Static Web Apps' built-in API can't run timers, so GitHub calls it instead:
 #   * finishes sending an issue in batches within the Azure send limits
 #   * deletes sign-ups that were never confirmed (after 7 days)

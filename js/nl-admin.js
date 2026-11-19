@@ -1,4 +1,4 @@
-/* The Briefing — editor (newsletter-admin.html).
+/* The Redmond Report — editor (newsletter-admin.html).
  * Requires the SWA role "newsletter-admin"; the API enforces it too.
  * All feed text goes through textContent / value — never innerHTML. */
 (function () {

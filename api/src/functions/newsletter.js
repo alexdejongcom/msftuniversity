@@ -1,4 +1,4 @@
-/* The Briefing — self-hosted newsletter on Azure.
+/* The Redmond Report — self-hosted newsletter on Azure.
  *
  * Public
  *   POST /api/newsletter/subscribe    { email, website }  → double opt-in mail
@@ -223,9 +223,9 @@ async function tick(ctx, { allowRemind = true } = {}) {
         const site = SITE();
         await mail.send({
           to: process.env.NL_ADMIN_EMAIL,
-          subject: "Your next Briefing draft is ready",
-          text: "It's been two weeks — a fresh draft of The Briefing is waiting.\n\nReview, add your take and send:\n" + site + "/newsletter-admin.html\n",
-          html: '<p style="font-family:Segoe UI,Arial,sans-serif;font-size:15px">It\'s been two weeks — a fresh draft of <b>The Briefing</b> is waiting.</p><p><a href="' + site + '/newsletter-admin.html" style="font-family:Segoe UI,Arial,sans-serif;background:#0067b8;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Review &amp; send</a></p>',
+          subject: "Your next Redmond Report draft is ready",
+          text: "It's been two weeks — a fresh draft of The Redmond Report is waiting.\n\nReview, add your take and send:\n" + site + "/newsletter-admin.html\n",
+          html: '<p style="font-family:Segoe UI,Arial,sans-serif;font-size:15px">It\'s been two weeks — a fresh draft of <b>The Redmond Report</b> is waiting.</p><p><a href="' + site + '/newsletter-admin.html" style="font-family:Segoe UI,Arial,sans-serif;background:#0067b8;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Review &amp; send</a></p>',
         });
         await mail.record(1);
         await store.upsert({ partitionKey: "meta", rowKey: "remind", cycle, at: now() });

@@ -37,7 +37,7 @@ function render(issue, ctx = {}) {
   const items = (issue.items || []).filter((i) => i.include);
   const events = (issue.events || []).filter((v) => v.include !== false);
   const site = SITE();
-  const subject = issue.subject || "Microsoft University Briefing";
+  const subject = issue.subject || "The Redmond Report";
   const unsub = ctx.unsubscribeUrl || site + "/newsletter.html";
   const web = ctx.webUrl || "";
   const FONT = "font-family:'Segoe UI',-apple-system,Helvetica,Arial,sans-serif;";
@@ -54,7 +54,7 @@ function render(issue, ctx = {}) {
   h.push('<table role="presentation" cellpadding="0" cellspacing="0"><tr>' +
     '<td style="padding-right:12px;"><table role="presentation" cellpadding="0" cellspacing="2"><tr><td width="10" height="10" style="background:#f25022;font-size:0;">&nbsp;</td><td width="10" height="10" style="background:#7fba00;font-size:0;">&nbsp;</td></tr><tr><td width="10" height="10" style="background:#00a4ef;font-size:0;">&nbsp;</td><td width="10" height="10" style="background:#ffb900;font-size:0;">&nbsp;</td></tr></table></td>' +
     '<td style="' + FONT + 'color:#b8cce4;font-size:14px;">microsoft<b style="color:#fff;">university</b><span style="color:#4fb3f6;">.com</span></td></tr></table>');
-  h.push('<div style="' + FONT + 'color:#00a4ef;font-size:12px;font-weight:700;letter-spacing:1.5px;margin-top:22px;">THE BRIEFING · ' + e(longDate(issue.sentAt || issue.createdAt || new Date().toISOString()).toUpperCase()) + "</div>");
+  h.push('<div style="' + FONT + 'color:#00a4ef;font-size:12px;font-weight:700;letter-spacing:1.5px;margin-top:22px;">THE REDMOND REPORT · ' + e(longDate(issue.sentAt || issue.createdAt || new Date().toISOString()).toUpperCase()) + "</div>");
   h.push('<div style="' + FONT + 'color:#ffffff;font-size:26px;line-height:1.25;font-weight:700;margin-top:6px;">' + e(subject) + "</div>");
   h.push("</td></tr>");
   if (web) h.push('<tr><td style="' + FONT + 'padding:10px 32px 0;font-size:12px;color:#8a8a8a;text-align:right;"><a href="' + e(web) + '" style="color:#8a8a8a;">View in your browser</a></td></tr>');
@@ -102,7 +102,7 @@ function render(issue, ctx = {}) {
   h.push("</table></td></tr></table></body></html>");
 
   // plain-text alternative
-  const t = [subject.toUpperCase(), "The Briefing · " + longDate(issue.sentAt || issue.createdAt || new Date().toISOString()), ""];
+  const t = [subject.toUpperCase(), "The Redmond Report · " + longDate(issue.sentAt || issue.createdAt || new Date().toISOString()), ""];
   if (web) t.push("View in your browser: " + web, "");
   if ((issue.intro || "").trim()) t.push(issue.intro.trim(), "");
   for (const [kind, title] of SECTIONS) {
@@ -128,14 +128,14 @@ function confirmMail(confirmUrl) {
   const html = '<!doctype html><html><body style="margin:0;background:#f2f4f7;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">' +
     '<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#fff;border-radius:10px;"><tr><td style="padding:32px;' + FONT + 'color:#1f1f1f;">' +
     '<div style="font-size:22px;font-weight:700;color:#0b1a30;">One click to confirm</div>' +
-    '<p style="font-size:15.5px;line-height:1.6;">Someone (hopefully you) asked to receive <b>The Briefing</b> from Microsoft University — the Microsoft news that matters, every two weeks.</p>' +
+    '<p style="font-size:15.5px;line-height:1.6;">Someone (hopefully you) asked to receive <b>The Redmond Report</b> from Microsoft University — the Microsoft news that matters, every two weeks.</p>' +
     '<p style="margin:26px 0;"><a href="' + e(confirmUrl) + '" style="background:#0067b8;color:#fff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:6px;display:inline-block;">Yes, subscribe me</a></p>' +
     '<p style="font-size:13px;color:#6b6b6b;line-height:1.6;">Didn\'t ask for this? Just ignore this email — you won\'t hear from us again, and we delete unconfirmed sign-ups after 7 days.</p>' +
     '<p style="font-size:12px;color:#8a8a8a;">Microsoft University · alexdejong.com · Bergeijk, the Netherlands · <a href="' + e(site) + '/privacy.html" style="color:#8a8a8a;">Privacy</a></p>' +
     "</td></tr></table></td></tr></table></body></html>";
-  const text = "Confirm your subscription to The Briefing from Microsoft University:\n\n" + confirmUrl +
+  const text = "Confirm your subscription to The Redmond Report from Microsoft University:\n\n" + confirmUrl +
     "\n\nDidn't ask for this? Ignore this email — unconfirmed sign-ups are deleted after 7 days.\n\nMicrosoft University · alexdejong.com · Bergeijk, the Netherlands";
-  return { subject: "Confirm your subscription to The Briefing", html, text };
+  return { subject: "Confirm your subscription to The Redmond Report", html, text };
 }
 
 module.exports = { render, confirmMail, esc: e };

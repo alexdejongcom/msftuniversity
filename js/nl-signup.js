@@ -1,4 +1,4 @@
-/* The Briefing — sign-up forms. Enhances every <form class="nl-form">:
+/* The Redmond Report — sign-up forms. Enhances every <form class="nl-form">:
  * posts to /api/newsletter/subscribe and shows the answer inline.
  * The hidden "website" field is a honeypot for bots. */
 (function () {
