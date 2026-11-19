@@ -109,3 +109,11 @@ Azure starts every custom domain at **30 mails/minute and 100/hour**. Bigger lis
 automatically (keep the editor open to speed it up, the hourly scheduler finishes it otherwise). Once the domain
 has a few weeks of clean sending, request a quota increase (ACS docs: *Quota increase for email domains*) and
 raise `NL_RATE_MINUTE` / `NL_RATE_HOUR` to match.
+
+## Monitoring dashboard
+
+Azure portal → Dashboard → **Microsoft University - status** (resource `msftuniversity-status` in rg-msftuniversity).
+Data sources: Static Web App metrics, Application Insights `msftuniversity-insights` (workspace
+`msftuniversity-logs`, 30-day retention, 0.15 GB/day cap) and Communication Services email metrics.
+To change the tiles: edit `tools/azure/make-dashboard.py`, run it, then in Cloud Shell
+`az portal dashboard update -g rg-msftuniversity -n msftuniversity-status --input-path dashboard.json`.
