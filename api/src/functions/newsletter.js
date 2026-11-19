@@ -18,6 +18,8 @@
  *   POST /api/newsletter/admin/schedule       { id }   → send at the next Thursday 09:30 slot
  *   POST /api/newsletter/admin/unschedule     { id }   → back to draft
  *   GET  /api/newsletter/admin/subscribers.csv
+ *   GET  /api/newsletter/admin/subscribers    → [{ email, status, createdAt, confirmedAt }]
+ *   POST /api/newsletter/admin/remove         { email }  (e.g. a GDPR deletion request)
  * Scheduler (GitHub Actions, header x-nl-key = NL_CRON_KEY) or admin
  *   POST /api/newsletter/tick   starts a scheduled issue when its slot arrives,
  *                               sends the next batch within the ACS rate
@@ -330,6 +332,11 @@ app.http("nlAdmin", {
         if (!it) return json(404, { error: "not found" });
         return { status: 200, headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" }, body: render(it, { unsubscribeUrl: SITE() + "/newsletter.html" }).html };
       }
+      if (req.method === "GET" && action === "subscribers") {
+        const subs = await store.list("PartitionKey eq 'sub'", ["email", "status", "createdAt", "confirmedAt"]);
+        return json(200, subs.map((x) => ({ email: x.email, status: x.status, createdAt: x.createdAt || "", confirmedAt: x.confirmedAt || "" }))
+          .sort((a, b) => ((b.confirmedAt || b.createdAt) > (a.confirmedAt || a.createdAt) ? 1 : -1)));
+      }
       if (req.method === "GET" && action === "subscribers.csv") {
         const subs = await store.list("PartitionKey eq 'sub' and status eq 'active'", ["email", "confirmedAt"]);
         const csv = "email,confirmed\n" + subs.map((s) => '"' + String(s.email).replace(/"/g, '""') + '",' + (s.confirmedAt || "")).join("\n");
@@ -339,6 +346,12 @@ app.http("nlAdmin", {
       const b = await body(req);
 
       if (action === "draft") return json(200, await createDraft());
+      if (action === "remove") {
+        const email = String(b.email || "").trim();
+        if (!email) return json(400, { error: "email required" });
+        await store.remove("sub", store.subKey(email));
+        return json(200, { ok: true });
+      }
 
       const cur = b.id ? await store.get("issue", String(b.id)) : null;
       if (!cur) return json(404, { error: "issue not found" });

@@ -100,10 +100,51 @@
         el("span", { text: i.subject || "(no subject)" }), el("span", { class: "desc", text: badge }),
       ])]));
     });
+    app.appendChild(subscriberPanel());
     app.appendChild(el("details", { class: "card resource-group", style: "margin-bottom:24px", open: !state.issues.length }, [
       el("summary", { text: "All issues (" + state.issues.length + ")", style: "cursor:pointer;font-weight:600" }), list,
     ]));
     app.appendChild(el("div", { id: "nla-editor" }));
+  }
+
+  /* ---------- subscribers ---------- */
+  function subscriberPanel() {
+    var body = el("div", { style: "margin-top:12px" }, [el("span", { class: "desc", text: "Loading…" })]);
+    var loaded = false;
+    var box = el("details", { class: "card resource-group", style: "margin-bottom:16px" }, [
+      el("summary", { text: "Subscribers (" + state.subscribers.active + " confirmed, " + state.subscribers.pending + " waiting)", style: "cursor:pointer;font-weight:600" }), body,
+    ]);
+    box.addEventListener("toggle", function () { if (box.open && !loaded) { loaded = true; load(); } });
+    function load() {
+      api("GET", "subscribers").then(function (rows) {
+        body.innerHTML = "";
+        if (!rows.length) { body.appendChild(el("p", { text: "No subscribers yet — share msftuniversity.com/newsletter.html.", style: "color:var(--ink-faint)" })); return; }
+        var q = el("input", { type: "search", placeholder: "Search by email…", style: INPUT + "margin-bottom:10px;max-width:320px" });
+        var table = el("table", { style: "width:100%;border-collapse:collapse;font-size:14px" });
+        function draw() {
+          table.innerHTML = "";
+          table.appendChild(el("tr", {}, ["Email", "Status", "Signed up", "Confirmed", ""].map(function (h) { return el("th", { text: h, style: "text-align:left;padding:6px 8px;border-bottom:2px solid var(--border);font-size:12.5px;color:var(--ink-faint)" }); })));
+          rows.filter(function (r) { return !q.value || r.email.toLowerCase().indexOf(q.value.toLowerCase()) >= 0; }).forEach(function (r) {
+            var td = "padding:7px 8px;border-bottom:1px solid var(--border)";
+            table.appendChild(el("tr", {}, [
+              el("td", { text: r.email, style: td + ";font-weight:600;word-break:break-all" }),
+              el("td", { text: r.status === "active" ? "Confirmed" : "Waiting for confirmation", style: td + ";color:" + (r.status === "active" ? "#0e700e" : "#8a6100") }),
+              el("td", { text: fmt(r.createdAt), style: td }),
+              el("td", { text: fmt(r.confirmedAt), style: td }),
+              el("td", { style: td + ";text-align:right" }, [el("button", { text: "Remove", class: "btn", style: "cursor:pointer;color:#a4262c;background:none;padding:2px 6px;font-size:13px", onclick: function () {
+                if (!confirm("Remove " + r.email + "? Their address is deleted immediately and they won't get any more issues.")) return;
+                api("POST", "remove", { email: r.email }).then(function () { rows = rows.filter(function (x) { return x !== r; }); draw(); toast("Removed"); }).catch(function (e) { toast(e.message, true); });
+              } })]),
+            ]));
+          });
+        }
+        q.addEventListener("input", draw);
+        draw();
+        body.appendChild(q);
+        body.appendChild(el("div", { style: "overflow-x:auto" }, [table]));
+      }).catch(function (e) { body.textContent = "Could not load: " + e.message; });
+    }
+    return box;
   }
 
   function newDraft() {
