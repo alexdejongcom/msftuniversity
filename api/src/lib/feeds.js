@@ -7,7 +7,7 @@
  * Each keeps its own in-memory cache and serves stale data if a refresh
  * fails. They throw only when there is nothing at all to return.
  */
-const { parse } = require("./learn-whatsnew");
+const { parse, summarize } = require("./learn-whatsnew");
 
 function cached(ms, load) {
   let cache = { at: 0, items: null };
@@ -87,6 +87,8 @@ const getRoadmap = cached(3 * 3600e3, async () => {
       ga: /^\d{4}-\d{2}$/.test(x.generalAvailabilityDate || "") ? x.generalAvailabilityDate : "",
       link: "https://www.microsoft.com/microsoft-365/roadmap?id=" + encodeURIComponent(x.id),
       added: x.created,
+      // roadmap descriptions often open with an "Overview" heading paragraph
+      summary: summarize(String(x.description || "").replace(/<p>\s*(Overview|What's New|Summary)\s*<\/p>/gi, " ").replace(/<\/p>/gi, " </p>")),
     }));
 });
 
@@ -120,7 +122,8 @@ function parseRss(xml, source, max) {
     const title = rssText(it, "title");
     const link = rssText(it, "link");
     const date = new Date(rssText(it, "pubDate"));
-    if (title && /^https:\/\//.test(link) && !isNaN(date)) items.push({ title, link, date: date.toISOString(), source });
+    const desc = rssText(it, "description").replace(/The post .* appeared first on .*$/i, "").replace(/\[(…|\.\.\.|&#8230;)\]\s*$/, "…");
+    if (title && /^https:\/\//.test(link) && !isNaN(date)) items.push({ title, link, date: date.toISOString(), source, summary: summarize(desc) });
   }
   return items;
 }

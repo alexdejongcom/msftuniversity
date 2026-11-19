@@ -85,7 +85,9 @@ Do these once, in order. You paste every key/connection string yourself — neve
 | `NL_CRON_KEY` | a long random string — e.g. run `openssl rand -hex 24` |
 | `NL_SITE_URL` | `https://msftuniversity.com` (optional, this is the default) |
 
-`COUNTER_STORAGE` is already there. Optional later: `NL_RATE_MINUTE` / `NL_RATE_HOUR` (default 30 / 100 —
+`COUNTER_STORAGE` is already there. Optional: `NL_FIRST_SEND` — the first Thursday of the rhythm
+(`YYYY-MM-DD`, default `2026-11-26`); issues go out every other Thursday at 09:30 Amsterdam time from there,
+and the draft reminder arrives the Tuesday before. Optional later: `NL_RATE_MINUTE` / `NL_RATE_HOUR` (default 30 / 100 —
 Azure's starting limits for a custom domain).
 
 ### 3. Editor access
@@ -100,7 +102,7 @@ GitHub repo → **Settings → Secrets and variables → Actions → New reposit
 ### 5. First run
 1. Subscribe yourself on `/newsletter.html` and click the confirmation link.
 2. Open `/newsletter-admin.html` → **Build a new draft** → tick items, add your take → **Send me a test**.
-3. Happy? **Send to N subscribers.**
+3. Happy? **Schedule for Thursday 09:30** (or *Send now*). You can keep editing a scheduled issue until it goes out.
 
 ### Growing the list
 Azure starts every custom domain at **30 mails/minute and 100/hour**. Bigger lists are sent in batches

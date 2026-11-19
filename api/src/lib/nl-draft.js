@@ -54,7 +54,7 @@ async function buildDraft({ lastSent, seen, now = Date.now() }) {
     const rows = wn.value
       .filter((x) => !seen.has(x.link) && x.key.slice(0, 7) >= sinceMonth)
       .slice(0, 24)
-      .map((x) => ({ source: x.source, out: { source: x.source, title: x.title, link: x.link, meta: [x.stage, x.month].filter(Boolean).join(" · ") } }));
+      .map((x) => ({ source: x.source, out: { source: x.source, title: x.title, link: x.link, summary: x.summary || "", meta: [x.stage, x.month].filter(Boolean).join(" · ") } }));
     add("release", rows, 6);
   }
   if (rm.status === "fulfilled") {
@@ -64,7 +64,7 @@ async function buildDraft({ lastSent, seen, now = Date.now() }) {
       .map((x) => {
         const ga = /^(\d{4})-(\d{2})$/.exec(x.ga || "");
         const when = ga ? "GA " + ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][+ga[2] - 1] + " " + ga[1] : "";
-        return { source: x.product, out: { source: x.product, title: x.title, link: x.link, meta: [x.status, when].filter(Boolean).join(" · ") } };
+        return { source: x.product, out: { source: x.product, title: x.title, link: x.link, summary: x.summary || "", meta: [x.status, when].filter(Boolean).join(" · ") } };
       });
     add("roadmap", rows, 4);
   }
@@ -72,7 +72,7 @@ async function buildDraft({ lastSent, seen, now = Date.now() }) {
     const rows = bl.value
       .filter((x) => !seen.has(x.link) && Date.parse(x.date) >= since)
       .slice(0, 10)
-      .map((x) => ({ source: x.source, out: { source: x.source, title: x.title, link: x.link, meta: "" } }));
+      .map((x) => ({ source: x.source, out: { source: x.source, title: x.title, link: x.link, summary: x.summary || "", meta: "" } }));
     add("blog", rows, 3);
   }
 

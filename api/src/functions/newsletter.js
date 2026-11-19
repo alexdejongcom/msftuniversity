@@ -14,12 +14,16 @@
  *   POST /api/newsletter/admin/save           { id, subject, intro, outro, items, events }
  *   POST /api/newsletter/admin/delete         { id }   (drafts only)
  *   POST /api/newsletter/admin/test           { id }   → preview to NL_ADMIN_EMAIL
- *   POST /api/newsletter/admin/send           { id }   → queue for all subscribers
+ *   POST /api/newsletter/admin/send           { id }   → queue for all subscribers now
+ *   POST /api/newsletter/admin/schedule       { id }   → send at the next Thursday 09:30 slot
+ *   POST /api/newsletter/admin/unschedule     { id }   → back to draft
  *   GET  /api/newsletter/admin/subscribers.csv
  * Scheduler (GitHub Actions, header x-nl-key = NL_CRON_KEY) or admin
- *   POST /api/newsletter/tick   sends the next batch within the ACS rate
- *                               limits, purges stale sign-ups, reminds Alex
- *                               when a new issue is due.
+ *   POST /api/newsletter/tick   starts a scheduled issue when its slot arrives,
+ *                               sends the next batch within the ACS rate
+ *                               limits, purges stale sign-ups, and on the
+ *                               Tuesday before each slot builds a draft and
+ *                               emails Alex. Rhythm: see ../lib/nl-schedule.js
  *
  * Confirm and unsubscribe links in mails open a page with a button (POST),
  * never a GET that changes state: link scanners such as Defender Safe Links
@@ -32,10 +36,10 @@ const store = require("../lib/nl-store");
 const mail = require("../lib/nl-mail");
 const { render, confirmMail } = require("../lib/nl-render");
 const { buildDraft } = require("../lib/nl-draft");
+const schedule = require("../lib/nl-schedule");
 
 const SITE = () => (process.env.NL_SITE_URL || "https://msftuniversity.com").replace(/\/$/, "");
 const ROLE = "newsletter-admin";
-const CYCLE_DAYS = 14;
 const DAY = 86400e3;
 
 const json = (status, body) => ({ status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" }, body: JSON.stringify(body) });
@@ -70,7 +74,7 @@ function issueOut(e) {
     id: e.rowKey, status: e.status, subject: e.subject || "", intro: e.intro || "", outro: e.outro || "",
     items: JSON.parse(e.items || "[]"), events: JSON.parse(e.events || "[]"),
     createdAt: e.createdAt, updatedAt: e.updatedAt || "", sentAt: e.sentAt || "",
-    total: e.total || 0, sent: e.sent || 0, failed: e.failed || 0,
+    total: e.total || 0, sent: e.sent || 0, failed: e.failed || 0, scheduledFor: e.scheduledFor || "",
   };
 }
 async function issues() {
@@ -162,6 +166,17 @@ app.http("nlIssue", {
 });
 
 /* ---------- sending ---------- */
+// Snapshot the confirmed subscribers into the send queue and flip to "sending".
+async function startSending(cur) {
+  const issue = issueOut(cur);
+  if (!issue.items.some((i) => i.include)) return { error: "select at least one item" };
+  const subs = await store.list("PartitionKey eq 'sub' and status eq 'active'", ["RowKey", "email"]);
+  if (!subs.length) return { error: "no confirmed subscribers yet" };
+  await store.batchInsert("q-" + cur.rowKey, subs.map((s) => ({ rowKey: s.rowKey, email: s.email, status: "queued" })));
+  await store.merge({ partitionKey: "issue", rowKey: cur.rowKey, status: "sending", total: subs.length, sent: 0, failed: 0, sentAt: now() });
+  return { total: subs.length };
+}
+
 async function tick(ctx, { allowRemind = true } = {}) {
   const out = { sentNow: 0, pending: 0, waitSeconds: 0, reminded: false, purged: 0 };
 
@@ -171,8 +186,21 @@ async function tick(ctx, { allowRemind = true } = {}) {
   for (const s of stale) await store.remove("sub", s.rowKey);
   out.purged = stale.length;
 
-  // 2. continue an issue that is being sent
-  const all = await issues();
+  // 2. a scheduled issue whose slot has arrived starts sending
+  let all = await issues();
+  if (!all.some((e) => e.status === "sending")) {
+    const due = all.find((e) => e.status === "scheduled" && Date.parse(e.scheduledFor) <= Date.now());
+    if (due) {
+      const r = await startSending(due);
+      if (r.error) {
+        await store.merge({ partitionKey: "issue", rowKey: due.rowKey, status: "draft", scheduledFor: "" });
+        ctx.warn("scheduled issue not sent:", r.error);
+      }
+      all = await issues();
+    }
+  }
+
+  // 3. continue an issue that is being sent
   const sending = all.find((e) => e.status === "sending");
   if (sending) {
     const issue = issueOut(sending), pk = "q-" + issue.id;
@@ -209,26 +237,26 @@ async function tick(ctx, { allowRemind = true } = {}) {
     return out;
   }
 
-  // 3. remind Alex when an issue is due
+  // 4. on the Tuesday before a slot: build a draft and remind Alex
   if (allowRemind && process.env.NL_ADMIN_EMAIL) {
-    const last = all.find((e) => e.status === "sent");
-    const due = !last || Date.now() - Date.parse(last.sentAt) >= (CYCLE_DAYS - 1) * DAY;
-    const cycle = last ? last.rowKey : "first";
+    const slot = schedule.nextSlot();
     const r = await store.get("meta", "remind");
-    if (due && (!r || r.cycle !== cycle)) {
+    const handled = all.some((e) => (e.status === "scheduled" && e.scheduledFor === new Date(slot.sendAt).toISOString()));
+    if (Date.now() >= slot.remindAt && (!r || r.cycle !== slot.date) && !handled) {
+      const last = all.find((e) => e.status === "sent");
       const hasDraft = all.some((e) => e.status === "draft" && (!last || e.rowKey > last.rowKey));
       if (!hasDraft) await createDraft();
       const { left } = await mail.budget();
       if (left) {
-        const site = SITE();
+        const site = SITE(), when = schedule.label(slot);
         await mail.send({
           to: process.env.NL_ADMIN_EMAIL,
           subject: "Your next Redmond Report draft is ready",
-          text: "It's been two weeks — a fresh draft of The Redmond Report is waiting.\n\nReview, add your take and send:\n" + site + "/newsletter-admin.html\n",
-          html: '<p style="font-family:Segoe UI,Arial,sans-serif;font-size:15px">It\'s been two weeks — a fresh draft of <b>The Redmond Report</b> is waiting.</p><p><a href="' + site + '/newsletter-admin.html" style="font-family:Segoe UI,Arial,sans-serif;background:#0067b8;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Review &amp; send</a></p>',
+          text: "A fresh draft of The Redmond Report is waiting.\n\nPick the items, add your take and schedule it for " + when + ":\n" + site + "/newsletter-admin.html\n",
+          html: '<p style="font-family:Segoe UI,Arial,sans-serif;font-size:15px">A fresh draft of <b>The Redmond Report</b> is waiting. Pick the items, add your take and schedule it for <b>' + when + '</b>.</p><p><a href="' + site + '/newsletter-admin.html" style="font-family:Segoe UI,Arial,sans-serif;background:#0067b8;color:#fff;padding:10px 18px;border-radius:6px;text-decoration:none">Review &amp; schedule</a></p>',
         });
         await mail.record(1);
-        await store.upsert({ partitionKey: "meta", rowKey: "remind", cycle, at: now() });
+        await store.upsert({ partitionKey: "meta", rowKey: "remind", cycle: slot.date, at: now() });
         out.reminded = true;
       }
     }
@@ -265,7 +293,7 @@ function cleanItems(items) {
   return (Array.isArray(items) ? items : []).slice(0, 80).map((i) => ({
     id: clip(i.id, 40), kind: ["release", "roadmap", "blog"].includes(i.kind) ? i.kind : "blog",
     source: clip(i.source, 80), title: clip(i.title, 200), link: /^https:\/\//.test(i.link || "") ? clip(i.link, 600) : "",
-    meta: clip(i.meta, 80), include: !!i.include, note: clip(i.note, 1500),
+    meta: clip(i.meta, 80), include: !!i.include, summary: clip(i.summary, 600), note: clip(i.note, 1500),
   })).filter((i) => i.link && i.title);
 }
 function cleanEvents(evs) {
@@ -290,6 +318,7 @@ app.http("nlAdmin", {
           issues: list,
           configured: { acs: !!process.env.ACS_CONNECTION_STRING, from: process.env.NL_FROM || "", admin: !!process.env.NL_ADMIN_EMAIL, cron: (process.env.NL_CRON_KEY || "").length >= 24 },
           limits: { minute: +process.env.NL_RATE_MINUTE || 30, hour: +process.env.NL_RATE_HOUR || 100 },
+          nextSlot: (() => { const sl = schedule.nextSlot(Date.now() + 5 * 60e3); return { at: new Date(sl.sendAt).toISOString(), label: schedule.label(sl) }; })(),
         });
       }
       if (req.method === "GET" && action === "issue") {
@@ -315,7 +344,7 @@ app.http("nlAdmin", {
       if (!cur) return json(404, { error: "issue not found" });
 
       if (action === "save") {
-        if (cur.status !== "draft") return json(409, { error: "only drafts can be edited" });
+        if (cur.status !== "draft" && cur.status !== "scheduled") return json(409, { error: "only drafts can be edited" });
         await store.merge({
           partitionKey: "issue", rowKey: cur.rowKey, subject: clip(b.subject, 150) || cur.subject,
           intro: clip(b.intro, 6000), outro: clip(b.outro, 3000),
@@ -324,7 +353,7 @@ app.http("nlAdmin", {
         return json(200, issueOut(await store.get("issue", cur.rowKey)));
       }
       if (action === "delete") {
-        if (cur.status !== "draft") return json(409, { error: "only drafts can be deleted" });
+        if (cur.status !== "draft" && cur.status !== "scheduled") return json(409, { error: "only drafts can be deleted" });
         await store.remove("issue", cur.rowKey);
         return json(200, { ok: true });
       }
@@ -338,16 +367,26 @@ app.http("nlAdmin", {
         return json(200, { ok: true, to: process.env.NL_ADMIN_EMAIL });
       }
       if (action === "send") {
-        if (cur.status !== "draft") return json(409, { error: "this issue was already sent" });
+        if (cur.status !== "draft" && cur.status !== "scheduled") return json(409, { error: "this issue was already sent" });
         if ((await issues()).some((e) => e.status === "sending")) return json(409, { error: "another issue is still being sent" });
-        const issue = issueOut(cur);
-        if (!issue.items.some((i) => i.include)) return json(400, { error: "select at least one item" });
-        const subs = await store.list("PartitionKey eq 'sub' and status eq 'active'", ["RowKey", "email"]);
-        if (!subs.length) return json(400, { error: "no confirmed subscribers yet" });
-        await store.batchInsert("q-" + cur.rowKey, subs.map((s) => ({ rowKey: s.rowKey, email: s.email, status: "queued" })));
-        await store.merge({ partitionKey: "issue", rowKey: cur.rowKey, status: "sending", total: subs.length, sent: 0, failed: 0, sentAt: now() });
+        const r = await startSending(cur);
+        if (r.error) return json(400, { error: r.error });
         const t = await tick(ctx, { allowRemind: false });
-        return json(200, { ok: true, total: subs.length, ...t });
+        return json(200, { ok: true, total: r.total, ...t });
+      }
+      if (action === "schedule") {
+        if (cur.status !== "draft") return json(409, { error: "only drafts can be scheduled" });
+        if (!issueOut(cur).items.some((i) => i.include)) return json(400, { error: "select at least one item" });
+        const other = (await issues()).find((e) => e.status === "scheduled");
+        if (other) return json(409, { error: "\u201C" + other.subject + "\u201D is already scheduled — unschedule it first" });
+        const sl = schedule.nextSlot(Date.now() + 5 * 60e3);
+        await store.merge({ partitionKey: "issue", rowKey: cur.rowKey, status: "scheduled", scheduledFor: new Date(sl.sendAt).toISOString() });
+        return json(200, { ok: true, scheduledFor: new Date(sl.sendAt).toISOString(), label: schedule.label(sl) });
+      }
+      if (action === "unschedule") {
+        if (cur.status !== "scheduled") return json(409, { error: "this issue isn't scheduled" });
+        await store.merge({ partitionKey: "issue", rowKey: cur.rowKey, status: "draft", scheduledFor: "" });
+        return json(200, { ok: true });
       }
       return json(404, { error: "unknown action" });
     } catch (e) {

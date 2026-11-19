@@ -95,7 +95,7 @@
     ]));
     var list = el("ul", { class: "resource-list" });
     state.issues.forEach(function (i) {
-      var badge = i.status === "sent" ? "Sent " + fmt(i.sentAt) + " · " + i.sent + "/" + i.total : i.status === "sending" ? "Sending · " + i.sent + "/" + i.total : "Draft · " + fmt(i.updatedAt || i.createdAt);
+      var badge = i.status === "sent" ? "Sent " + fmt(i.sentAt) + " · " + i.sent + "/" + i.total : i.status === "sending" ? "Sending · " + i.sent + "/" + i.total : i.status === "scheduled" ? "Scheduled · " + fmt(i.scheduledFor) : "Draft · " + fmt(i.updatedAt || i.createdAt);
       list.appendChild(el("li", {}, [el("a", { href: "#", onclick: function (e) { e.preventDefault(); openIssue(i.id); } }, [
         el("span", { text: i.subject || "(no subject)" }), el("span", { class: "desc", text: badge }),
       ])]));
@@ -135,7 +135,16 @@
     host.innerHTML = "";
     clearTimeout(pollTimer);
     if (!issue) { host.appendChild(el("p", { text: "No draft yet — build one from the latest news above.", style: "color:var(--ink-faint)" })); return; }
-    var ro = issue.status !== "draft";
+    var ro = issue.status !== "draft" && issue.status !== "scheduled";
+
+    if (issue.status === "scheduled") {
+      host.appendChild(el("div", { class: "card", style: "margin-bottom:20px;border-left:4px solid #0e700e;background:#f1faf1;display:flex;gap:12px;align-items:center;flex-wrap:wrap" }, [
+        el("div", { style: "flex:1;min-width:220px" }, [el("b", { text: "Scheduled for " + fmt(issue.scheduledFor) + "." }), " You can keep editing until then — just save your changes."]),
+        el("button", { class: "btn btn-outline", text: "Unschedule", style: "cursor:pointer", onclick: function () {
+          api("POST", "unschedule", { id: issue.id }).then(function () { toast("Back to draft"); loadState(issue.id); }).catch(function (e) { toast(e.message, true); });
+        } }),
+      ]));
+    }
 
     if (issue.status === "sending") {
       var pct = issue.total ? Math.round((issue.sent + issue.failed) / issue.total * 100) : 0;
@@ -158,21 +167,24 @@
     function count() { counter.textContent = " · " + issue.items.filter(function (i) { return i.include; }).length + " selected"; }
     count();
     host.appendChild(el("h3", { style: "margin:8px 0 4px" }, ["News items", counter]));
-    host.appendChild(el("p", { text: "Tick what goes in. Add a line on why it matters — that's what makes people open the next one.", style: "font-size:13.5px;color:var(--ink-faint);margin-bottom:12px" }));
+    host.appendChild(el("p", { text: "Tick what goes in. Each item comes with a short summary taken from Microsoft's own description — edit it if you like. Add your take where you have one; that's what makes people open the next issue.", style: "font-size:13.5px;color:var(--ink-faint);margin-bottom:12px" }));
     groups.forEach(function (g) {
       var rows = issue.items.filter(function (i) { return i.kind === g[0]; });
       if (!rows.length) return;
       var box = el("div", { class: "card", style: "margin-bottom:16px;padding:18px 20px" }, [el("div", { text: g[1], style: "font-weight:700;margin-bottom:8px" })]);
       rows.forEach(function (it) {
-        var note = el("textarea", { value: it.note || "", rows: 2, style: INPUT + "font-size:14px;margin-top:6px", disabled: ro, placeholder: "Why it matters (optional)", oninput: function () { it.note = note.value; mark(); } });
-        note.hidden = !it.include;
-        var cb = el("input", { type: "checkbox", checked: !!it.include, disabled: ro, style: "margin-top:4px;transform:scale(1.2)", onchange: function () { it.include = cb.checked; note.hidden = !cb.checked; count(); mark(); } });
+        var summary = el("textarea", { value: it.summary || "", rows: 2, style: INPUT + "font-size:14px;margin-top:6px;color:var(--ink-soft)", disabled: ro, placeholder: "Summary (shown under the title)", oninput: function () { it.summary = summary.value; mark(); } });
+        var note = el("textarea", { value: it.note || "", rows: 2, style: INPUT + "font-size:14px;margin-top:6px;background:#eef5fc", disabled: ro, placeholder: "Your take — why it matters (optional, shown as \u201CAlex\u2019s take\u201D)", oninput: function () { it.note = note.value; mark(); } });
+        var sumPreview = el("div", { text: it.summary || "", style: "font-size:13.5px;color:var(--ink-faint);margin-top:4px" });
+        function vis() { summary.hidden = note.hidden = !it.include; sumPreview.hidden = !!it.include || !it.summary; }
+        vis();
+        var cb = el("input", { type: "checkbox", checked: !!it.include, disabled: ro, style: "margin-top:4px;transform:scale(1.2)", onchange: function () { it.include = cb.checked; vis(); count(); mark(); } });
         box.appendChild(el("div", { style: "display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--border)" }, [
           cb,
           el("div", { style: "flex:1;min-width:0" }, [
             el("div", { style: "font-size:12px;font-weight:700;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.4px" }, [it.source + (it.meta ? " · " + it.meta : "")]),
             el("a", { href: it.link, target: "_blank", rel: "noopener", text: it.title, style: "font-weight:600" }),
-            note,
+            sumPreview, summary, note,
           ]),
         ]));
       });
@@ -201,14 +213,19 @@
       bar.appendChild(el("button", { class: "btn btn-outline", text: "Send me a test", style: "cursor:pointer", onclick: function () {
         save().then(function () { return api("POST", "test", { id: issue.id }); }).then(function (r) { toast("Test sent to " + r.to); }).catch(function (e) { toast(e.message, true); });
       } }));
-      bar.appendChild(el("button", { class: "btn btn-blue", text: "Send to " + state.subscribers.active + " subscribers…", style: "cursor:pointer;border:0;margin-left:auto", onclick: function () {
+      if (issue.status === "draft") bar.appendChild(el("button", { class: "btn btn-blue", text: "Schedule for " + state.nextSlot.label, style: "cursor:pointer;border:0;margin-left:auto", onclick: function () {
+        save().then(function () { return api("POST", "schedule", { id: issue.id }); })
+          .then(function (r) { toast("Scheduled for " + r.label); loadState(issue.id); })
+          .catch(function (e) { toast(e.message, true); });
+      } }));
+      bar.appendChild(el("button", { class: "btn btn-outline", text: "Send now to " + state.subscribers.active + "…", style: "cursor:pointer;" + (issue.status === "draft" ? "" : "margin-left:auto"), onclick: function () {
         var n = state.subscribers.active;
         if (!confirm("Send “" + subject.value + "” to " + n + " confirmed subscriber" + (n === 1 ? "" : "s") + "? This can't be undone.")) return;
         save().then(function () { return api("POST", "send", { id: issue.id }); })
           .then(function (r) { toast("Sending started — " + r.sentNow + " of " + r.total + " out"); loadState(issue.id); })
           .catch(function (e) { toast(e.message, true); });
       } }));
-      bar.appendChild(el("button", { class: "btn", text: "Delete draft", style: "cursor:pointer;color:#a4262c;background:none", onclick: function () {
+      bar.appendChild(el("button", { class: "btn", text: issue.status === "scheduled" ? "Delete" : "Delete draft", style: "cursor:pointer;color:#a4262c;background:none", onclick: function () {
         if (!confirm("Delete this draft?")) return;
         api("POST", "delete", { id: issue.id }).then(function () { issue = null; dirty = false; loadState(); }).catch(function (e) { toast(e.message, true); });
       } }));

@@ -2,13 +2,14 @@
 # Static Web Apps' built-in API can't run timers, so GitHub calls it instead:
 #   * finishes sending an issue in batches within the Azure send limits
 #   * deletes sign-ups that were never confirmed (after 7 days)
-#   * emails Alex when the next issue is due (every two weeks)
+#   * sends a scheduled issue at its slot (every other Thursday 09:30 Amsterdam)
+#   * builds a draft and emails Alex on the Tuesday before each slot
 # Needs repository secret NL_CRON_KEY (same value as the SWA app setting).
 name: Newsletter scheduler
 
 on:
   schedule:
-    - cron: "17 * * * *"   # hourly, off the top of the hour
+    - cron: "31 * * * *"   # hourly at :31 UTC — right after the 09:30 Amsterdam slot (CET and CEST)
   workflow_dispatch:
 
 concurrency:

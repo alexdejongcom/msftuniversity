@@ -65,31 +65,51 @@ function sections(html) {
   return out;
 }
 
+/* A short, factual summary: the first sentence or two of Microsoft's own
+ * description, minus "For more information, see…" style pointers. */
+function summarize(text, max = 300) {
+  const t = decode(text).replace(/^\s*:\s*/, "").replace(/^\s*\[[^\]]{1,40}\]\s*/, "");
+  const sentences = (t.match(/[^.!?]+(?:[.!?]+(?=\s|$)|$)/g) || []).map((x) => x.trim()).filter(Boolean)
+    .filter((x) => !/^(for more information|for more details|to learn more|learn more|see |more info|read more|details:)/i.test(x));
+  let out = "";
+  for (const x of sentences) {
+    if (out && (out + " " + x).length > max) break;
+    out = out ? out + " " + x : x;
+    if (out.length > 160) break;
+  }
+  return clip(out, max);
+}
+
 function parse(html, feed, perFeed) {
   const items = [], seen = new Set();
-  const push = (sec, title, anchor, stage) => {
+  const push = (sec, title, anchor, stage, summary) => {
     title = clip(title.replace(/\s*\((preview|ga)\)\s*$/i, ""), 110);
     if (seen.has(title)) return; // some pages repeat an entry under several tabs
     seen.add(title);
     if (title && items.length < perFeed)
-      items.push({ title, link: feed.url + "#" + anchor, month: sec.month.label, key: sec.month.key, stage: stage || "", source: feed.source });
+      items.push({ title, link: feed.url + "#" + anchor, month: sec.month.label, key: sec.month.key, stage: stage || "", source: feed.source, summary: summary || "" });
   };
   for (const sec of sections(html)) {
     if (items.length >= perFeed) break;
     const body = sec.html;
     if (feed.mode === "h3") {
       const re = /<h3[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h3>/gi; let m;
-      while ((m = re.exec(body))) { const t = decode(m[2]); push(sec, t, m[1], stageOf(t)); }
+      while ((m = re.exec(body))) {
+        const t = decode(m[2]);
+        const rest = body.slice(re.lastIndex), stop = rest.search(/<h[1-3][\s>]/i);
+        const paras = ((stop < 0 ? rest : rest.slice(0, stop)).match(/<p>([\s\S]*?)<\/p>/gi) || []).slice(0, 2).join(" ");
+        push(sec, t, m[1], stageOf(t), summarize(paras));
+      }
     } else if (feed.mode === "li-strong") {
-      const re = /<li>\s*(?:<p>)?\s*<strong>([\s\S]*?)<\/strong>([\s\S]{0,400})/gi; let m;
-      while ((m = re.exec(body))) { const t = decode(m[1]); push(sec, t, sec.id, stageOf(t + " " + decode(m[2]))); }
+      const re = /<li>\s*(?:<p>)?\s*<strong>([\s\S]*?)<\/strong>([\s\S]*?)<\/li>/gi; let m;
+      while ((m = re.exec(body))) { const t = decode(m[1]); push(sec, t, sec.id, stageOf(t + " " + decode(m[2]).slice(0, 400)), summarize(m[2])); }
     } else if (feed.mode === "table") {
-      const re = /<tr>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>/gi; let m;
+      const re = /<tr>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>\s*<td>([\s\S]*?)<\/td>(?:\s*<td>([\s\S]*?)<\/td>)?/gi; let m;
       while ((m = re.exec(body))) {
         const type = decode(m[1]);
         if (!/^feature/i.test(type)) continue; // skip per-platform build releases
         const st = decode(m[3]);
-        push(sec, decode(m[2]), sec.id, /preview/i.test(st) ? "Preview" : /ga/i.test(st) ? "GA" : "");
+        push(sec, decode(m[2]), sec.id, /preview/i.test(st) ? "Preview" : /ga/i.test(st) ? "GA" : "", summarize(m[4] || ""));
       }
     } else if (feed.mode === "category") {
       const parts = body.split(/<h3[^>]*\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h3>/i);
@@ -101,7 +121,7 @@ function parse(html, feed, perFeed) {
           const label = decode(m[1]);
           const text = decode(m[2]).replace(/^:\s*/, "");
           const first = (text.match(/^.*?[.!?](\s|$)/) || [text])[0].replace(/\s+$/, "");
-          push(sec, cat + ": " + first.replace(/\.$/, ""), parts[i], stageOf(label));
+          push(sec, cat + ": " + first.replace(/\.$/, ""), parts[i], stageOf(label), summarize(text.slice(first.length)));
         }
       }
     } else if (feed.mode === "category-title") {
@@ -112,7 +132,11 @@ function parse(html, feed, perFeed) {
         while ((m = re.exec(chunk))) {
           const t = decode(m[1]);
           if (/:$/.test(t)) continue; // "Details:", "Why:" labels, not features
-          push(sec, cat.replace(/^Microsoft 365 (?=Copilot)/, "") + ": " + t, parts[i], stageOf(t));
+          // the description is the paragraph after the title line
+          const rest = chunk.slice(re.lastIndex);
+          const after = rest.slice(rest.indexOf("</p>") + 4);
+          const para = (after.match(/^\s*<p>([\s\S]*?)<\/p>/i) || [])[1] || "";
+          push(sec, cat.replace(/^Microsoft 365 (?=Copilot)/, "") + ": " + t, parts[i], stageOf(t), /^\s*<strong>/.test(para) ? "" : summarize(para));
         }
       }
     }
@@ -120,4 +144,4 @@ function parse(html, feed, perFeed) {
   return items;
 }
 
-module.exports = { parse, sections, month, decode };
+module.exports = { parse, sections, month, decode, summarize };

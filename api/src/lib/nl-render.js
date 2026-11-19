@@ -73,7 +73,8 @@ function render(issue, ctx = {}) {
       h.push('<tr><td style="padding:10px 32px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-left:3px solid ' + col + ';"><tr><td style="padding:2px 0 2px 14px;">' +
         '<div style="' + FONT + 'font-size:11.5px;font-weight:700;color:' + col + ';text-transform:uppercase;letter-spacing:.6px;">' + e(it.source) + (it.meta ? ' <span style="color:#8a8a8a;font-weight:600;">· ' + e(it.meta) + "</span>" : "") + "</div>" +
         '<a href="' + e(safeUrl(it.link)) + '" style="' + FONT + 'font-size:16px;font-weight:600;line-height:1.4;color:#0067b8;text-decoration:none;">' + e(it.title) + "</a>" +
-        ((it.note || "").trim() ? paras(it.note, FONT + "margin:6px 0 0;font-size:14.5px;line-height:1.55;color:#3d3d3d;") : "") +
+        ((it.summary || "").trim() ? '<p style="' + FONT + 'margin:5px 0 0;font-size:14.5px;line-height:1.55;color:#3d3d3d;">' + e(it.summary.trim()) + "</p>" : "") +
+        ((it.note || "").trim() ? '<p style="' + FONT + 'margin:8px 0 0;font-size:14.5px;line-height:1.55;color:#0b1a30;background:#eef5fc;border-radius:6px;padding:8px 12px;"><b>Alex&rsquo;s take:</b> ' + e(it.note.trim()).replace(/\n/g, "<br>") + "</p>" : "") +
         "</td></tr></table></td></tr>");
     }
   }
@@ -109,7 +110,12 @@ function render(issue, ctx = {}) {
     const rows = items.filter((i) => i.kind === kind);
     if (!rows.length) continue;
     t.push("== " + title + " ==", "");
-    rows.forEach((it) => { t.push("* [" + it.source + "] " + it.title, "  " + safeUrl(it.link)); if ((it.note || "").trim()) t.push("  " + it.note.trim().replace(/\n/g, "\n  ")); t.push(""); });
+    rows.forEach((it) => {
+      t.push("* [" + it.source + "] " + it.title, "  " + safeUrl(it.link));
+      if ((it.summary || "").trim()) t.push("  " + it.summary.trim());
+      if ((it.note || "").trim()) t.push("  Alex's take: " + it.note.trim().replace(/\n/g, "\n  "));
+      t.push("");
+    });
   }
   if (events.length) {
     t.push("== Upcoming courses & events ==", "");
@@ -128,7 +134,7 @@ function confirmMail(confirmUrl) {
   const html = '<!doctype html><html><body style="margin:0;background:#f2f4f7;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 12px;">' +
     '<table role="presentation" width="560" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#fff;border-radius:10px;"><tr><td style="padding:32px;' + FONT + 'color:#1f1f1f;">' +
     '<div style="font-size:22px;font-weight:700;color:#0b1a30;">One click to confirm</div>' +
-    '<p style="font-size:15.5px;line-height:1.6;">Someone (hopefully you) asked to receive <b>The Redmond Report</b> from Microsoft University — the Microsoft news that matters, every two weeks.</p>' +
+    '<p style="font-size:15.5px;line-height:1.6;">Someone (hopefully you) asked to receive <b>The Redmond Report</b> from Microsoft University — the Microsoft news that matters, every other Thursday.</p>' +
     '<p style="margin:26px 0;"><a href="' + e(confirmUrl) + '" style="background:#0067b8;color:#fff;text-decoration:none;font-weight:600;padding:12px 22px;border-radius:6px;display:inline-block;">Yes, subscribe me</a></p>' +
     '<p style="font-size:13px;color:#6b6b6b;line-height:1.6;">Didn\'t ask for this? Just ignore this email — you won\'t hear from us again, and we delete unconfirmed sign-ups after 7 days.</p>' +
     '<p style="font-size:12px;color:#8a8a8a;">Microsoft University · alexdejong.com · Bergeijk, the Netherlands · <a href="' + e(site) + '/privacy.html" style="color:#8a8a8a;">Privacy</a></p>' +
