@@ -45,6 +45,42 @@ def logs(x, y, w, h, title, query, span="P7D"):
         "type": "Extension/Microsoft_OperationsManagementSuite_Workspace/PartType/LogsDashboardPart",
         "inputs": inputs, "settings": {"content": {"PartTitle": title, "PartSubTitle": "Application Insights (last 7 days)"}}}}
 
+# ---- cost (Cost Management pinned views) ----
+SCOPE = f"/subscriptions/{SUB}"
+STORAGE = f"/subscriptions/{SUB}/resourcegroups/rg-intunelabs/providers/microsoft.storage/storageaccounts/msftuniversity"
+# Every resource of the site, including the storage account (in rg-intunelabs)
+# behind the visitor counter, newsletter list and certificates.
+P = f"/subscriptions/{SUB}/resourcegroups/rg-msftuniversity/providers/"
+SITE_RESOURCES = [STORAGE] + [P + x for x in [
+    "microsoft.web/staticsites/msftuniversity",
+    "microsoft.network/dnszones/microsoftuniversity.com",
+    "microsoft.communication/communicationservices/msftuniversity-acs",
+    "microsoft.communication/emailservices/msftuniversity-email",
+    "microsoft.insights/components/msftuniversity-insights",
+    "microsoft.operationalinsights/workspaces/msftuniversity-logs",
+]]
+# A single-dimension filter: the pinned cost tiles ignore "or" filters.
+# Add new resources here when the site grows.
+COST_FILTER = {"dimensions": {"name": "ResourceId", "operator": "In", "values": SITE_RESOURCES}}
+
+def cost(x, y, w, h, title, chart, date_range, group, granularity="Monthly", accumulated=False, kpis=None):
+    ds = {"granularity": granularity, "aggregation": {"totalCost": {"name": "Cost", "function": "Sum"}},
+          "filter": COST_FILTER}
+    if group:
+        ds["grouping"] = [{"type": "Dimension", "name": group}]
+    if granularity != "None":
+        ds["sorting"] = [{"direction": "ascending", "name": "UsageDate" if granularity == "Daily" else "BillingMonth"}]
+    view = {"currency": "EUR", "dateRange": date_range,
+            "query": {"type": "ActualCost", "dataSet": ds, "timeframe": "None"},
+            "chart": chart, "accumulated": "true" if accumulated else "false",
+            "pivots": [{"type": "Dimension", "name": "ResourceId"}, {"type": "Dimension", "name": "ServiceName"}, {"type": "Dimension", "name": "Meter"}],
+            "scope": SCOPE.lstrip("/"), "kpis": kpis or [], "displayName": title}
+    return {"position": {"x": x, "y": y, "colSpan": w, "rowSpan": h}, "metadata": {
+        "type": "Extension/Microsoft_Azure_CostManagement/PartType/CostAnalysisPinPart",
+        "inputs": [{"name": "scope", "value": SCOPE}, {"name": "scopeName", "value": "Microsoft University"},
+                   {"name": "view", "value": view, "isOptional": True}, {"name": "externalState", "isOptional": True}],
+        "deepLink": "#blade/Microsoft_Azure_CostManagement/Menu/costanalysis"}}
+
 SITE = "https://msftuniversity.com"
 header = (
     "**Microsoft University — status at a glance.** Traffic and errors come from Azure itself; "
@@ -80,6 +116,14 @@ parts = [
     metric(0, 14, 6, 4, "Data sent (30 days)", "microsoft.web/staticsites", SWA, [("BytesSent", 1, "Bytes sent")], chart=1),
     logs(6, 14, 6, 4, "Slowest API calls",
          "requests | top 20 by duration desc | project timestamp, Endpoint=name, Ms=round(duration), Status=resultCode"),
+]
+
+parts += [
+    md(0, 18, 12, 1, "Cost", "**What Microsoft University costs to run** — everything in rg-msftuniversity plus the `msftuniversity` storage account (visitor counter, newsletter list, certificates). Domain registration at Argeweb is billed outside Azure."),
+    cost(0, 19, 6, 4, "This month so far by resource", "Table", "ThisMonth", "ResourceId", granularity="None"),
+    cost(6, 19, 6, 4, "Cost per month by resource", "StackedColumn", "Last6Months", "ResourceId"),
+    cost(0, 23, 6, 4, "Last 6 months by resource", "Table", "Last6Months", "ResourceId", granularity="None"),
+    cost(6, 23, 6, 4, "Last 6 months by service", "Table", "Last6Months", "ServiceName", granularity="None"),
 ]
 
 props = {"lenses": [{"order": 0, "parts": parts}], "metadata": {"model": {

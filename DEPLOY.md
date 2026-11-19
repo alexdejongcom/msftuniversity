@@ -113,7 +113,7 @@ raise `NL_RATE_MINUTE` / `NL_RATE_HOUR` to match.
 ## Monitoring dashboard
 
 Azure portal → Dashboard → **Microsoft University - status** (resource `msftuniversity-status` in rg-msftuniversity).
-Data sources: Static Web App metrics, Application Insights `msftuniversity-insights` (workspace
+Data sources: Static Web App metrics, Cost Management (cost section; resources listed in SITE_RESOURCES), Application Insights `msftuniversity-insights` (workspace
 `msftuniversity-logs`, 30-day retention, 0.15 GB/day cap) and Communication Services email metrics.
 To change the tiles: edit `tools/azure/make-dashboard.py`, run it, then in Cloud Shell
 `az portal dashboard update -g rg-msftuniversity -n msftuniversity-status --input-path dashboard.json`.
